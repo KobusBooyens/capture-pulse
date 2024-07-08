@@ -1,0 +1,77 @@
+meta {
+  name: createNotification
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{url}}/notifications
+  body: json
+  auth: none
+}
+
+body:json {
+  [
+    {
+      "id": "1",
+      "severity": "error",
+      "title": "Send nutrition plan",
+      "description": "Client Jessie Shakespear signed recently. Reminder to send nutrition plan",
+      "actioned": true,
+      "dateTimeCreated": "2024-05-25T08:30:00Z",
+      "dateTimeActioned": "2024-06-13T17:53:50.714Z",
+      "client": "6677e54730f1c840fb2ee02d"
+    },
+    {
+      "id": "2",
+      "severity": "info",
+      "title": "Package Renewal",
+      "description": "Client John Doe joined on 2024-06-01. Follow up for renewal before package expires in 1 month",
+      "actioned": false,
+      "dateTimeCreated": "2024-05-20T10:00:00Z",
+      "dateTimeActioned": null,
+      "client": "6677e54730f1c840fb2ee02e"
+    },
+    {
+      "id": "3",
+      "severity": "warning",
+      "title": "Update nutrition plan (4 week)",
+      "description": "Client Jane Smith joined 4 weeks ago. Reminder to update nutrition plan",
+      "actioned": false,
+      "dateTimeCreated": "2024-05-18T09:15:00Z",
+      "dateTimeActioned": null,
+      "client": "6677e54730f1c840fb2ee02f"
+    },
+    {
+      "id": "4",
+      "severity": "warning",
+      "title": "Update nutrition plan (3 week)",
+      "description": "Client Alice Johnson joined 3 weeks ago. Reminder to update nutrition plan",
+      "actioned": false,
+      "dateTimeCreated": "2024-05-25T11:45:00Z",
+      "dateTimeActioned": "2024-06-05T19:02:03.691Z",
+      "client": "6677e54730f1c840fb2ee030"
+    },
+    {
+      "id": "5",
+      "severity": "info",
+      "title": "Package Renewal",
+      "description": "Client Bob Brown joined on 2024-06-04. Follow up for renewal before package expires in 1 month",
+      "actioned": true,
+      "dateTimeCreated": "2024-05-22T14:30:00Z",
+      "dateTimeActioned": "2024-06-13T17:53:57.486Z",
+      "client": "6677e54730f1c840fb2ee031"
+    },
+    {
+      "id": "6",
+      "severity": "error",
+      "title": "Send nutrition plan",
+      "description": "Client Steve Johnson signed recently. Reminder to send nutrition plan",
+      "actioned": false,
+      "dateTimeCreated": "2024-05-25T08:30:00Z",
+      "dateTimeActioned": null,
+      "client": "6677e6bd30f1c840fb2ee048"
+    }
+  ]
+  
+}

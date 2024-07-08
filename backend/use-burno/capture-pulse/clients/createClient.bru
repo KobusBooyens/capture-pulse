@@ -1,0 +1,72 @@
+meta {
+  name: createClient
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{url}}/clients
+  body: json
+  auth: none
+}
+
+body:json {
+  [
+    {
+      "firstName": "Jessie",
+      "lastName": "Shakespear",
+      "dob": "2009-04-06",
+      "gender": "Female",
+      "email": "jess.s@test.com",
+      "contactNumber": "13246579",
+      "joiningDate": "2024-05-31",
+      "package": "6676fa214229e76d83796457",
+      "amount": "900"
+    },
+    {
+      "firstName": "John",
+      "lastName": "Doe",
+      "dob": "1990-02-15",
+       "gender": "Male",
+      "email": "john.d@test.com",
+      "contactNumber": "12345678",
+      "joiningDate": "2024-06-01",
+      "package": "6676fa214229e76d83796459",
+      "amount": "600"
+    },
+    {
+      "firstName": "Jane",
+      "lastName": "Smith",
+      "dob": "1985-08-25",
+      "gender": "Female",
+      "email": "jane.s@test.com",
+      "contactNumber": "87654321",
+      "joiningDate": "2024-06-02",
+      "package": "6676fa214229e76d83796458",
+      "amount": "800"
+    },
+    {
+      "firstName": "Alice",
+      "lastName": "Johnson",
+      "dob": "2000-12-30",
+      "gender": "Female",
+      "email": "alice.j@test.com",
+      "contactNumber": "56473829",
+      "joiningDate": "2024-06-03",
+      "package": "6676fa214229e76d8379645a",
+      "amount": "1200"
+    },
+    {
+      "firstName": "Bob",
+      "lastName": "Brown",
+      "dob": "1975-07-12",
+      "gender": "Male",
+      "email": "bob.b@test.com",
+      "contactNumber": "90785634",
+      "joiningDate": "2024-06-04",
+      "package": "6676fa214229e76d83796457",
+      "amount": "900"
+    }
+  ]
+  
+}

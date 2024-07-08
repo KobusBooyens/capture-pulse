@@ -1,0 +1,32 @@
+meta {
+  name: createPackage
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{url}}/packages
+  body: json
+  auth: none
+}
+
+body:json {
+  [
+    {
+      "name": "Month to Month",
+      "amount": 900
+    },
+    {
+      "name": "3 Months",
+      "amount": 800
+    },
+    {
+      "name": "6 Months",
+      "amount": 600
+    },
+    {
+      "name": "Couples",
+      "amount": 1200
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+meta {
+  name: getCheckins
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{url}}/checkins/client/6677e54730f1c840fb2ee02e?type=pulse
+  body: none
+  auth: none
+}
+
+params:query {
+  type: pulse
+}

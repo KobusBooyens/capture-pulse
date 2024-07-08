@@ -1,0 +1,22 @@
+meta {
+  name: createAccount
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{url}}/accounts
+  body: json
+  auth: none
+}
+
+body:json {
+  [
+    {
+      "client": "6677e54730f1c840fb2ee02e",
+      "date": "2024-06-26",
+      "amount": "200",
+      "reference": "test test"
+    }
+  ]
+}

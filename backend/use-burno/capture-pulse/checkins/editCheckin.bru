@@ -1,0 +1,21 @@
+meta {
+  name: editCheckin
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{url}}/checkins/6677df5bdb5c17d8600059ed
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "client": "6676fb800ff312e4a8deb0b6",
+    "severity": "warning",
+    "title": "Send nutrition plan",
+    "description": "Client A signed recently. Reminder to send nutrition plan",
+    "actioned": false
+  }
+}
