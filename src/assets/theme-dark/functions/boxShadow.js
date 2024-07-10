@@ -1,0 +1,14 @@
+import pxToRem from "./pxToRem.js";
+import rgba from "./rgba.js";
+
+function boxShadow(offset = [], radius = [], color, opacity, inset = "") {
+    const [x, y] = offset;
+    const [blur, spread] = radius;
+
+    return `${inset} ${pxToRem(x)} ${pxToRem(y)} ${pxToRem(blur)} ${pxToRem(spread)} ${rgba(
+        color,
+        opacity
+    )}`;
+}
+
+export default boxShadow;
