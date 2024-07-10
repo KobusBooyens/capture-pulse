@@ -8,7 +8,7 @@ import Box from "../../components/Box/Box.jsx";
 import Typography from "../../components/Typography/Typography.jsx";
 
 function Footer({ company, links }) {
-    const { href, name } = company;
+    const { name } = company;
     const { size } = typography;
 
     const renderLinks = () =>
@@ -40,19 +40,8 @@ function Footer({ company, links }) {
                 fontSize={size.sm}
                 px={1.5}
             >
-        &copy; {new Date().getFullYear()}, made with
-                <Box fontSize={size.md} color="text" mb={-0.5} mx={0.25}>
-                    <Icon color="inherit" fontSize="inherit">
-            favorite
-                    </Icon>
-                </Box>
-        by
-                <Link href={href} target="_blank">
-                    <Typography variant="button" fontWeight="medium">
-            &nbsp;{name}&nbsp;
-                    </Typography>
-                </Link>
-        for a better web.
+        &copy; {new Date().getFullYear()} {name} v0.01
+
             </Box>
             <Box
                 component="ul"
@@ -71,7 +60,7 @@ function Footer({ company, links }) {
                     },
                 })}
             >
-                {renderLinks()}
+                {/*{renderLinks()}*/}
             </Box>
         </Box>
     );
@@ -79,13 +68,7 @@ function Footer({ company, links }) {
 
 // Setting default values for the props of Footer
 Footer.defaultProps = {
-    company: { href: "https://www.creative-tim.com/", name: "Creative Tim" },
-    links: [
-        { href: "https://www.creative-tim.com/", name: "Creative Tim" },
-        { href: "https://www.creative-tim.com/presentation", name: "About Us" },
-        { href: "https://www.creative-tim.com/blog", name: "Blog" },
-        { href: "https://www.creative-tim.com/license", name: "License" },
-    ],
+    company: { name: "Capture Pulse" }
 };
 
 // Typechecking props for the Footer

@@ -1,7 +1,11 @@
 import React from "react";
+import DashboardLayout from "../../controls/LayoutContainers/DashboardLayout.jsx";
+import DashboardNavbar from "../../controls/Navbars/DashboardNavbar/DashboardNavbar.jsx";
 
 export const Notifications = () => {
     return (
-        <div>Notifications</div>
+        <DashboardLayout>
+            <DashboardNavbar/>
+        </DashboardLayout>
     );
 };

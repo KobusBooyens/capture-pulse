@@ -34,7 +34,6 @@ function DashboardLayout({ children }) {
     );
 }
 
-// Typechecking props for the DashboardLayout
 DashboardLayout.propTypes = {
     children: PropTypes.node.isRequired,
 };

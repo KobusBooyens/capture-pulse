@@ -1,8 +1,12 @@
 import React from "react";
+import DashboardLayout from "../../controls/LayoutContainers/DashboardLayout.jsx";
+import DashboardNavbar from "../../controls/Navbars/DashboardNavbar/DashboardNavbar.jsx";
 
 const Clients = () => {
     return (
-        <div>Clients</div>
+        <DashboardLayout>
+            <DashboardNavbar/>
+        </DashboardLayout>
     );
 };
 export default Clients;

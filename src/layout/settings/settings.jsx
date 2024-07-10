@@ -1,8 +1,12 @@
 import React from "react";
+import DashboardLayout from "../../controls/LayoutContainers/DashboardLayout.jsx";
+import DashboardNavbar from "../../controls/Navbars/DashboardNavbar/DashboardNavbar.jsx";
 
 const Settings = () => {
     return (
-        <div>Settings</div>
+        <DashboardLayout>
+            <DashboardNavbar/>
+        </DashboardLayout>
     );
 };
 export default Settings;

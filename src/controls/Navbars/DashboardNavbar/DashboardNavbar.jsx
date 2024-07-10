@@ -23,9 +23,9 @@ import {
     setOpenConfigurator,
 } from "../../../context/materialUIControllerProvider.jsx";
 import NotificationItem from "../../Items/NotificationItem/NotificationItem.jsx";
-import { Breadcrumbs } from "@mui/material";
+
 import Box from "../../../components/Box/Box.jsx";
-import Input from "../../../components/Input/Input.jsx";
+import Breadcrumbs from "../../Breadcrumbs/Breadcrumbs.jsx";
 
 function DashboardNavbar({ absolute, light, isMini }) {
     const [navbarType, setNavbarType] = useState();
@@ -35,28 +35,19 @@ function DashboardNavbar({ absolute, light, isMini }) {
     const route = useLocation().pathname.split("/").slice(1);
 
     useEffect(() => {
-    // Setting the navbar type
         if (fixedNavbar) {
             setNavbarType("sticky");
         } else {
             setNavbarType("static");
         }
 
-        // A function that sets the transparent state of the navbar.
         function handleTransparentNavbar() {
             setTransparentNavbar(dispatch, fixedNavbar && window.scrollY === 0 || !fixedNavbar);
         }
 
-        /** 
-     The event listener that's calling the handleTransparentNavbar function when 
-     scrolling the window.
-    */
         window.addEventListener("scroll", handleTransparentNavbar);
-
-        // Call the handleTransparentNavbar function to set the state with the initial value.
         handleTransparentNavbar();
 
-        // Remove event listener on cleanup
         return () => window.removeEventListener("scroll", handleTransparentNavbar);
     }, [dispatch, fixedNavbar]);
 
@@ -65,7 +56,6 @@ function DashboardNavbar({ absolute, light, isMini }) {
     const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
     const handleCloseMenu = () => setOpenMenu(false);
 
-    // Render the notifications menu
     const renderMenu = () => 
         <Menu
             anchorEl={openMenu}
@@ -109,9 +99,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 </Box>
                 {isMini ? null : 
                     <Box sx={(theme) => navbarRow(theme, { isMini })}>
-                        <Box pr={1}>
-                            <Input label="Search here" />
-                        </Box>
+                        {/*<Box pr={1}>*/}
+                        {/*    <Input label="Search here" />*/}
+                        {/*</Box>*/}
                         <Box color={light ? "white" : "inherit"}>
                             <Link to="/authentication/sign-in/basic">
                                 <IconButton sx={navbarIconButton} size="small" disableRipple>
@@ -129,27 +119,30 @@ function DashboardNavbar({ absolute, light, isMini }) {
                                     {miniSidenav ? "menu_open" : "menu"}
                                 </Icon>
                             </IconButton>
-                            <IconButton
-                                size="small"
-                                disableRipple
-                                color="inherit"
-                                sx={navbarIconButton}
-                                onClick={handleConfiguratorOpen}
-                            >
-                                <Icon sx={iconsStyle}>settings</Icon>
+                            {/*<IconButton*/}
+                            {/*    size="small"*/}
+                            {/*    disableRipple*/}
+                            {/*    color="inherit"*/}
+                            {/*    sx={navbarIconButton}*/}
+                            {/*    onClick={handleConfiguratorOpen}*/}
+                            {/*>*/}
+                            {/*    <Icon sx={iconsStyle}>settings</Icon>*/}
+                            {/*</IconButton>*/}
+                            <IconButton>
+                                <Icon sx={iconsStyle}>{light ? "dark_mode" : "light_mode"}</Icon>
                             </IconButton>
-                            <IconButton
-                                size="small"
-                                disableRipple
-                                color="inherit"
-                                sx={navbarIconButton}
-                                aria-controls="notification-menu"
-                                aria-haspopup="true"
-                                variant="contained"
-                                onClick={handleOpenMenu}
-                            >
-                                <Icon sx={iconsStyle}>notifications</Icon>
-                            </IconButton>
+                            {/*<IconButton*/}
+                            {/*    size="small"*/}
+                            {/*    disableRipple*/}
+                            {/*    color="inherit"*/}
+                            {/*    sx={navbarIconButton}*/}
+                            {/*    aria-controls="notification-menu"*/}
+                            {/*    aria-haspopup="true"*/}
+                            {/*    variant="contained"*/}
+                            {/*    onClick={handleOpenMenu}*/}
+                            {/*>*/}
+                            {/*    <Icon sx={iconsStyle}>notifications</Icon>*/}
+                            {/*</IconButton>*/}
                             {renderMenu()}
                         </Box>
                     </Box>
@@ -159,14 +152,12 @@ function DashboardNavbar({ absolute, light, isMini }) {
     );
 }
 
-// Setting default values for the props of DashboardNavbar
 DashboardNavbar.defaultProps = {
     absolute: false,
     light: false,
     isMini: false,
 };
 
-// Typechecking props for the DashboardNavbar
 DashboardNavbar.propTypes = {
     absolute: PropTypes.bool,
     light: PropTypes.bool,

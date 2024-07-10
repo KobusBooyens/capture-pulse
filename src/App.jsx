@@ -99,7 +99,7 @@ function App() {
                 <Sidenav
                     color={sidenavColor}
                     brand={brand}
-                    brandName={"Capture Pulse | Fitness Pty "}
+                    brandName={"Capture Pulse"}
                     routes={routes}
                     onMouseEnter={handleOnMouseEnter}
                     onMouseLeave={handleOnMouseLeave}
