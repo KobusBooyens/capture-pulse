@@ -10,9 +10,11 @@ import ReportsLineChart from "../../controls/Charts/LineCharts/ReportsLineChart/
 
 import reportsBarChartData from "./data/reportsBarChartData";
 import reportsLineChartData from "./data/reportsLineChartData";
+import Typography from "../../components/Typography/Typography.jsx";
 
 const Dashboard = () => {
     const { joined, payments } = reportsLineChartData;
+
     return (
         <DashboardLayout>
             <DashboardNavbar/>
@@ -25,12 +27,18 @@ const Dashboard = () => {
                                 icon="person_add"
                                 title="New Clients"
                                 count="+2"
-                                percentage={{
-                                    color: "success",
-                                    amount: "",
-                                    label: "Just updated",
-                                }}
-                            />
+                            >
+                                <Typography component="p" variant="button" color="text" display="flex">
+                                    <Typography
+                                        component="span"
+                                        variant="button"
+                                        fontWeight="bold"
+                                        color={"success"}>
+                                        {""}
+                                    </Typography>
+                                &nbsp;{"Just updated"}
+                                </Typography>
+                            </ComplexStatisticsCard>
                         </Box>
                     </Grid>
                     <Grid item xs={12} md={6} lg={3}>
@@ -45,7 +53,26 @@ const Dashboard = () => {
                                     amount: "Male",
                                     label: "25",
                                 }}
-                            />
+                            >
+                                <Typography component="p" variant="button" color="text" display="flex" gap={1}>
+                                    <Typography
+                                        component="span"
+                                        variant="button"
+                                        fontWeight="bold"
+                                        color={"info"}>
+                                        {"Male"}
+                                    </Typography>
+                                    {"81"}
+                                    <Typography
+                                        component="span"
+                                        variant="button"
+                                        fontWeight="bold"
+                                        color={"primary"}>
+                                        {"Female"}
+                                    </Typography>
+                                    {"200"}
+                                </Typography>
+                            </ComplexStatisticsCard>
                         </Box>
                     </Grid>
                     <Grid item xs={12} md={6} lg={3}>
@@ -54,12 +81,18 @@ const Dashboard = () => {
                                 icon="settings_accessibility"
                                 title="Check-ins"
                                 count="150"
-                                percentage={{
-                                    color: "warning",
-                                    amount: "185",
-                                    label: "remaining",
-                                }}
-                            />
+                            >
+                                <Typography component="p" variant="button" color="text" display="flex" gap={1}>
+                                    <Typography
+                                        component="span"
+                                        variant="button"
+                                        fontWeight="bold"
+                                        color={"warning"}>
+                                        {"Remaining"}
+                                    </Typography>
+                                    {"131"}
+                                </Typography>
+                            </ComplexStatisticsCard>
                         </Box>
                     </Grid>
                     <Grid item xs={12} md={6} lg={3}>
@@ -69,12 +102,18 @@ const Dashboard = () => {
                                 icon="receipt_long"
                                 title="Billing"
                                 count="4500"
-                                percentage={{
-                                    color: "warning",
-                                    amount: "4800",
-                                    label: "outstanding this month",
-                                }}
-                            />
+                            >
+                                <Typography component="p" variant="button" color="text" display="flex" gap={1}>
+                                    <Typography
+                                        component="span"
+                                        variant="button"
+                                        fontWeight="bold"
+                                        color={"error"}>
+                                        {"To be collected"}
+                                    </Typography>
+                                    {"4800"}
+                                </Typography>
+                            </ComplexStatisticsCard>
                         </Box>
                     </Grid>
                 </Grid>
@@ -84,8 +123,8 @@ const Dashboard = () => {
                             <Box mb={3}>
                                 <ReportsBarChart
                                     color="info"
-                                    title="New Clients Joined"
-                                    description="Weekly statistic"
+                                    title="New Clients"
+                                    description="Weekly insights"
                                     date="latest user joined 2 days ago"
                                     chart={reportsBarChartData}
                                 />
@@ -95,8 +134,8 @@ const Dashboard = () => {
                             <Box mb={3}>
                                 <ReportsLineChart
                                     color="success"
-                                    title="New Clients Joined"
-                                    description="Monthly statistic"
+                                    title="New Clients"
+                                    description="Monthly insights"
                                     date="updated 4 min ago"
                                     chart={joined}
                                 />
@@ -107,7 +146,7 @@ const Dashboard = () => {
                                 <ReportsLineChart
                                     color="dark"
                                     title="Billing"
-                                    description="Cash flow Summary"
+                                    description="Payments Received Insights"
                                     date="just updated"
                                     chart={payments}
                                 />

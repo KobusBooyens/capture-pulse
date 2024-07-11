@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useLocation, Link } from "react-router-dom";
+import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import AppBar from "@mui/material/AppBar";
@@ -18,43 +18,32 @@ import {
 
 import {
     useMaterialUIController,
-    setTransparentNavbar,
     setMiniSidenav,
-    setOpenConfigurator,
+    setDarkMode,
+    setSidenavColor
 } from "../../../context/materialUIControllerProvider.jsx";
+
 import NotificationItem from "../../Items/NotificationItem/NotificationItem.jsx";
 
 import Box from "../../../components/Box/Box.jsx";
 import Breadcrumbs from "../../Breadcrumbs/Breadcrumbs.jsx";
 
 function DashboardNavbar({ absolute, light, isMini }) {
-    const [navbarType, setNavbarType] = useState();
-    const [controller, dispatch] = useMaterialUIController();
-    const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, darkMode } = controller;
+    const [controller, dispatch,] = useMaterialUIController();
+    const { miniSidenav, transparentNavbar, darkMode, sidenavColor } = controller;
     const [openMenu, setOpenMenu] = useState(false);
+    const [openPersonalizeMenu, setOpenPersonalizeMenu] = useState(false);
     const route = useLocation().pathname.split("/").slice(1);
 
-    useEffect(() => {
-        if (fixedNavbar) {
-            setNavbarType("sticky");
-        } else {
-            setNavbarType("static");
-        }
+    const sidenavColors = ["primary", "dark", "info", "success", "warning", "error"];
 
-        function handleTransparentNavbar() {
-            setTransparentNavbar(dispatch, fixedNavbar && window.scrollY === 0 || !fixedNavbar);
-        }
-
-        window.addEventListener("scroll", handleTransparentNavbar);
-        handleTransparentNavbar();
-
-        return () => window.removeEventListener("scroll", handleTransparentNavbar);
-    }, [dispatch, fixedNavbar]);
-
+    const navigation = useNavigate();
     const handleMiniSidenav = () => setMiniSidenav(dispatch, !miniSidenav);
-    const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
     const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
     const handleCloseMenu = () => setOpenMenu(false);
+    const handleOpenPersonalizeMenu = (event) => setOpenPersonalizeMenu(event.currentTarget);
+    const handleClosePersonalizeMenu = () => setOpenPersonalizeMenu(false);
+    const handleSignOut = () => navigation("/authentication/sign-in");
 
     const renderMenu = () => 
         <Menu
@@ -68,13 +57,75 @@ function DashboardNavbar({ absolute, light, isMini }) {
             onClose={handleCloseMenu}
             sx={{ mt: 2 }}
         >
-            <NotificationItem icon={<Icon>email</Icon>} title="Check new messages" />
-            <NotificationItem icon={<Icon>podcasts</Icon>} title="Manage Podcast sessions" />
-            <NotificationItem icon={<Icon>shopping_cart</Icon>} title="Payment successfully completed" />
+            <NotificationItem icon={<Icon>logout</Icon>} title="Sign-out" onClick={handleSignOut} />
+            <NotificationItem
+                icon={<Icon>{darkMode ? "light_mode" : "dark_mode"}</Icon>}
+                title={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+                onClick={handleDarkMode}
+            />
+
+            <NotificationItem
+                icon={<Icon>palette</Icon>}
+                title="Personalize"
+                onClick={handleOpenPersonalizeMenu} />
         </Menu>
   ;
 
-    // Styles for the navbar icons
+    const renderPaletteMenu = () =>
+        <Menu anchorEl={openPersonalizeMenu}
+            anchorReference={null}
+            anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "left",
+            }}
+            open={Boolean(openPersonalizeMenu)}
+            onClose={handleClosePersonalizeMenu}
+            sx={{ mt: 2 }}>
+            <NotificationItem title={"Navbar"} disableRipple >
+                <Box mb={0.5}>
+                    {sidenavColors.map((color) =>
+                        <IconButton
+                            key={color}
+                            sx={({
+                                borders: { borderWidth },
+                                palette: { white, dark, background },
+                                transitions,
+                            }) => ({
+                                width: "24px",
+                                height: "24px",
+                                padding: 0,
+                                border: `${borderWidth[1]} solid ${darkMode ? background.sidenav : white.main}`,
+                                borderColor: () => {
+                                    let borderColorValue = sidenavColor === color && dark.main;
+
+                                    if (darkMode && sidenavColor === color) {
+                                        borderColorValue = white.main;
+                                    }
+
+                                    return borderColorValue;
+                                },
+                                transition: transitions.create("border-color", {
+                                    easing: transitions.easing.sharp,
+                                    duration: transitions.duration.shorter,
+                                }),
+                                backgroundImage: ({ functions: { linearGradient }, palette: { gradients } }) =>
+                                    linearGradient(gradients[color].main, gradients[color].state),
+
+                                "&:not(:last-child)": {
+                                    mr: 1,
+                                },
+
+                                "&:hover, &:focus, &:active": {
+                                    borderColor: darkMode ? white.main : dark.main,
+                                },
+                            })}
+                            onClick={() => setSidenavColor(dispatch, color)}
+                        />
+                    )}
+                </Box>
+            </NotificationItem>
+        </Menu>;
+
     const iconsStyle = ({ palette: { dark, white, text }, functions: { rgba } }) => ({
         color: () => {
             let colorValue = light || darkMode ? white.main : dark.main;
@@ -87,9 +138,11 @@ function DashboardNavbar({ absolute, light, isMini }) {
         },
     });
 
+    const handleDarkMode = () => setDarkMode(dispatch, !darkMode);
+
     return (
         <AppBar
-            position={absolute ? "absolute" : navbarType}
+            position={"sticky"}
             color="inherit"
             sx={(theme) => navbar(theme, { transparentNavbar, absolute, light, darkMode })}
         >
@@ -99,15 +152,24 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 </Box>
                 {isMini ? null : 
                     <Box sx={(theme) => navbarRow(theme, { isMini })}>
-                        {/*<Box pr={1}>*/}
-                        {/*    <Input label="Search here" />*/}
-                        {/*</Box>*/}
                         <Box color={light ? "white" : "inherit"}>
-                            <Link to="/authentication/sign-in/basic">
-                                <IconButton sx={navbarIconButton} size="small" disableRipple>
-                                    <Icon sx={iconsStyle}>account_circle</Icon>
-                                </IconButton>
-                            </Link>
+                            <IconButton
+                                size="small"
+                                disableRipple
+                                color="inherit"
+                                sx={navbarIconButton}
+                                aria-controls="notification-menu"
+                                aria-haspopup="true"
+                                variant="contained"
+                                onClick={handleOpenMenu}
+                            >
+                                <Icon sx={iconsStyle}>account_circle</Icon>
+                            </IconButton>
+                            {/*<Link to="/authentication/sign-in/basic">*/}
+                            {/*    <IconButton sx={navbarIconButton} size="small" disableRipple>*/}
+                            {/*        <Icon sx={iconsStyle}>account_circle</Icon>*/}
+                            {/*    </IconButton>*/}
+                            {/*</Link>*/}
                             <IconButton
                                 size="small"
                                 disableRipple
@@ -119,31 +181,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
                                     {miniSidenav ? "menu_open" : "menu"}
                                 </Icon>
                             </IconButton>
-                            {/*<IconButton*/}
-                            {/*    size="small"*/}
-                            {/*    disableRipple*/}
-                            {/*    color="inherit"*/}
-                            {/*    sx={navbarIconButton}*/}
-                            {/*    onClick={handleConfiguratorOpen}*/}
-                            {/*>*/}
-                            {/*    <Icon sx={iconsStyle}>settings</Icon>*/}
-                            {/*</IconButton>*/}
-                            <IconButton>
-                                <Icon sx={iconsStyle}>{light ? "dark_mode" : "light_mode"}</Icon>
-                            </IconButton>
-                            {/*<IconButton*/}
-                            {/*    size="small"*/}
-                            {/*    disableRipple*/}
-                            {/*    color="inherit"*/}
-                            {/*    sx={navbarIconButton}*/}
-                            {/*    aria-controls="notification-menu"*/}
-                            {/*    aria-haspopup="true"*/}
-                            {/*    variant="contained"*/}
-                            {/*    onClick={handleOpenMenu}*/}
-                            {/*>*/}
-                            {/*    <Icon sx={iconsStyle}>notifications</Icon>*/}
-                            {/*</IconButton>*/}
+
                             {renderMenu()}
+                            {renderPaletteMenu()}
                         </Box>
                     </Box>
                 }

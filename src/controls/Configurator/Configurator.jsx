@@ -1,15 +1,8 @@
 import { useState, useEffect } from "react";
-
-import GitHubButton from "react-github-btn";
-
 import Divider from "@mui/material/Divider";
 import Switch from "@mui/material/Switch";
 import IconButton from "@mui/material/IconButton";
-import Link from "@mui/material/Link";
 import Icon from "@mui/material/Icon";
-
-import TwitterIcon from "@mui/icons-material/Twitter";
-import FacebookIcon from "@mui/icons-material/Facebook";
 
 import {
     useMaterialUIController,
@@ -262,60 +255,6 @@ function Configurator() {
                     <Switch checked={darkMode} onChange={handleDarkMode} />
                 </Box>
                 <Divider />
-                <Box mt={3} mb={2}>
-                    <Button
-                        component={Link}
-                        href="https://www.creative-tim.com/learning-lab/react/quick-start/material-dashboard/"
-                        target="_blank"
-                        rel="noreferrer"
-                        color={darkMode ? "light" : "dark"}
-                        variant="outlined"
-                        fullWidth
-                    >
-            view documentation
-                    </Button>
-                </Box>
-                <Box display="flex" justifyContent="center">
-                    <GitHubButton
-                        href="https://github.com/creativetimofficial/material-dashboard-react"
-                        data-icon="octicon-star"
-                        data-size="large"
-                        data-show-count="true"
-                        aria-label="Star creativetimofficial/material-dashboard-react on GitHub"
-                    >
-            Star
-                    </GitHubButton>
-                </Box>
-                <Box mt={2} textAlign="center">
-                    <Box mb={0.5}>
-                        <Typography variant="h6">Thank you for sharing!</Typography>
-                    </Box>
-
-                    <Box display="flex" justifyContent="center">
-                        <Box mr={1.5}>
-                            <Button
-                                component={Link}
-                                href="//twitter.com/intent/tweet?text=Check%20Material%20Dashboard%20React%20made%20by%20%40CreativeTim%20%23webdesign%20%23dashboard%20%23react%20%mui&url=https%3A%2F%2Fwww.creative-tim.com%2Fproduct%2Fmaterial-dashboard-react"
-                                target="_blank"
-                                rel="noreferrer"
-                                color="dark"
-                            >
-                                <TwitterIcon />
-                &nbsp; Tweet
-                            </Button>
-                        </Box>
-                        <Button
-                            component={Link}
-                            href="https://www.facebook.com/sharer/sharer.php?u=https://www.creative-tim.com/product/material-dashboard-react"
-                            target="_blank"
-                            rel="noreferrer"
-                            color="dark"
-                        >
-                            <FacebookIcon />
-              &nbsp; Share
-                        </Button>
-                    </Box>
-                </Box>
             </Box>
         </ConfiguratorRoot>
     );

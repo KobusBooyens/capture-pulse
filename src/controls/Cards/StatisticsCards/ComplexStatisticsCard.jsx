@@ -6,7 +6,7 @@ import Icon from "@mui/material/Icon";
 import Box from "../../../components/Box/Box.jsx";
 import Typography from "../../../components/Typography/Typography.jsx";
 
-function ComplexStatisticsCard({ color, title, count, percentage, icon }) {
+function ComplexStatisticsCard({ color, title, count, percentage, children, icon }) {
     return (
         <Card>
             <Box display="flex" justifyContent="space-between" pt={1} px={2}>
@@ -36,17 +36,18 @@ function ComplexStatisticsCard({ color, title, count, percentage, icon }) {
             </Box>
             <Divider />
             <Box pb={2} px={2}>
-                <Typography component="p" variant="button" color="text" display="flex">
-                    <Typography
-                        component="span"
-                        variant="button"
-                        fontWeight="bold"
-                        color={percentage.color}
-                    >
-                        {percentage.amount}
-                    </Typography>
-          &nbsp;{percentage.label}
-                </Typography>
+                {children}
+                {/*      <Typography component="p" variant="button" color="text" display="flex">*/}
+                {/*          <Typography*/}
+                {/*              component="span"*/}
+                {/*              variant="button"*/}
+                {/*              fontWeight="bold"*/}
+                {/*              color={percentage.color}*/}
+                {/*          >*/}
+                {/*              {percentage.amount}*/}
+                {/*          </Typography>*/}
+                {/*&nbsp;{percentage.label}*/}
+                {/*      </Typography>*/}
             </Box>
         </Card>
     );

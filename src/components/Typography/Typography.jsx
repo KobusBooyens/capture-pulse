@@ -1,7 +1,5 @@
 import { forwardRef } from "react";
-
 import PropTypes from "prop-types";
-
 import { useMaterialUIController } from "../../context/materialUIControllerProvider.jsx";
 import MDTypographyRoot from "./TypographyRoot.js";
 

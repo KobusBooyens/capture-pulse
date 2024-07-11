@@ -5,13 +5,9 @@ import Sidenav from "./controls/Sidenav/Sidenav.jsx";
 import routes from "./routes.jsx";
 import {
     setMiniSidenav,
-    setOpenConfigurator,
     useMaterialUIController,
 } from "./context/materialUIControllerProvider.jsx";
 import { useEffect, useState } from "react";
-import Icon from "@mui/material/Icon";
-import Box from "./components/Box/Box.jsx";
-import Configurator from "./controls/Configurator/Configurator.jsx";
 
 import brandWhite from "./assets/images/logo.png";
 import brandDark from "./assets/images/logo-dark.png";
@@ -22,8 +18,6 @@ function App() {
     const [controller, dispatch] = useMaterialUIController();
     const {
         miniSidenav,
-        layout,
-        openConfigurator,
         sidenavColor,
         transparentSidenav,
         whiteSidenav,
@@ -38,15 +32,12 @@ function App() {
         }
     };
 
-    // Close sidenav when mouse leave mini sidenav
     const handleOnMouseLeave = () => {
         if (onMouseEnter) {
             setMiniSidenav(dispatch, true);
             setOnMouseEnter(false);
         }
     };
-
-    const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
 
     useEffect(() => {
         document.documentElement.scrollTop = 0;
@@ -66,30 +57,6 @@ function App() {
             return null;
         });
 
-    const configsButton = 
-    <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        width="3.25rem"
-        height="3.25rem"
-        bgColor="white"
-        shadow="sm"
-        borderRadius="50%"
-        position="fixed"
-        right="2rem"
-        bottom="2rem"
-        zIndex={99}
-        color="dark"
-        sx={{ cursor: "pointer" }}
-        onClick={handleConfiguratorOpen}
-    >
-        <Icon fontSize="small" color="inherit">
-        settings
-        </Icon>
-    </Box>
-  ;
-
     const useDarkBrand = transparentSidenav && !darkMode || whiteSidenav;
     const brand = useDarkBrand ? brandDark : brandWhite;
     return (
@@ -104,9 +71,6 @@ function App() {
                     onMouseEnter={handleOnMouseEnter}
                     onMouseLeave={handleOnMouseLeave}
                 />
-                <Configurator />
-                {configsButton}
-                {layout === "vr" && <Configurator />}
                 <Routes>
                     {getRoutes(routes)}
                     <Route path="*" element={<Navigate to="/dashboard" />} />
