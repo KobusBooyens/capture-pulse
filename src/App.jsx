@@ -13,6 +13,7 @@ import brandWhite from "./assets/images/logo.png";
 import brandDark from "./assets/images/logo-dark.png";
 import themeDark from "./assets/theme-dark/index.js";
 import theme from "./assets/theme/index.js";
+import { ReactQueryProvider } from "./context/react-query-provider.jsx";
 
 function App() {
     const [controller, dispatch] = useMaterialUIController();
@@ -71,10 +72,12 @@ function App() {
                     onMouseEnter={handleOnMouseEnter}
                     onMouseLeave={handleOnMouseLeave}
                 />
-                <Routes>
-                    {getRoutes(routes)}
-                    <Route path="*" element={<Navigate to="/dashboard" />} />
-                </Routes>
+                <ReactQueryProvider>
+                    <Routes>
+                        {getRoutes(routes)}
+                        <Route path="*" element={<Navigate to="/dashboard" />} />
+                    </Routes>
+                </ReactQueryProvider>
             </ThemeProvider>
         </>
     );

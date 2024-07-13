@@ -1,5 +1,5 @@
 import Dashboard from "./layout/dashboard/dashboard.jsx";
-import Clients from "./layout/clients/clients.jsx";
+import ViewClients from "./layout/clients/Clients.jsx";
 import Checkins from "./layout/checkins/checkins.jsx";
 import Billing from "./layout/billing/billing.jsx";
 
@@ -23,7 +23,7 @@ const routes = [
         key: "clients",
         icon: <Icon fontSize={"small"}>people_alt</Icon>,
         route: "/clients",
-        component: <Clients/>
+        component: <ViewClients/>
     },
     {
         type: "collapse",

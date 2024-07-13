@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
@@ -20,7 +20,8 @@ import {
     useMaterialUIController,
     setMiniSidenav,
     setDarkMode,
-    setSidenavColor
+    setSidenavColor,
+    setTransparentNavbar
 } from "../../../context/materialUIControllerProvider.jsx";
 
 import NotificationItem from "../../Items/NotificationItem/NotificationItem.jsx";
@@ -29,8 +30,8 @@ import Box from "../../../components/Box/Box.jsx";
 import Breadcrumbs from "../../Breadcrumbs/Breadcrumbs.jsx";
 
 function DashboardNavbar({ absolute, light, isMini }) {
-    const [controller, dispatch,] = useMaterialUIController();
-    const { miniSidenav, transparentNavbar, darkMode, sidenavColor } = controller;
+    const [controller, dispatch] = useMaterialUIController();
+    const { miniSidenav, transparentNavbar, darkMode, sidenavColor, fixedNavbar } = controller;
     const [openMenu, setOpenMenu] = useState(false);
     const [openPersonalizeMenu, setOpenPersonalizeMenu] = useState(false);
     const route = useLocation().pathname.split("/").slice(1);
@@ -44,6 +45,19 @@ function DashboardNavbar({ absolute, light, isMini }) {
     const handleOpenPersonalizeMenu = (event) => setOpenPersonalizeMenu(event.currentTarget);
     const handleClosePersonalizeMenu = () => setOpenPersonalizeMenu(false);
     const handleSignOut = () => navigation("/authentication/sign-in");
+
+    useEffect(() => {
+    // A function that sets the transparent state of the navbar.
+        function handleTransparentNavbar() {
+            setTransparentNavbar(dispatch, fixedNavbar && window.scrollY === 0 || !fixedNavbar);
+        }
+
+        window.addEventListener("scroll", handleTransparentNavbar);
+
+        handleTransparentNavbar();
+
+        return () => window.removeEventListener("scroll", handleTransparentNavbar);
+    }, [dispatch]);
 
     const renderMenu = () => 
         <Menu

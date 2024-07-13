@@ -3,7 +3,7 @@ import { forwardRef } from "react";
 import PropTypes from "prop-types";
 
 import { useMaterialUIController } from "../../context/materialUIControllerProvider.jsx";
-import MDButtonRoot from "./ButtonRoot.js";
+import ButtonRoot from "./ButtonRoot.js";
 
 const Button = forwardRef(
     ({ color, variant, size, circular, iconOnly, children, ...rest }, ref) => {
@@ -11,7 +11,7 @@ const Button = forwardRef(
         const { darkMode } = controller;
 
         return (
-            <MDButtonRoot
+            <ButtonRoot
                 {...rest}
                 ref={ref}
                 color="primary"
@@ -20,7 +20,7 @@ const Button = forwardRef(
                 ownerState={{ color, variant, size, circular, iconOnly, darkMode }}
             >
                 {children}
-            </MDButtonRoot>
+            </ButtonRoot>
         );
     }
 );

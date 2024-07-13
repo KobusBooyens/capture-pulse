@@ -25,7 +25,7 @@ const Dashboard = () => {
                             <ComplexStatisticsCard
                                 color="primary"
                                 icon="person_add"
-                                title="New Clients"
+                                title="New ViewClients"
                                 count="+12"
                             >
                                 <Typography component="p" variant="button" color="text" display="flex">
@@ -46,7 +46,7 @@ const Dashboard = () => {
                             <ComplexStatisticsCard
                                 color="dark"
                                 icon="people_alt"
-                                title="Clients"
+                                title="ViewClients"
                                 count={281}
                             >
                                 <Typography component="p" variant="button" color="text" display="flex" gap={1}>
@@ -118,7 +118,7 @@ const Dashboard = () => {
                             <Box mb={3}>
                                 <ReportsBarChart
                                     color="info"
-                                    title="New Clients"
+                                    title="New ViewClients"
                                     description="Weekly insights"
                                     date="latest user joined 2 days ago"
                                     chart={reportsBarChartData}
@@ -129,7 +129,7 @@ const Dashboard = () => {
                             <Box mb={3}>
                                 <ReportsLineChart
                                     color="success"
-                                    title="New Clients"
+                                    title="New ViewClients"
                                     description="Monthly insights"
                                     date="updated 4 min ago"
                                     chart={joined}
