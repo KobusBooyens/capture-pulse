@@ -64,7 +64,7 @@ function DataTable({
     const setEntriesPerPage = (value) => setPageSize(value);
 
     // Render the paginations
-    const renderPagination = pageOptions.map((option) => 
+    const renderPagination = pageOptions.map((option) =>
         <Pagination
             item
             key={option}
@@ -90,8 +90,9 @@ function DataTable({
 
     // Search input state handle
     const onSearchChange = useAsyncDebounce((value) => {
+        console.log(value);
         setGlobalFilter(value || undefined);
-    }, 100);
+    }, 1000);
 
     // A function that sets the sorted value for the table
     const setSortedValue = (column) => {
@@ -124,9 +125,9 @@ function DataTable({
 
     return (
         <TableContainer sx={{ boxShadow: "none" }}>
-            {entriesPerPage || canSearch ? 
+            {entriesPerPage || canSearch ?
                 <Box display="flex" justifyContent="space-between" alignItems="center" p={3}>
-                    {entriesPerPage && 
+                    {entriesPerPage &&
             <Box display="flex" alignItems="center">
                 <Autocomplete
                     disableClearable
@@ -144,7 +145,7 @@ function DataTable({
                 </Typography>
             </Box>
                     }
-                    {canSearch && 
+                    {canSearch &&
             <Box width="12rem" ml="auto">
                 <Input
                     placeholder="Search..."
@@ -162,9 +163,9 @@ function DataTable({
                 : null}
             <Table {...getTableProps()}>
                 <Box component="thead">
-                    {headerGroups.map((headerGroup, key) => 
+                    {headerGroups.map((headerGroup, key) =>
                         <TableRow key={key} {...headerGroup.getHeaderGroupProps()}>
-                            {headerGroup.headers.map((column, idx) => 
+                            {headerGroup.headers.map((column, idx) =>
                                 <DataTableHeadCell
                                     key={idx}
                                     {...column.getHeaderProps(isSorted && column.getSortByToggleProps())}
@@ -183,7 +184,7 @@ function DataTable({
                         prepareRow(row);
                         return (
                             <TableRow key={key} {...row.getRowProps()}>
-                                {row.cells.map((cell, idx) => 
+                                {row.cells.map((cell, idx) =>
                                     <DataTableBodyCell
                                         key={idx}
                                         noBorder={noEndBorder && rows.length - 1 === key}
@@ -206,24 +207,24 @@ function DataTable({
                 alignItems={{ xs: "flex-start", sm: "center" }}
                 p={!showTotalEntries && pageOptions.length === 1 ? 0 : 3}
             >
-                {showTotalEntries && 
+                {showTotalEntries &&
           <Box mb={{ xs: 3, sm: 0 }}>
               <Typography variant="button" color="secondary" fontWeight="regular">
               Showing {entriesStart} to {entriesEnd} of {rows.length} entries
               </Typography>
           </Box>
                 }
-                {pageOptions.length > 1 && 
+                {pageOptions.length > 1 &&
           <Pagination
               variant={pagination.variant ? pagination.variant : "gradient"}
               color={pagination.color ? pagination.color : "info"}
           >
-              {canPreviousPage && 
+              {canPreviousPage &&
               <Pagination item onClick={() => previousPage()}>
                   <Icon sx={{ fontWeight: "bold" }}>chevron_left</Icon>
               </Pagination>
               }
-              {renderPagination.length > 6 ? 
+              {renderPagination.length > 6 ?
                   <Box width="5rem" mx={1}>
                       <Input
                           inputProps={{ type: "number", min: 1, max: customizedPageOptions.length }}
@@ -231,10 +232,10 @@ function DataTable({
                           onChange={(handleInputPagination, handleInputPaginationValue)}
                       />
                   </Box>
-                  : 
+                  :
                   renderPagination
               }
-              {canNextPage && 
+              {canNextPage &&
               <Pagination item onClick={() => nextPage()}>
                   <Icon sx={{ fontWeight: "bold" }}>chevron_right</Icon>
               </Pagination>

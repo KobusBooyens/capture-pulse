@@ -26,7 +26,7 @@ const Dashboard = () => {
                                 color="primary"
                                 icon="person_add"
                                 title="New Clients"
-                                count="+2"
+                                count="+12"
                             >
                                 <Typography component="p" variant="button" color="text" display="flex">
                                     <Typography
@@ -48,11 +48,6 @@ const Dashboard = () => {
                                 icon="people_alt"
                                 title="Clients"
                                 count={281}
-                                percentage={{
-                                    color: "info",
-                                    amount: "Male",
-                                    label: "25",
-                                }}
                             >
                                 <Typography component="p" variant="button" color="text" display="flex" gap={1}>
                                     <Typography

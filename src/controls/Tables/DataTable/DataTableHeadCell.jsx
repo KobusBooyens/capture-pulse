@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import Icon from "@mui/material/Icon";
 import Box from "../../../components/Box/Box.jsx";
-import { useMaterialUIController } from "../../context/materialUIControllerProvider.jsx";
+import { useMaterialUIController } from "../../../context/materialUIControllerProvider.jsx";
 
 function DataTableHeadCell({ width, children, sorted, align, ...rest }) {
     const [controller] = useMaterialUIController();
@@ -45,8 +45,8 @@ function DataTableHeadCell({ width, children, sorted, align, ...rest }) {
               <Box
                   position="absolute"
                   top={-6}
-                  color={sorted === "asce" ? "text" : "secondary"}
-                  opacity={sorted === "asce" ? 1 : 0.5}
+                  color={sorted === "asc" ? "text" : "secondary"}
+                  opacity={sorted === "asc" ? 1 : 0.5}
               >
                   <Icon>arrow_drop_up</Icon>
               </Box>
