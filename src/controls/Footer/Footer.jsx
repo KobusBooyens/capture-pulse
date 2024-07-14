@@ -7,7 +7,7 @@ import typography from "../../assets/theme/base/typography";
 import Box from "../../components/Box/Box.jsx";
 import Typography from "../../components/Typography/Typography.jsx";
 
-function Footer({ company, links }) {
+function Footer({ company = { name: "Capture Pulse" }, links }) {
     const { name } = company;
     const { size } = typography;
 
@@ -66,12 +66,6 @@ function Footer({ company, links }) {
     );
 }
 
-// Setting default values for the props of Footer
-Footer.defaultProps = {
-    company: { name: "Capture Pulse" }
-};
-
-// Typechecking props for the Footer
 Footer.propTypes = {
     company: PropTypes.objectOf(PropTypes.string),
     links: PropTypes.arrayOf(PropTypes.object),

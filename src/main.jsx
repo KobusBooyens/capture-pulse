@@ -5,11 +5,14 @@ import App from "./App.jsx";
 import "./index.css";
 import { UiSettingsProvider } from "./context/ui-settings-provider.jsx";
 import { BrowserRouter } from "react-router-dom";
+import { SnackbarProvider } from "./context/snackbar-provider.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render( 
     <React.StrictMode>
         <UiSettingsProvider>
-            <App />
+            <SnackbarProvider>
+                <App />
+            </SnackbarProvider>
         </UiSettingsProvider>
     </React.StrictMode>, 
 );

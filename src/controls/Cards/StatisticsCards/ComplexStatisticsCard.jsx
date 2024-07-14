@@ -6,7 +6,7 @@ import Icon from "@mui/material/Icon";
 import Box from "../../../components/Box/Box.jsx";
 import Typography from "../../../components/Typography/Typography.jsx";
 
-function ComplexStatisticsCard({ color, title, count, percentage, children, icon }) {
+function ComplexStatisticsCard({ color, title, count, children, icon }) {
     return (
         <Card>
             <Box display="flex" justifyContent="space-between" pt={1} px={2}>
@@ -37,23 +37,11 @@ function ComplexStatisticsCard({ color, title, count, percentage, children, icon
             <Divider />
             <Box pb={2} px={2}>
                 {children}
-                {/*      <Typography component="p" variant="button" color="text" display="flex">*/}
-                {/*          <Typography*/}
-                {/*              component="span"*/}
-                {/*              variant="button"*/}
-                {/*              fontWeight="bold"*/}
-                {/*              color={percentage.color}*/}
-                {/*          >*/}
-                {/*              {percentage.amount}*/}
-                {/*          </Typography>*/}
-                {/*&nbsp;{percentage.label}*/}
-                {/*      </Typography>*/}
             </Box>
         </Card>
     );
 }
 
-// Setting default values for the props of ComplexStatisticsCard
 ComplexStatisticsCard.defaultProps = {
     color: "info",
     percentage: {
@@ -63,7 +51,6 @@ ComplexStatisticsCard.defaultProps = {
     },
 };
 
-// Typechecking props for the ComplexStatisticsCard
 ComplexStatisticsCard.propTypes = {
     color: PropTypes.oneOf([
         "primary",
@@ -92,6 +79,7 @@ ComplexStatisticsCard.propTypes = {
         label: PropTypes.string,
     }),
     icon: PropTypes.node.isRequired,
+    children: PropTypes.node.isRequired
 };
 
 export default ComplexStatisticsCard;

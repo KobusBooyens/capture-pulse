@@ -13,8 +13,8 @@ import DataTableHeadCell from "./DataTableHeadCell";
 import DataTableBodyCell from "./DataTableBodyCell";
 import Pagination from "../../../components/Pagination/Pagination.jsx";
 import Box from "../../../components/Box/Box.jsx";
-import Input from "../../../components/Input/Input.jsx";
 import Typography from "../../../components/Typography/Typography.jsx";
+import { TextField } from "@mui/material";
 
 function DataTable({
     entriesPerPage,
@@ -138,7 +138,7 @@ function DataTable({
                     }}
                     size="small"
                     sx={{ width: "5rem" }}
-                    renderInput={(params) => <Input {...params} />}
+                    renderInput={(params) => <TextField {...params} />}
                 />
                 <Typography variant="caption" color="secondary">
                 &nbsp;&nbsp;entries per page
@@ -147,7 +147,7 @@ function DataTable({
                     }
                     {canSearch &&
             <Box width="12rem" ml="auto">
-                <Input
+                <TextField
                     placeholder="Search..."
                     value={search}
                     size="small"
@@ -226,7 +226,7 @@ function DataTable({
               }
               {renderPagination.length > 6 ?
                   <Box width="5rem" mx={1}>
-                      <Input
+                      <TextField
                           inputProps={{ type: "number", min: 1, max: customizedPageOptions.length }}
                           value={customizedPageOptions[pageIndex]}
                           onChange={(handleInputPagination, handleInputPaginationValue)}

@@ -4,10 +4,12 @@ import Typography from "../../../components/Typography/Typography.jsx";
 import Icon from "@mui/material/Icon";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-import useClients from "../../../api/clients/useClients.js";
 import dayjs from "dayjs";
+import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 
 export default function data(data) {
+    const navigate = useNavigate();
 
     const ClientDetail = ({ name, surname, contactNumber, gender }) =>
         <Box display="flex" alignItems="center" lineHeight={1}>
@@ -25,6 +27,13 @@ export default function data(data) {
         </Box>
   ;
 
+    ClientDetail.propTypes = {
+        name: PropTypes.string,
+        surname: PropTypes.string,
+        contactNumber: PropTypes.string,
+        gender: PropTypes.string,
+    };
+
     const PackageDetail = ({ name, goal }) =>
         <Box lineHeight={1} textAlign="left">
             <Typography display="block" variant="caption" color="text" fontWeight="medium">
@@ -34,15 +43,20 @@ export default function data(data) {
         </Box>
   ;
 
+    PackageDetail.propTypes = {
+        name: PropTypes.string,
+        goal: PropTypes.string
+    };
+
     const Actions = ({ data }) =>
         <Box display="flex" alignItems="center" gap={1}>
             <Tooltip title="Edit" placement="top">
-                <IconButton onClick={() => console.log("editing client", data)}>
+                <IconButton onClick={() => navigate(`./edit/${data._id}`)}>
                     <Icon fontSize="small" color="info">edit</Icon>
                 </IconButton>
             </Tooltip>
             <Tooltip title="Remove" placement="top">
-                <IconButton onClick={() => console.log("deleting client", data)}>
+                <IconButton onClick={() => console.log("deleting record", data)}>
                     <Icon fontSize="small" color="error">delete</Icon>
                 </IconButton>
             </Tooltip>
@@ -62,7 +76,12 @@ export default function data(data) {
     const rows = data.map(row => {
         return {
             id: row._id,
-            client: <ClientDetail name={row.firstName} surname={row.lastName} gender={row.gender} contactNumber={row.contactNumber} />,
+            client: <ClientDetail
+                name={row.name}
+                surname={row.lastName}
+                gender={row.gender}
+                contactNumber={row.contactNumber}
+            />,
             package: <PackageDetail name={row.package.name} goal={row.goal} />,
             joined: formatDate(row.joiningDate) ,
             action: <Actions data={row} />,

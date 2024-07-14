@@ -19,7 +19,7 @@ const router = createBrowserRouter(
 
             {/*clients*/}
             <Route path="clients" element={<Clients />}/>
-            <Route path="clients/:id" element={<EditClientPage />}/>
+            <Route path="clients/edit/:id" element={<EditClientPage />}/>
             <Route path="clients/add" element={<AddClientPage />}/>
 
             {/*checkins*/}

@@ -1,4 +1,4 @@
-import {apiClient} from "../api-client.js";
+import { apiClient } from "../api-client.js";
 import useCustomMutation from "../shared/useCustomMutation";
 import clientQueryKeys from "./useQueryKeys.js";
 

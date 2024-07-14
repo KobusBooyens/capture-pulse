@@ -7,10 +7,10 @@ import Fade from "@mui/material/Fade";
 
 import { useUISettingsController } from "../../context/ui-settings-provider.jsx";
 import Box from "../Box/Box.jsx";
-import MDSnackbarIconRoot from "./SnackbarIconRoot.js";
+import SnackbarIconRoot from "./SnackbarIconRoot.js";
 import Typography from "../Typography/Typography.jsx";
 
-function Snackbar({ color, icon, title, dateTime, content, close, bgWhite, ...rest }) {
+function SnackbarAlert({ color= "info", icon, title, dateTime, content, close, bgWhite = false, ...rest }) {
     const [controller] = useUISettingsController();
     const { darkMode } = controller;
 
@@ -68,9 +68,9 @@ function Snackbar({ color, icon, title, dateTime, content, close, bgWhite, ...re
                     p={1.5}
                 >
                     <Box display="flex" alignItems="center" lineHeight={0}>
-                        <MDSnackbarIconRoot fontSize="small" ownerState={{ color, bgWhite }}>
+                        <SnackbarIconRoot fontSize="small" ownerState={{ color, bgWhite }}>
                             {icon}
-                        </MDSnackbarIconRoot>
+                        </SnackbarIconRoot>
                         <Typography
                             variant="button"
                             fontWeight="medium"
@@ -122,14 +122,8 @@ function Snackbar({ color, icon, title, dateTime, content, close, bgWhite, ...re
     );
 }
 
-// Setting default values for the props of Snackbar
-Snackbar.defaultProps = {
-    bgWhite: false,
-    color: "info",
-};
-
 // Typechecking props for Snackbar
-Snackbar.propTypes = {
+SnackbarAlert.propTypes = {
     color: PropTypes.oneOf([
         "primary",
         "secondary",
@@ -148,4 +142,4 @@ Snackbar.propTypes = {
     bgWhite: PropTypes.bool,
 };
 
-export default Snackbar;
+export default SnackbarAlert;

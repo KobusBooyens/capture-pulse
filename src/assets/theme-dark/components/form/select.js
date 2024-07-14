@@ -1,28 +1,48 @@
 import colors from "../../base/colors.js";
-import pxToRem from "../../functions/pxToRem.js";
-const { transparent } = colors;
+import typography from "../../base/typography.js";
+import borders from "../../base/borders.js";
+import rgba from "../../functions/rgba.js";
+
+const { info, inputBorderColor, dark, grey, white } = colors;
+const { size } = typography;
+const { borderWidth } = borders;
 
 const select = {
     styleOverrides: {
-        select: {
-            display: "grid",
-            alignItems: "center",
-            padding: `0 ${pxToRem(12)} !important`,
-
-            "& .Mui-selected": {
-                backgroundColor: transparent.main,
+        root: {
+            fontSize: size.sm,
+            color: dark.main,
+            "& .MuiSelect-select": {
+                color: white.main,
+                "&:focus": {
+                    backgroundColor: rgba(inputBorderColor, 0.1),
+                },
+                "&:hover:not(.Mui-disabled):before": {
+                    borderBottom: `${borderWidth[1]} solid ${rgba(inputBorderColor, 0.6)}`,
+                },
+                "&:before": {
+                    borderColor: rgba(inputBorderColor, 0.6),
+                },
+                "&:after": {
+                    borderColor: info.main,
+                },
+                "& .MuiSelect-icon": {
+                    color: grey[100],
+                },
+            },
+            "& .MuiSelect-iconOpen": {
+                color: info.main,
             },
         },
-
         selectMenu: {
-            background: "none",
-            height: "none",
-            minHeight: "none",
-            overflow: "unset",
+            backgroundColor: dark.main,
+            color: white.main,
         },
-
         icon: {
-            display: "none",
+            color: grey[100],
+        },
+        iconOpen: {
+            color: info.main,
         },
     },
 };

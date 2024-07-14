@@ -1,12 +1,12 @@
-import Dashboard from "../layout/dashboard/dashboard.jsx";
-import ViewClients from "../layout/clients/Clients.jsx";
-import Checkins from "../layout/checkins/checkins.jsx";
-import Billing from "../layout/billing/billing.jsx";
+import Dashboard from "../dashboard/dashboard.jsx";
+import ViewClients from "../clients/Clients.jsx";
+import Checkins from "../checkins/checkins.jsx";
+import Billing from "../billing/billing.jsx";
 
 import Icon from "@mui/material/Icon";
-import Notifications from "../layout/notifications/notifications.jsx";
-import Settings from "../layout/settings/settings.jsx";
-import Users from "../layout/users/users.jsx";
+import Notifications from "../notifications/notifications.jsx";
+import Settings from "../settings/settings.jsx";
+import Users from "../users/users.jsx";
 
 const menuItems = [
     {
