@@ -2,11 +2,11 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 
-import { useMaterialUIController, setLayout } from "../../context/materialUIControllerProvider.jsx";
+import { useUISettingsController, setLayout } from "../../context/ui-settings-provider.jsx";
 import Box from "../../components/Box/Box.jsx";
 
 function DashboardLayout({ children }) {
-    const [controller, dispatch] = useMaterialUIController();
+    const [controller, dispatch] = useUISettingsController();
     const { miniSidenav } = controller;
     const { pathname } = useLocation();
 

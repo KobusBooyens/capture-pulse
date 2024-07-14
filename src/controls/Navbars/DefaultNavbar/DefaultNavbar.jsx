@@ -7,7 +7,7 @@ import Icon from "@mui/material/Icon";
 
 import breakpoints from "../../../assets/theme/base/breakpoints";
 
-import { useMaterialUIController } from "../../../context/materialUIControllerProvider.jsx";
+import { useUISettingsController } from "../../../context/ui-settings-provider.jsx";
 import Box from "../../../components/Box/Box.jsx";
 import Typography from "../../../components/Typography/Typography.jsx";
 import DefaultNavbarLink from "./DefaultNavbarLink.jsx";
@@ -15,7 +15,7 @@ import Button from "../../../components/Button/Button.jsx";
 import DefaultNavbarMobile from "./DefaultNavbarMobile.jsx";
 
 function DefaultNavbar({ transparent, light, action }) {
-    const [controller] = useMaterialUIController();
+    const [controller] = useUISettingsController();
     const { darkMode } = controller;
 
     const [mobileNavbar, setMobileNavbar] = useState(false);

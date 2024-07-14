@@ -4,11 +4,11 @@ import { useLocation } from "react-router-dom";
 
 import PropTypes from "prop-types";
 
-import { useMaterialUIController, setLayout } from "../../context/materialUIControllerProvider.jsx";
+import { useUISettingsController, setLayout } from "../../context/ui-settings-provider.jsx";
 import Box from "../../components/Box/Box.jsx";
 
 function PageLayout({ background, children }) {
-    const [, dispatch] = useMaterialUIController();
+    const [, dispatch] = useUISettingsController();
     const { pathname } = useLocation();
 
     useEffect(() => {

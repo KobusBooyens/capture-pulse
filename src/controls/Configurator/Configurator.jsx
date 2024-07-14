@@ -5,21 +5,21 @@ import IconButton from "@mui/material/IconButton";
 import Icon from "@mui/material/Icon";
 
 import {
-    useMaterialUIController,
+    useUISettingsController,
     setOpenConfigurator,
     setTransparentSidenav,
     setWhiteSidenav,
     setFixedNavbar,
     setSidenavColor,
     setDarkMode,
-} from "../../context/materialUIControllerProvider.jsx";
+} from "../../context/ui-settings-provider.jsx";
 import ConfiguratorRoot from "./ConfiguratorRoot.js";
 import Box from "../../components/Box/Box.jsx";
 import Typography from "../../components/Typography/Typography.jsx";
 import Button from "../../components/Button/Button.jsx";
 
 function Configurator() {
-    const [controller, dispatch] = useMaterialUIController();
+    const [controller, dispatch] = useUISettingsController();
     const {
         openConfigurator,
         fixedNavbar,

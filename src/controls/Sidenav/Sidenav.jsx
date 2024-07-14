@@ -7,11 +7,11 @@ import Divider from "@mui/material/Divider";
 import Link from "@mui/material/Link";
 import Icon from "@mui/material/Icon";
 
-import { useMaterialUIController,
+import { useUISettingsController,
     setMiniSidenav,
     setTransparentSidenav,
     setWhiteSidenav,
-} from "../../context/materialUIControllerProvider.jsx";
+} from "../../context/ui-settings-provider.jsx";
 import SidenavCollapse from "./SidenavCollapse.jsx";
 import SidenavRoot from "./SidenavRoot.jsx";
 import Box from "../../components/Box/Box.jsx";
@@ -20,7 +20,7 @@ import Typography from "../../components/Typography/Typography.jsx";
 import sidenavLogoLabel from "./styles/sidenav.js";
 
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
-    const [controller, dispatch] = useMaterialUIController();
+    const [controller, dispatch] = useUISettingsController();
     const { miniSidenav, transparentSidenav, whiteSidenav, darkMode } = controller;
     const location = useLocation();
     const collapseName = location.pathname.replace("/", "");

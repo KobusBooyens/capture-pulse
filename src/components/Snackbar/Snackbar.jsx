@@ -5,13 +5,13 @@ import Icon from "@mui/material/Icon";
 import Divider from "@mui/material/Divider";
 import Fade from "@mui/material/Fade";
 
-import { useMaterialUIController } from "../../context/materialUIControllerProvider.jsx";
+import { useUISettingsController } from "../../context/ui-settings-provider.jsx";
 import Box from "../Box/Box.jsx";
 import MDSnackbarIconRoot from "./SnackbarIconRoot.js";
 import Typography from "../Typography/Typography.jsx";
 
 function Snackbar({ color, icon, title, dateTime, content, close, bgWhite, ...rest }) {
-    const [controller] = useMaterialUIController();
+    const [controller] = useUISettingsController();
     const { darkMode } = controller;
 
     let titleColor;

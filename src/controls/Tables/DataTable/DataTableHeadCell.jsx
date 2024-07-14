@@ -1,10 +1,10 @@
 import PropTypes from "prop-types";
 import Icon from "@mui/material/Icon";
 import Box from "../../../components/Box/Box.jsx";
-import { useMaterialUIController } from "../../../context/materialUIControllerProvider.jsx";
+import { useUISettingsController } from "../../../context/ui-settings-provider.jsx";
 
 function DataTableHeadCell({ width, children, sorted, align, ...rest }) {
-    const [controller] = useMaterialUIController();
+    const [controller] = useUISettingsController();
     const { darkMode } = controller;
 
     return (

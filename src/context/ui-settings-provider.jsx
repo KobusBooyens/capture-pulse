@@ -1,9 +1,9 @@
 import { createContext, useContext, useReducer, useMemo } from "react";
 import PropTypes from "prop-types";
 
-const MaterialUI = createContext();
+const UISettingsContext = createContext();
 
-MaterialUI.displayName = "MaterialUIContext";
+UISettingsContext.displayName = "UISettingsContext";
 
 function reducer(state, action) {
     switch (action.type) {
@@ -40,7 +40,7 @@ function reducer(state, action) {
     }
 }
 
-function MaterialUIControllerProvider({ children }) {
+function UiSettingsProvider({ children }) {
     const initialState = {
         miniSidenav: false,
         transparentSidenav: false,
@@ -57,22 +57,22 @@ function MaterialUIControllerProvider({ children }) {
 
     const value = useMemo(() => [controller, dispatch], [controller, dispatch]);
 
-    return <MaterialUI.Provider value={value}>{children}</MaterialUI.Provider>;
+    return <UISettingsContext.Provider value={value}>{children}</UISettingsContext.Provider>;
 }
 
-function useMaterialUIController() {
-    const context = useContext(MaterialUI);
+function useUISettingsController() {
+    const context = useContext(UISettingsContext);
 
     if (!context) {
         throw new Error(
-            "useMaterialUIController should be used inside the MaterialUIControllerProvider."
+            "useUISettingsController should be used inside the UiSettingsProvider."
         );
     }
 
     return context;
 }
 
-MaterialUIControllerProvider.propTypes = {
+UiSettingsProvider.propTypes = {
     children: PropTypes.node.isRequired,
 };
 
@@ -87,8 +87,8 @@ const setLayout = (dispatch, value) => dispatch({ type: "LAYOUT", value });
 const setDarkMode = (dispatch, value) => dispatch({ type: "DARKMODE", value });
 
 export {
-    MaterialUIControllerProvider,
-    useMaterialUIController,
+    UiSettingsProvider,
+    useUISettingsController,
     setMiniSidenav,
     setTransparentSidenav,
     setWhiteSidenav,

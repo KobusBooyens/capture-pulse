@@ -17,12 +17,12 @@ import {
 } from "./styles.js";
 
 import {
-    useMaterialUIController,
+    useUISettingsController,
     setMiniSidenav,
     setDarkMode,
     setSidenavColor,
     setTransparentNavbar
-} from "../../../context/materialUIControllerProvider.jsx";
+} from "../../../context/ui-settings-provider.jsx";
 
 import NotificationItem from "../../Items/NotificationItem/NotificationItem.jsx";
 
@@ -30,7 +30,7 @@ import Box from "../../../components/Box/Box.jsx";
 import Breadcrumbs from "../../Breadcrumbs/Breadcrumbs.jsx";
 
 function DashboardNavbar({ absolute, light, isMini }) {
-    const [controller, dispatch] = useMaterialUIController();
+    const [controller, dispatch] = useUISettingsController();
     const { miniSidenav, transparentNavbar, darkMode, sidenavColor, fixedNavbar } = controller;
     const [openMenu, setOpenMenu] = useState(false);
     const [openPersonalizeMenu, setOpenPersonalizeMenu] = useState(false);

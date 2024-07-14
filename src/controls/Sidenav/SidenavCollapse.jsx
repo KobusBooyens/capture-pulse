@@ -11,11 +11,11 @@ import {
     collapseText,
 } from "./styles/sidenavCollapse";
 
-import { useMaterialUIController } from "../../context/materialUIControllerProvider.jsx";
+import { useUISettingsController } from "../../context/ui-settings-provider.jsx";
 import Box from "../../components/Box/Box.jsx";
 
 function SidenavCollapse({ icon, name, active, ...rest }) {
-    const [controller] = useMaterialUIController();
+    const [controller] = useUISettingsController();
     const { miniSidenav, transparentSidenav, whiteSidenav, darkMode, sidenavColor } = controller;
 
     return (

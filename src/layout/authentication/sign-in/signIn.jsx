@@ -1,7 +1,10 @@
 import React from "react";
+import Typography from "../../../components/Typography/Typography.jsx";
 
 export const SignIn = () => {
     return (
-        <div>SignIn</div>
+        <>
+            <Typography>Welcome to the Sign-in Page</Typography>
+        </>
     );
 };

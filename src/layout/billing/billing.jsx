@@ -1,12 +1,11 @@
 import React from "react";
-import DashboardLayout from "../../controls/LayoutContainers/DashboardLayout.jsx";
-import DashboardNavbar from "../../controls/Navbars/DashboardNavbar/DashboardNavbar.jsx";
+import Typography from "../../components/Typography/Typography.jsx";
 
 const Billing = () => {
     return (
-        <DashboardLayout>
-            <DashboardNavbar/>
-        </DashboardLayout>
+        <>
+            <Typography>Welcome to the Billing Page</Typography>
+        </>
     );
 };
 

@@ -1,14 +1,14 @@
 import React from "react";
-import tableData from "./data/clientsTableData.jsx";
-import Box from "../../components/Box/Box.jsx";
+import tableData from "../data/ViewClientsDataTable.jsx";
+import Box from "../../../components/Box/Box.jsx";
 import { Grid } from "@mui/material";
 import Card from "@mui/material/Card";
-import Typography from "../../components/Typography/Typography.jsx";
-import DataTable from "../../controls/Tables/DataTable/DataTable.jsx";
-import Button from "../../components/Button/Button.jsx";
+import Typography from "../../../components/Typography/Typography.jsx";
+import DataTable from "../../../controls/Tables/DataTable/DataTable.jsx";
+import Button from "../../../components/Button/Button.jsx";
 import Icon from "@mui/material/Icon";
 
-const ViewClients = ({ data }) => {
+const ViewClientsPage = ({ data }) => {
     const { columns, rows } = tableData(data);
 
     return (
@@ -28,7 +28,7 @@ const ViewClients = ({ data }) => {
                             className={"flex flex-row justify-between"}
                         >
                             <Typography variant="h5" color="white">Clients</Typography>
-                            <Button color={"white"} className={"flex gap-2"}> <Icon>add</Icon> Add Client</Button>
+                            <Button variant={"gradient"} color={"secondary"} className={"flex gap-2"}> <Icon>add</Icon> Add Client</Button>
                         </Box>
                         <Box pt={3}>
                             <DataTable
@@ -46,4 +46,4 @@ const ViewClients = ({ data }) => {
         </Box>
     );
 };
-export default ViewClients;
+export default ViewClientsPage;

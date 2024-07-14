@@ -16,8 +16,7 @@ const Dashboard = () => {
     const { joined, payments } = reportsLineChartData;
 
     return (
-        <DashboardLayout>
-            <DashboardNavbar/>
+        <>
             <Box py={3}>
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={6} lg={3}>
@@ -25,7 +24,7 @@ const Dashboard = () => {
                             <ComplexStatisticsCard
                                 color="primary"
                                 icon="person_add"
-                                title="New ViewClients"
+                                title="New ViewClientsPage"
                                 count="+12"
                             >
                                 <Typography component="p" variant="button" color="text" display="flex">
@@ -46,7 +45,7 @@ const Dashboard = () => {
                             <ComplexStatisticsCard
                                 color="dark"
                                 icon="people_alt"
-                                title="ViewClients"
+                                title="ViewClientsPage"
                                 count={281}
                             >
                                 <Typography component="p" variant="button" color="text" display="flex" gap={1}>
@@ -118,7 +117,7 @@ const Dashboard = () => {
                             <Box mb={3}>
                                 <ReportsBarChart
                                     color="info"
-                                    title="New ViewClients"
+                                    title="New ViewClientsPage"
                                     description="Weekly insights"
                                     date="latest user joined 2 days ago"
                                     chart={reportsBarChartData}
@@ -129,7 +128,7 @@ const Dashboard = () => {
                             <Box mb={3}>
                                 <ReportsLineChart
                                     color="success"
-                                    title="New ViewClients"
+                                    title="New ViewClientsPage"
                                     description="Monthly insights"
                                     date="updated 4 min ago"
                                     chart={joined}
@@ -150,8 +149,7 @@ const Dashboard = () => {
                     </Grid>
                 </Box>
             </Box>
-            <Footer />
-        </DashboardLayout>
+        </>
     );
 };
 export default Dashboard;

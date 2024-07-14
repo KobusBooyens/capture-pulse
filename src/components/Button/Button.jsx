@@ -2,12 +2,12 @@ import { forwardRef } from "react";
 
 import PropTypes from "prop-types";
 
-import { useMaterialUIController } from "../../context/materialUIControllerProvider.jsx";
+import { useUISettingsController } from "../../context/ui-settings-provider.jsx";
 import ButtonRoot from "./ButtonRoot.js";
 
 const Button = forwardRef(
     ({ color, variant, size, circular, iconOnly, children, ...rest }, ref) => {
-        const [controller] = useMaterialUIController();
+        const [controller] = useUISettingsController();
         const { darkMode } = controller;
 
         return (

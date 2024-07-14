@@ -1,21 +1,21 @@
-import Dashboard from "./layout/dashboard/dashboard.jsx";
-import ViewClients from "./layout/clients/Clients.jsx";
-import Checkins from "./layout/checkins/checkins.jsx";
-import Billing from "./layout/billing/billing.jsx";
+import Dashboard from "../layout/dashboard/dashboard.jsx";
+import ViewClients from "../layout/clients/Clients.jsx";
+import Checkins from "../layout/checkins/checkins.jsx";
+import Billing from "../layout/billing/billing.jsx";
 
 import Icon from "@mui/material/Icon";
-import { Notifications } from "./layout/notifications/notifications.jsx";
-import Settings from "./layout/settings/settings.jsx";
-import Users from "./layout/users/users.jsx";
+import Notifications from "../layout/notifications/notifications.jsx";
+import Settings from "../layout/settings/settings.jsx";
+import Users from "../layout/users/users.jsx";
 
-const routes = [
+const menuItems = [
     {
         type: "collapse",
         name: "Dashboard",
         key: "dashboard",
         icon: <Icon fontSize={"small"}>dashboard</Icon>,
         route: "/dashboard",
-        component: <Dashboard/>
+        component: <Dashboard />
     },
     {
         type: "collapse",
@@ -23,7 +23,7 @@ const routes = [
         key: "clients",
         icon: <Icon fontSize={"small"}>people_alt</Icon>,
         route: "/clients",
-        component: <ViewClients/>
+        component: <ViewClients />
     },
     {
         type: "collapse",
@@ -31,7 +31,7 @@ const routes = [
         key: "checkins",
         icon: <Icon fontSize={"small"}>settings_accessibility</Icon>,
         route: "/checkins",
-        component: <Checkins/>
+        component: <Checkins />
     },
     {
         type: "collapse",
@@ -39,7 +39,7 @@ const routes = [
         key: "billing",
         icon: <Icon fontSize={"small"}>receipt_long</Icon>,
         route: "/billing",
-        component: <Billing/>
+        component: <Billing />
     },
     {
         type: "collapse",
@@ -47,7 +47,7 @@ const routes = [
         key: "notifications",
         icon: <Icon fontSize={"small"}>notifications</Icon>,
         route: "/notifications",
-        component: <Notifications/>
+        component: <Notifications />
     },
     {
         type: "collapse",
@@ -55,7 +55,7 @@ const routes = [
         key: "users",
         icon: <Icon fontSize={"small"}>person</Icon>,
         route: "/users",
-        component: <Users/>
+        component: <Users />
     },
     {
         type: "collapse",
@@ -63,8 +63,8 @@ const routes = [
         key: "settings",
         icon: <Icon fontSize={"small"}>settings</Icon>,
         route: "/settings",
-        component: <Settings/>
+        component: <Settings />
     }
 ];
 
-export default routes;
+export default menuItems;
