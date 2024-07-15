@@ -9,28 +9,10 @@ import Button from "../../../components/Button/Button.jsx";
 import Icon from "@mui/material/Icon";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
-import SnackbarAlert from "../../../components/Snackbar/SnackbarAlert.jsx";
 
 const ViewClientsPage = ({ data }) => {
     const navigate = useNavigate();
     const { columns, rows } = tableData(data);
-
-    const [successSB, setSuccessSB] = useState(false);
-    const openSuccessSB = () => setSuccessSB(true);
-    const closeSuccessSB = () => setSuccessSB(false);
-    const renderSuccessSB = 
-      <SnackbarAlert
-          color="success"
-          icon="check"
-          title="Material Dashboard"
-          content="Hello, world! This is a notification message"
-          dateTime="11 mins ago"
-          open={successSB}
-          onClose={closeSuccessSB}
-          close={closeSuccessSB}
-          bgWhite
-      />
-    ;
 
     return (
         <Box pt={6} pb={3}>
@@ -53,7 +35,6 @@ const ViewClientsPage = ({ data }) => {
                                 color={"secondary"}
                                 className={"flex gap-2"}
                                 onClick={() =>
-                                    // openSuccessSB(true)
                                     navigate("add")
                                 }
                             >
@@ -73,7 +54,6 @@ const ViewClientsPage = ({ data }) => {
                     </Card>
                 </Grid>
             </Grid>
-            {renderSuccessSB}
         </Box>
     );
 };

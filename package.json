@@ -4,9 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "client": "vite",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --fix",
+    "server": "npm run backend --prefix backend",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
     "preview": "vite preview"
   },
   "dependencies": {

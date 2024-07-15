@@ -12,6 +12,7 @@ import menuItems from "./menuItems.jsx";
 import DashboardNavbar from "../../controls/Navbars/DashboardNavbar/DashboardNavbar.jsx";
 import DashboardLayout from "../../controls/LayoutContainers/DashboardLayout.jsx";
 import Footer from "../../controls/Footer/Footer.jsx";
+import { SnackbarProvider } from "../../context/snackbar-provider.jsx";
 
 const Layout = () => {
     const [controller, dispatch] = useUISettingsController();
@@ -47,22 +48,26 @@ const Layout = () => {
     const brand = useDarkBrand ? brandDark : brandWhite;
     return (
         <>
+
             <ThemeProvider theme={darkMode ? themeDark : theme}>
-                <CssBaseline/>
-                <Sidenav
-                    color={sidenavColor}
-                    brand={brand}
-                    brandName={"Capture Pulse"}
-                    routes={menuItems}
-                    onMouseEnter={handleOnMouseEnter}
-                    onMouseLeave={handleOnMouseLeave}
-                />
-                <DashboardLayout>
-                    <DashboardNavbar/>
-                    <Outlet/>
-                    <Footer/>
-                </DashboardLayout>
+                <SnackbarProvider>
+                    <CssBaseline/>
+                    <Sidenav
+                        color={sidenavColor}
+                        brand={brand}
+                        brandName={"Capture Pulse"}
+                        routes={menuItems}
+                        onMouseEnter={handleOnMouseEnter}
+                        onMouseLeave={handleOnMouseLeave}
+                    />
+                    <DashboardLayout>
+                        <DashboardNavbar/>
+                        <Outlet/>
+                        <Footer/>
+                    </DashboardLayout>
+                </SnackbarProvider>
             </ThemeProvider>
+
         </>
     );
 };

@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useSnackbar from "../../hooks/useSnackbar.js";
 
-const useCustomMutation = (mutationFn, queryKey, messages = {}) => {
+const useCustomMutation = (mutationFn, queryKey, alertMessage = {}) => {
     const queryClient = useQueryClient();
     const { showSnackBar } = useSnackbar();
-
+    const { success, error } = alertMessage;
     return useMutation({
         mutationFn,
         onMutate: async (data) => {
@@ -13,12 +13,11 @@ const useCustomMutation = (mutationFn, queryKey, messages = {}) => {
             return { previousData, data };
         },
         onError: (err, data, context) => {
-            showSnackBar("Failed to add client", "An error has occurred while adding client, please try again.",
-                "error");
+            showSnackBar(error.title, error.content, error.severity, new Date());
             queryClient.setQueryData(queryKey, context.previousData);
         },
         onSuccess: () => {
-            showSnackBar("Client successfully added", "Nice! You have added a client.", "success");
+            showSnackBar(success.title, success.content, success.severity, new Date());
         },
         onSettled: () => {
             queryClient.invalidateQueries(queryKey);

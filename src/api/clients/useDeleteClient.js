@@ -9,8 +9,16 @@ const deleteFn = async ({ id }) => {
 
 const useDeleteClient = () => {
     return useCustomMutation(deleteFn, clientQueryKeys.all, {
-        success: "Record has been deleted",
-        error: "Failed to delete record"
+        success: {
+            title: "Success!",
+            content: "Record has been deleted!",
+            severity: "success"
+        },
+        error: {
+            title: "Failed!",
+            content: "Oh no! An error occurred while deleting the client. Please try again!",
+            severity: "error"
+        },
     });
 };
 

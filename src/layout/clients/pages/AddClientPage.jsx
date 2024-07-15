@@ -15,11 +15,10 @@ import useSnackbar from "../../../hooks/useSnackbar.js";
 // import Stepper from "../../../components/Stepper/Stepper.jsx";
 
 const AddClientPage = () => {
-
     const methods = useForm();
     const createClient = useCreateClient();
     const navigate = useNavigate();
-    const { showSnackBar } = useSnackbar();
+
     const { steps, currentStepIndex, step, isFirstStep, isLastStep, back, next } = useMultistepForm([
         { component: <PersonalForm/>, label: "Personal" },
         { component: <AboutYouForm/>, label: "About You" },
@@ -27,14 +26,12 @@ const AddClientPage = () => {
     ]);
 
     const onFormSubmit = (data) => {
-        showSnackBar("Failed to add client", "An error has occurred while adding client, please try again.",
-            "error");
         if (!isLastStep) return next();
 
         data = { ...data, package: data.package._id };
         console.log(data);
 
-        // createClient.mutate(data);
+        createClient.mutate(data);
     };
 
     useEffect(() => {

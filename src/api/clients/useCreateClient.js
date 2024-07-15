@@ -10,8 +10,16 @@ const createClientFn = async (data) => {
 
 const useCreateClient = () => {
     return useCustomMutation(createClientFn, clientQueryKeys.all, {
-        success: "Record was successfully created",
-        error: "An error occurred while creating record"
+        success: {
+            title: "Success!",
+            content: "Nice! Client was successfully created!",
+            severity: "success"
+        },
+        error: {
+            title: "Failed!",
+            content: "Oh no! An error occurred while creating the client. Please try again!",
+            severity: "error"
+        },
     });
 };
 

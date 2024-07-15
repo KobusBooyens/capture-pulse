@@ -10,7 +10,7 @@ import Box from "../Box/Box.jsx";
 import SnackbarIconRoot from "./SnackbarIconRoot.js";
 import Typography from "../Typography/Typography.jsx";
 
-function SnackbarAlert({ color= "info", icon, title, dateTime, content, close, bgWhite = false, ...rest }) {
+function SnackbarAlert({ color= "info", title, dateTime, content, close, bgWhite = false, ...rest }) {
     const [controller] = useUISettingsController();
     const { darkMode } = controller;
 
@@ -31,6 +31,13 @@ function SnackbarAlert({ color= "info", icon, title, dateTime, content, close, b
         dateTimeColor = "white";
         dividerColor = true;
     }
+
+    const iconStyleMapping = {
+        "info": <Icon>info_outlined</Icon>,
+        "success": <Icon>check</Icon>,
+        "warning": <Icon>warning_amber_outlined</Icon>,
+        "error": <Icon>dangerous_outlined</Icon>,
+    };
 
     return (
         <Snackbar
@@ -69,7 +76,7 @@ function SnackbarAlert({ color= "info", icon, title, dateTime, content, close, b
                 >
                     <Box display="flex" alignItems="center" lineHeight={0}>
                         <SnackbarIconRoot fontSize="small" ownerState={{ color, bgWhite }}>
-                            {icon}
+                            {iconStyleMapping[color] ?? <Icon>notifications_outlined</Icon>}
                         </SnackbarIconRoot>
                         <Typography
                             variant="button"
@@ -122,7 +129,6 @@ function SnackbarAlert({ color= "info", icon, title, dateTime, content, close, b
     );
 }
 
-// Typechecking props for Snackbar
 SnackbarAlert.propTypes = {
     color: PropTypes.oneOf([
         "primary",
@@ -134,7 +140,6 @@ SnackbarAlert.propTypes = {
         "dark",
         "light",
     ]),
-    icon: PropTypes.node.isRequired,
     title: PropTypes.string.isRequired,
     dateTime: PropTypes.string.isRequired,
     content: PropTypes.node.isRequired,

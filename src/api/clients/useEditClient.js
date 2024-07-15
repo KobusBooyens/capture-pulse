@@ -10,8 +10,16 @@ const editFn = async ({ id, updatedData }) => {
 
 const useEditClient = () => {
     return useCustomMutation(editFn, clientQueryKeys.all, {
-        success: "Record was successfully updated",
-        error: "An error occurred while updating record"
+        success: {
+            title: "Success!",
+            content: "Nice! Client was successfully updated!",
+            severity: "success"
+        },
+        error: {
+            title: "Failed!",
+            content: "Oh no! An error occurred while updating the client. Please try again!",
+            severity: "error"
+        },
     });
 };
 

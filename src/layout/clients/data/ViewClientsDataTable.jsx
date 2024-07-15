@@ -7,6 +7,8 @@ import Tooltip from "@mui/material/Tooltip";
 import dayjs from "dayjs";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
+import useDeleteClient from "../../../api/clients/useDeleteClient.js";
+import { useCallback, useState } from "react";
 
 export default function data(data) {
     const navigate = useNavigate();
@@ -62,6 +64,10 @@ export default function data(data) {
             </Tooltip>
         </Box>;
 
+    Actions.propTypes = {
+        data: PropTypes.object,
+    };
+
     const formatDate = (date) => {
         return dayjs(date).format("YYYY-MM-DD");
     };
@@ -77,7 +83,7 @@ export default function data(data) {
         return {
             id: row._id,
             client: <ClientDetail
-                name={row.name}
+                name={row.firstName}
                 surname={row.lastName}
                 gender={row.gender}
                 contactNumber={row.contactNumber}
