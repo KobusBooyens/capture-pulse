@@ -7,11 +7,15 @@ import Tooltip from "@mui/material/Tooltip";
 import dayjs from "dayjs";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
-import useDeleteClient from "../../../api/clients/useDeleteClient.js";
 import { useCallback, useState } from "react";
 
 export default function data(data) {
     const navigate = useNavigate();
+    const [isDeleting, setIsDeleting] = useState({ deleting: false, data: {} });
+
+    const handleDeleteClient = useCallback((data) => {
+        setIsDeleting({ deleting: true, data });
+    },[]);
 
     const ClientDetail = ({ name, surname, contactNumber, gender }) =>
         <Box display="flex" alignItems="center" lineHeight={1}>
@@ -58,7 +62,7 @@ export default function data(data) {
                 </IconButton>
             </Tooltip>
             <Tooltip title="Remove" placement="top">
-                <IconButton onClick={() => console.log("deleting record", data)}>
+                <IconButton onClick={() => handleDeleteClient(data)}>
                     <Icon fontSize="small" color="error">delete</Icon>
                 </IconButton>
             </Tooltip>
@@ -97,5 +101,7 @@ export default function data(data) {
     return {
         columns: columns,
         rows: rows,
+        isDeleting,
+        setIsDeleting
     };
 }

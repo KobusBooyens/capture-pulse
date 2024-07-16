@@ -48,7 +48,6 @@ const Layout = () => {
     const brand = useDarkBrand ? brandDark : brandWhite;
     return (
         <>
-
             <ThemeProvider theme={darkMode ? themeDark : theme}>
                 <SnackbarProvider>
                     <CssBaseline/>

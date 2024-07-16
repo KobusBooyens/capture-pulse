@@ -11,8 +11,6 @@ import { FormProvider, useForm } from "react-hook-form";
 import useCreateClient from "../../../api/clients/useCreateClient.js";
 import Button from "../../../components/Button/Button.jsx";
 import { useNavigate } from "react-router-dom";
-import useSnackbar from "../../../hooks/useSnackbar.js";
-// import Stepper from "../../../components/Stepper/Stepper.jsx";
 
 const AddClientPage = () => {
     const methods = useForm();
@@ -47,7 +45,7 @@ const AddClientPage = () => {
                 <Grid item xs={12}>
                     <Card>
                         <Box mx={2} mt={-3} py={3} px={2} variant="gradient" bgColor="info" borderRadius="lg"
-                            coloredShadow="info" className={"flex flex-row justify-between"}
+                            coloredShadow="info" className={"flex flex-row justify-center"}
                         >
                             <Typography variant="h5" color="white">Add Client</Typography>
                         </Box>

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import tableData from "../data/ViewClientsDataTable.jsx";
+import React, { useCallback, useEffect, useState } from "react";
+import useClientTableData from "../data/useClientDataTable.jsx";
 import Box from "../../../components/Box/Box.jsx";
 import { Grid } from "@mui/material";
 import Card from "@mui/material/Card";
@@ -9,10 +9,24 @@ import Button from "../../../components/Button/Button.jsx";
 import Icon from "@mui/material/Icon";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
+import DeleteDialog from "../../../controls/Dialogs/DeleteDialog.jsx";
+import useDeleteClient from "../../../api/clients/useDeleteClient.js";
 
 const ViewClientsPage = ({ data }) => {
     const navigate = useNavigate();
-    const { columns, rows } = tableData(data);
+    const deleteClient = useDeleteClient();
+
+    const { columns, rows, isDeleting, setIsDeleting } = useClientTableData(data);
+
+    const handleCloseDeleteDialog = () => {
+        setIsDeleting({ deleting: false, data: {} });
+    };
+
+    useEffect(() => {
+        if (deleteClient.isSuccess) {
+            setIsDeleting({ deleting: false, data: {} });
+        }
+    }, [deleteClient.isSuccess]);
 
     return (
         <Box pt={6} pb={3}>
@@ -54,6 +68,12 @@ const ViewClientsPage = ({ data }) => {
                     </Card>
                 </Grid>
             </Grid>
+            <DeleteDialog
+                openDialog={isDeleting.deleting}
+                onClose={handleCloseDeleteDialog}
+                onConfirm={() => deleteClient.mutate({ id: isDeleting.data._id })}
+                isLoading={deleteClient.isPending}
+            />
         </Box>
     );
 };
