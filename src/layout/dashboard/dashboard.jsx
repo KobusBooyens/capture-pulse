@@ -1,7 +1,4 @@
 import React from "react";
-import DashboardLayout from "../../controls/LayoutContainers/DashboardLayout.jsx";
-import DashboardNavbar from "../../controls/Navbars/DashboardNavbar/DashboardNavbar.jsx";
-import Footer from "../../controls/Footer/Footer.jsx";
 import Box from "../../components/Box/Box.jsx";
 import { Grid } from "@mui/material";
 import ComplexStatisticsCard from "../../controls/Cards/StatisticsCards/ComplexStatisticsCard.jsx";
@@ -20,11 +17,11 @@ const Dashboard = () => {
             <Box py={3}>
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={6} lg={3}>
-                        <Box mb={1.5}>
+                        <Box mb={1.5} >
                             <ComplexStatisticsCard
                                 color="primary"
                                 icon="person_add"
-                                title="New ViewClientsPage"
+                                title="New Clients"
                                 count="+12"
                             >
                                 <Typography component="p" variant="button" color="text" display="flex">
@@ -45,7 +42,7 @@ const Dashboard = () => {
                             <ComplexStatisticsCard
                                 color="dark"
                                 icon="people_alt"
-                                title="ViewClientsPage"
+                                title="Total Clients"
                                 count={281}
                             >
                                 <Typography component="p" variant="button" color="text" display="flex" gap={1}>
@@ -117,7 +114,7 @@ const Dashboard = () => {
                             <Box mb={3}>
                                 <ReportsBarChart
                                     color="info"
-                                    title="New ViewClientsPage"
+                                    title="Clients"
                                     description="Weekly insights"
                                     date="latest user joined 2 days ago"
                                     chart={reportsBarChartData}
@@ -128,7 +125,7 @@ const Dashboard = () => {
                             <Box mb={3}>
                                 <ReportsLineChart
                                     color="success"
-                                    title="New ViewClientsPage"
+                                    title="Clients"
                                     description="Monthly insights"
                                     date="updated 4 min ago"
                                     chart={joined}

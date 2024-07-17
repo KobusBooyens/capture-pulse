@@ -39,9 +39,9 @@ const ViewClientsPage = ({ data }) => {
                             py={3}
                             px={2}
                             variant="gradient"
-                            bgColor="info"
+                            bgColor="primary"
                             borderRadius="lg"
-                            coloredShadow="info"
+                            coloredShadow="dark"
                             className={"flex flex-row justify-between"}
                         >
                             <Typography variant="h5" color="white">Clients</Typography>

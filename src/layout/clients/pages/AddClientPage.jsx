@@ -44,16 +44,16 @@ const AddClientPage = () => {
             <Grid container spacing={6}>
                 <Grid item xs={12}>
                     <Card>
-                        <Box mx={2} mt={-3} py={3} px={2} variant="gradient" bgColor="info" borderRadius="lg"
-                            coloredShadow="info" className={"flex flex-row justify-center"}
+                        <Box mx={2} mt={-3} py={3} px={2} variant="gradient" bgColor="primary" borderRadius="lg"
+                            coloredShadow="primary" className={"flex flex-row justify-center"}
                         >
                             <Typography variant="h5" color="white">Add Client</Typography>
                         </Box>
                         <Box pt={3} pb={3} >
                             <FormProvider {...methods}>
                                 <form onSubmit={methods.handleSubmit(onFormSubmit)} noValidate>
-                                    <Box mx={2} mt={3} py={3} px={2} variant="gradient"
-                                        borderRadius="lg" coloredShadow={"light"}>
+                                    <Box mx={2} mt={3} py={3} px={2}
+                                        borderRadius="lg" coloredShadow={"primary"}>
                                         <Stepper nonLinear activeStep={currentStepIndex} className={"mb-10"} sx={{
                                             mt: -6,
                                             px: 6
@@ -77,7 +77,7 @@ const AddClientPage = () => {
                                                     <Button variant={"gradient"} color={"secondary"} onClick={back}>
                                                       Back
                                                     </Button>}
-                                                  <Button variant={"gradient"} color={"info"} type={"submit"}>
+                                                  <Button variant={"gradient"} color={"primary"} type={"submit"}>
                                                       {isLastStep ? "Submit" : "Next"}
                                                   </Button>
                                               </>

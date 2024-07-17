@@ -96,7 +96,6 @@ export default createTheme({
         MuiIconButton: { ...iconButton },
         MuiInput: { ...input },
         MuiInputLabel: { ...inputLabel },
-
         MuiOutlinedInput: { ...inputOutlined },
         MuiTextField: { ...textField },
         MuiMenu: { ...menu },

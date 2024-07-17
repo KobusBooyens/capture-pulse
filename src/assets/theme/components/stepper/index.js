@@ -11,7 +11,8 @@ const { colored } = boxShadows;
 const stepper = {
     styleOverrides: {
         root: {
-            background: linearGradient(gradients.info.main, gradients.info.state),
+            background: linearGradient(gradients.info.state, gradients.info.main),
+            //  background: linearGradient( "#125688", "#125688BF"),
             padding: `${pxToRem(24)} 0 ${pxToRem(16)}`,
             borderRadius: borderRadius.lg,
             boxShadow: colored.info,
