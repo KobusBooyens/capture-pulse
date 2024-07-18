@@ -7,6 +7,8 @@ import Icon from "@mui/material/Icon";
 import Notifications from "../notifications/notifications.jsx";
 import Settings from "../settings/settings.jsx";
 import Users from "../users/users.jsx";
+import WeighingCheckin from "../checkins/pages/weighingCheckin.jsx";
+import GeneralCheckin from "../checkins/pages/generalCheckin.jsx";
 
 const menuItems = [
     {
@@ -31,7 +33,25 @@ const menuItems = [
         key: "checkins",
         icon: <Icon fontSize={"small"}>settings_accessibility</Icon>,
         route: "/checkins",
-        component: <Checkins />
+        component: <Checkins />,
+        subMenuItems: [
+            {
+                type: "item",
+                name: "General Check-in",
+                key: "generalCheckin",
+                icon: <Icon fontSize={"small"}>how_to_reg</Icon>,
+                route: "/checkins/general",
+                component: <GeneralCheckin />
+            },
+            {
+                type: "item",
+                name: "Weighing",
+                key: "weighing",
+                icon: <Icon fontSize={"small"}>scale</Icon>,
+                route: "/checkins/weighing",
+                component: <WeighingCheckin />
+            }
+        ]
     },
     {
         type: "collapse",

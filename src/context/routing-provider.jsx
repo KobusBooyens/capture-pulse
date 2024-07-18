@@ -10,6 +10,8 @@ import Notifications from "../layout/notifications/notifications.jsx";
 import Billing from "../layout/billing/billing.jsx";
 import Settings from "../layout/settings/settings.jsx";
 import Users from "../layout/users/users.jsx";
+import GeneralCheckin from "../layout/checkins/pages/generalCheckin.jsx";
+import WeighingCheckin from "../layout/checkins/pages/weighingCheckin.jsx";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -24,6 +26,8 @@ const router = createBrowserRouter(
 
             {/*checkins*/}
             <Route path="checkins" element={<Checkins />}/>
+            <Route path="checkins/general" element={<GeneralCheckin />}/>
+            <Route path="checkins/weighing" element={<WeighingCheckin />}/>
             {/*<Route path="checkins/:id" element={<CheckinManager/>}/>*/}
 
             {/*notifications*/}

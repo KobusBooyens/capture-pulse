@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, NavLink } from "react-router-dom";
 import PropTypes from "prop-types";
 
@@ -24,7 +24,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
     const { miniSidenav, transparentSidenav, whiteSidenav, darkMode } = controller;
     const location = useLocation();
     const collapseName = location.pathname.replace("/", "");
-
+    const [activeMenuKey, setActiveMenuKey] = useState("");
     let textColor = "white";
 
     if (transparentSidenav || whiteSidenav && !darkMode) {
@@ -48,28 +48,20 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
         return () => window.removeEventListener("resize", handleMiniSidenav);
     }, [dispatch, location]);
 
-    const renderRoutes = routes.map(({ type, name, icon, title, noCollapse, key, href, route }) => {
+    const renderRoutes = routes.map(({ type, name, icon, title, key, route, subMenuItems }) => {
         let returnValue;
 
         if (type === "collapse") {
-            returnValue = href ? 
-                <Link
-                    href={href}
-                    key={key}
-                    target="_blank"
-                    rel="noreferrer"
-                    sx={{ textDecoration: "none" }}
-                >
-                    <SidenavCollapse
-                        name={name}
+            returnValue =
+                <NavLink key={key} to={route}>
+                    <SidenavCollapse name={name}
                         icon={icon}
                         active={key === collapseName}
-                        noCollapse={noCollapse}
+                        subMenuItems={subMenuItems}
+                        mainMenuKey={key}
+                        setActiveMenu={setActiveMenuKey}
+                        activeMenuKey={activeMenuKey}
                     />
-                </Link>
-                : 
-                <NavLink key={key} to={route}>
-                    <SidenavCollapse name={name} icon={icon} active={key === collapseName} />
                 </NavLink>
             ;
         } else if (type === "title") {
@@ -154,7 +146,7 @@ Sidenav.propTypes = {
     color: PropTypes.oneOf(["primary", "secondary", "info", "success", "warning", "error", "dark"]),
     brand: PropTypes.string,
     brandName: PropTypes.string.isRequired,
-    routes: PropTypes.arrayOf(PropTypes.object).isRequired,
+    routes: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 export default Sidenav;
