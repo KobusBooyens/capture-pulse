@@ -5,13 +5,15 @@ import Dashboard from "../layout/dashboard/dashboard.jsx";
 import Clients from "../layout/clients/Clients.jsx";
 import AddClientPage from "../layout/clients/pages/AddClientPage.jsx";
 import EditClientPage from "../layout/clients/pages/EditClientPage.jsx";
-import Checkins from "../layout/checkins/checkins.jsx";
+import Checkins from "../layout/checkins/Checkins.jsx";
 import Notifications from "../layout/notifications/notifications.jsx";
 import Billing from "../layout/billing/billing.jsx";
 import Settings from "../layout/settings/settings.jsx";
 import Users from "../layout/users/users.jsx";
-import GeneralCheckin from "../layout/checkins/pages/generalCheckin.jsx";
-import WeighingCheckin from "../layout/checkins/pages/weighingCheckin.jsx";
+import ViewGeneralCheckin from "../layout/checkins/pages/ViewGeneralCheckin.jsx";
+import ViewWeighingCheckin from "../layout/checkins/pages/ViewWeighingCheckin.jsx";
+import GeneralCheckins from "../layout/checkins/GeneralCheckins.jsx";
+import WeighingCheckins from "../layout/checkins/WeighingCheckins.jsx";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -26,8 +28,8 @@ const router = createBrowserRouter(
 
             {/*checkins*/}
             <Route path="checkins" element={<Checkins />}/>
-            <Route path="checkins/general" element={<GeneralCheckin />}/>
-            <Route path="checkins/weighing" element={<WeighingCheckin />}/>
+            <Route path="checkins/general" element={<GeneralCheckins />}/>
+            <Route path="checkins/weighing" element={<WeighingCheckins />}/>
             {/*<Route path="checkins/:id" element={<CheckinManager/>}/>*/}
 
             {/*notifications*/}

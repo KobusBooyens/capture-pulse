@@ -1,32 +1,22 @@
+import React from "react";
 import Box from "../../../components/Box/Box.jsx";
 import Icon from "@mui/material/Icon";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
-import dayjs from "dayjs";
 import PropTypes from "prop-types";
+import Tooltip from "@mui/material/Tooltip";
+import IconButton from "@mui/material/IconButton";
+import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
-import { useCallback, useState } from "react";
 import ClientDetails from "../../shared/ClientDetails.jsx";
 import PackageDetails from "../../shared/PackageDetails.jsx";
 
-export default function data(data) {
+export const useWeighingCheckinData = (data) => {
     const navigate = useNavigate();
-    const [isDeleting, setIsDeleting] = useState({ deleting: false, data: {} });
-
-    const handleDeleteClient = useCallback((data) => {
-        setIsDeleting({ deleting: true, data });
-    },[]);
 
     const Actions = ({ data }) =>
         <Box display="flex" alignItems="center" gap={1}>
-            <Tooltip title="Edit" placement="top">
+            <Tooltip title="check-in" placement="top">
                 <IconButton onClick={() => navigate(`./edit/${data._id}`)}>
-                    <Icon fontSize="small" color="info">edit</Icon>
-                </IconButton>
-            </Tooltip>
-            <Tooltip title="Remove" placement="top">
-                <IconButton onClick={() => handleDeleteClient(data)}>
-                    <Icon fontSize="small" color="error">delete</Icon>
+                    <Icon fontSize="small" color="info">inventory_outlined</Icon>
                 </IconButton>
             </Tooltip>
         </Box>;
@@ -36,13 +26,14 @@ export default function data(data) {
     };
 
     const formatDate = (date) => {
-        return dayjs(date).format("YYYY-MM-DD");
+        return dayjs(date).format("ll");
     };
 
     const columns = [
         { Header: "client", accessor: "client", align: "left" },
         { Header: "package", accessor: "package", align: "left" },
         { Header: "joined", accessor: "joined", align: "left" },
+        { Header: "last weighing", accessor: "lastWeighing", align: "left" },
         { Header: "action", accessor: "action", align: "center" },
     ];
 
@@ -56,15 +47,10 @@ export default function data(data) {
                 contactNumber={row.contactNumber}
             />,
             package: <PackageDetails name={row.package.name} goal={row.goal} />,
-            joined: formatDate(row.joiningDate) ,
+            joined: formatDate(row.joiningDate),
+            lastWeighing: formatDate(new Date()),
             action: <Actions data={row} />,
         };
     });
-
-    return {
-        columns,
-        rows,
-        isDeleting,
-        setIsDeleting
-    };
-}
+    return { columns, rows };
+};

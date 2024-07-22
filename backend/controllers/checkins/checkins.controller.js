@@ -1,6 +1,6 @@
-const db = require("../models");
+const db = require("../../models");
 const { z } = require("zod");
-const validateAndRespond = require("../utils/zodValidation");
+const validateAndRespond = require("../../utils/zodValidation");
 
 const schema = z.object({
     client: z.string({ required_error: "client is required" }),
@@ -96,4 +96,10 @@ const deleteItem = async (req, res) => {
     }
 };
 
-module.exports = { getAll, get, create, edit, deleteItem };
+module.exports = {
+    getAll,
+    get,
+    create,
+    edit,
+    deleteItem,
+};

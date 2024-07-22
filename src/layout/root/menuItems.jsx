@@ -1,14 +1,16 @@
 import Dashboard from "../dashboard/dashboard.jsx";
 import ViewClients from "../clients/Clients.jsx";
-import Checkins from "../checkins/checkins.jsx";
+import Checkins from "../checkins/Checkins.jsx";
 import Billing from "../billing/billing.jsx";
 
 import Icon from "@mui/material/Icon";
 import Notifications from "../notifications/notifications.jsx";
 import Settings from "../settings/settings.jsx";
 import Users from "../users/users.jsx";
-import WeighingCheckin from "../checkins/pages/weighingCheckin.jsx";
-import GeneralCheckin from "../checkins/pages/generalCheckin.jsx";
+import ViewWeighingCheckin from "../checkins/pages/ViewWeighingCheckin.jsx";
+import ViewGeneralCheckin from "../checkins/pages/ViewGeneralCheckin.jsx";
+import GeneralCheckins from "../checkins/GeneralCheckins.jsx";
+import WeighingCheckins from "../checkins/WeighingCheckins.jsx";
 
 const menuItems = [
     {
@@ -41,7 +43,7 @@ const menuItems = [
                 key: "generalCheckin",
                 icon: <Icon fontSize={"small"}>how_to_reg</Icon>,
                 route: "/checkins/general",
-                component: <GeneralCheckin />
+                component: <GeneralCheckins />
             },
             {
                 type: "item",
@@ -49,7 +51,7 @@ const menuItems = [
                 key: "weighing",
                 icon: <Icon fontSize={"small"}>scale</Icon>,
                 route: "/checkins/weighing",
-                component: <WeighingCheckin />
+                component: <WeighingCheckins />
             }
         ]
     },

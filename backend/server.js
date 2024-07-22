@@ -9,20 +9,22 @@ app.use(express.json());
 app.use(cors());
 
 (async () => {
-  try {
-    await connectToDatabase();
+    try {
+        await connectToDatabase();
 
-    require("./routes/client.routes")(app);
-    require("./routes/account.routes")(app);
-    require("./routes/notification.routes")(app);
-    require("./routes/packages.routes")(app);
-    require("./routes/checkins.routes")(app);
+        require("./routes/client.routes")(app);
+        require("./routes/account.routes")(app);
+        require("./routes/notification.routes")(app);
+        require("./routes/packages.routes")(app);
+        require("./routes/checkins/checkins.routes")(app);
+        require("./routes/checkins/generalCheckins.routes")(app);
+        require("./routes/checkins/weighingCheckins.routes")(app);
 
-    app.listen(port, () => {
-      console.log(`Server is listening on port: ${port}`);
-    });
-  } catch (err) {
-    console.error("Failed to start the server", err);
-    process.exit(1);
-  }
+        app.listen(port, () => {
+            console.log(`Server is listening on port: ${port}`);
+        });
+    } catch (err) {
+        console.error("Failed to start the server", err);
+        process.exit(1);
+    }
 })();

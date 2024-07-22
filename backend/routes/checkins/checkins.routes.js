@@ -1,4 +1,4 @@
-const checkinsController = require("../controllers/checkins.controller");
+const checkinsController = require("../../controllers/checkins/checkins.controller");
 
 module.exports = function (app) {
     app.use(function (req, res, next) {
