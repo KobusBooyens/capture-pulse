@@ -9,7 +9,7 @@ import reportsBarChartData from "./data/reportsBarChartData";
 import reportsLineChartData from "./data/reportsLineChartData";
 import Typography from "../../components/Typography/Typography.jsx";
 
-const Dashboard = () => {
+const DashboardMain = () => {
     const { joined, payments } = reportsLineChartData;
 
     return (
@@ -21,7 +21,7 @@ const Dashboard = () => {
                             <ComplexStatisticsCard
                                 color="primary"
                                 icon="person_add"
-                                title="New Clients"
+                                title="New ClientsMain"
                                 count="+12"
                             >
                                 <Typography component="p" variant="button" color="text" display="flex">
@@ -42,7 +42,7 @@ const Dashboard = () => {
                             <ComplexStatisticsCard
                                 color="dark"
                                 icon="people_alt"
-                                title="Total Clients"
+                                title="Total ClientsMain"
                                 count={281}
                             >
                                 <Typography component="p" variant="button" color="text" display="flex" gap={1}>
@@ -114,7 +114,7 @@ const Dashboard = () => {
                             <Box mb={3}>
                                 <ReportsBarChart
                                     color="info"
-                                    title="Clients"
+                                    title="ClientsMain"
                                     description="Weekly insights"
                                     date="latest user joined 2 days ago"
                                     chart={reportsBarChartData}
@@ -125,7 +125,7 @@ const Dashboard = () => {
                             <Box mb={3}>
                                 <ReportsLineChart
                                     color="success"
-                                    title="Clients"
+                                    title="ClientsMain"
                                     description="Monthly insights"
                                     date="updated 4 min ago"
                                     chart={joined}
@@ -149,4 +149,4 @@ const Dashboard = () => {
         </>
     );
 };
-export default Dashboard;
+export default DashboardMain;

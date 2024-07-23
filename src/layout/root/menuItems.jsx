@@ -1,5 +1,5 @@
-import Dashboard from "../dashboard/dashboard.jsx";
-import ViewClients from "../clients/Clients.jsx";
+import DashboardMain from "../dashboard/DashboardMain.jsx";
+import ViewClients from "../clients/ClientsMain.jsx";
 import Checkins from "../checkins/Checkins.jsx";
 import Billing from "../billing/billing.jsx";
 
@@ -7,10 +7,10 @@ import Icon from "@mui/material/Icon";
 import Notifications from "../notifications/notifications.jsx";
 import Settings from "../settings/settings.jsx";
 import Users from "../users/users.jsx";
-import ViewWeighingCheckin from "../checkins/pages/ViewWeighingCheckin.jsx";
-import ViewGeneralCheckin from "../checkins/pages/ViewGeneralCheckin.jsx";
-import GeneralCheckins from "../checkins/GeneralCheckins.jsx";
-import WeighingCheckins from "../checkins/WeighingCheckins.jsx";
+import ViewWeighingCheckinPage from "../checkins/pages/ViewWeighingCheckinPage.jsx";
+import ViewGeneralCheckinPage from "../checkins/pages/ViewGeneralCheckinPage.jsx";
+import GeneralCheckinsMain from "../checkins/GeneralCheckinsMain.jsx";
+import WeighingCheckinsMain from "../checkins/WeighingCheckinsMain.jsx";
 
 const menuItems = [
     {
@@ -19,7 +19,7 @@ const menuItems = [
         key: "dashboard",
         icon: <Icon fontSize={"small"}>dashboard</Icon>,
         route: "/dashboard",
-        component: <Dashboard />
+        component: <DashboardMain />
     },
     {
         type: "collapse",
@@ -43,7 +43,7 @@ const menuItems = [
                 key: "generalCheckin",
                 icon: <Icon fontSize={"small"}>how_to_reg</Icon>,
                 route: "/checkins/general",
-                component: <GeneralCheckins />
+                component: <GeneralCheckinsMain />
             },
             {
                 type: "item",
@@ -51,7 +51,7 @@ const menuItems = [
                 key: "weighing",
                 icon: <Icon fontSize={"small"}>scale</Icon>,
                 route: "/checkins/weighing",
-                component: <WeighingCheckins />
+                component: <WeighingCheckinsMain />
             }
         ]
     },

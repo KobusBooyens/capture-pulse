@@ -4,11 +4,11 @@ import Card from "@mui/material/Card";
 import Box from "../../../components/Box/Box.jsx";
 import Typography from "../../../components/Typography/Typography.jsx";
 import DataTable from "../../../controls/Tables/DataTable/DataTable.jsx";
-import { useGeneralCheckinData } from "../data/useGeneralCheckinData.jsx";
 import PropTypes from "prop-types";
+import { useWeighingCheckinData } from "../data/useWeighingCheckinData.jsx";
 
-const ViewGeneralCheckin = ({ data }) => {
-    const { columns, rows } = useGeneralCheckinData(data);
+const ViewWeighingCheckinPage = ({ data }) => {
+    const { columns, rows } = useWeighingCheckinData(data);
     return (
         <Box pt={6} pb={3}>
             <Grid container spacing={6}>
@@ -25,7 +25,7 @@ const ViewGeneralCheckin = ({ data }) => {
                             coloredShadow="dark"
                             className={"flex flex-row justify-between"}
                         >
-                            <Typography variant="h5" color="white">Clients General Check-in</Typography>
+                            <Typography variant="h5" color="white">Clients Weighing Check-in</Typography>
                         </Box>
                         <Box pt={3}>
                             <DataTable
@@ -44,8 +44,8 @@ const ViewGeneralCheckin = ({ data }) => {
     );
 };
 
-ViewGeneralCheckin.propTypes = {
+ViewWeighingCheckinPage.propTypes = {
     data: PropTypes.objectOf(PropTypes.array).isRequired
 };
 
-export default ViewGeneralCheckin;
+export default ViewWeighingCheckinPage;

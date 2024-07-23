@@ -24,7 +24,24 @@ const getAll = async (req, res) => {
         const data = await db.GeneralCheckins.find({ client: req.params.id })
             .populate("client")
             .lean();
-        res.status(200).json(data);
+
+        const response = {
+            client: {
+                firstName: data[0].client.firstName,
+                lastName: data[0].client.lastName,
+                contactNumber: data[0].client.contactNumber,
+            },
+            records: data.map(r => {
+                return {
+                    _id: r._id,
+                    date: r.date,
+                    mood: r.mood,
+                    feedback: r.feedback
+                };
+            })
+        };
+        
+        res.status(200).json(response);
     } catch (err) {
         console.error(err);
         res.status(500).send({ message: "Internal Server Error", error: err });

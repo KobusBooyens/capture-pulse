@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import useClientTableData from "../data/useClientDataTable.jsx";
+import useClientTableData from "../data/useClientData.jsx";
 import Box from "../../../components/Box/Box.jsx";
 import { Grid } from "@mui/material";
 import Card from "@mui/material/Card";

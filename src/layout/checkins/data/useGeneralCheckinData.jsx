@@ -14,9 +14,14 @@ export const useGeneralCheckinData = (data) => {
 
     const Actions = ({ data }) =>
         <Box display="flex" alignItems="center" gap={1}>
-            <Tooltip title="check-in" placement="top">
-                <IconButton onClick={() => navigate(`./edit/${data._id}`)}>
+            <Tooltip title="Add" placement="top">
+                <IconButton onClick={() => navigate(`./add/${data._id}`)}>
                     <Icon fontSize="small" color="info">inventory_outlined</Icon>
+                </IconButton>
+            </Tooltip>
+            <Tooltip title="View History" placement="top">
+                <IconButton onClick={() => navigate(`./history/${data._id}`)}>
+                    <Icon fontSize="small" color="secondary">history</Icon>
                 </IconButton>
             </Tooltip>
         </Box>;

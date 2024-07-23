@@ -2,9 +2,9 @@ import { apiClient } from "../api-client.js";
 import checkinQueryKeys from "./useQueryKeys.js";
 import useCustomMutation from "../shared/useCustomMutation.js";
 
-const editFn = async ({ id, updatedData }) => {
+const editFn = async ({ id, updatedData, type }) => {
     await new Promise(resolve => setTimeout(resolve, 2000));
-    const response = await apiClient.put(`checkins/${id}`, updatedData);
+    const response = await apiClient.put(`checkins/${type}/${id}`, updatedData);
     return response.data;
 };
 
