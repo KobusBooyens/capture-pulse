@@ -9,27 +9,31 @@ import { useCallback, useState } from "react";
 import ClientDetails from "../../shared/ClientDetails.jsx";
 import PackageDetails from "../../shared/PackageDetails.jsx";
 
-export default function data(data) {
-    const navigate = useNavigate();
+export default function useClientData(data) {
+
     const [isDeleting, setIsDeleting] = useState({ deleting: false, data: {} });
 
     const handleDeleteClient = useCallback((data) => {
         setIsDeleting({ deleting: true, data });
     },[]);
 
-    const Actions = ({ data }) =>
-        <Box display="flex" alignItems="center" gap={1}>
-            <Tooltip title="Edit" placement="top">
-                <IconButton onClick={() => navigate(`./edit/${data._id}`)}>
-                    <Icon fontSize="small" color="info">edit</Icon>
-                </IconButton>
-            </Tooltip>
-            <Tooltip title="Remove" placement="top">
-                <IconButton onClick={() => handleDeleteClient(data)}>
-                    <Icon fontSize="small" color="error">delete</Icon>
-                </IconButton>
-            </Tooltip>
-        </Box>;
+    const Actions = ({ data }) => {
+        const navigate = useNavigate();
+        return (
+            <Box display="flex" alignItems="center" gap={1}>
+                <Tooltip title="Edit" placement="top">
+                    <IconButton onClick={() => navigate(`./edit/${data._id}`)}>
+                        <Icon fontSize="small" color="info">edit</Icon>
+                    </IconButton>
+                </Tooltip>
+                <Tooltip title="Remove" placement="top">
+                    <IconButton onClick={() => handleDeleteClient(data)}>
+                        <Icon fontSize="small" color="error">delete</Icon>
+                    </IconButton>
+                </Tooltip>
+            </Box>
+        );
+    };
 
     Actions.propTypes = {
         data: PropTypes.object,

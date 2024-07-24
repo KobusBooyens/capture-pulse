@@ -5,9 +5,7 @@ import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import Icon from "@mui/material/Icon";
 import PropTypes from "prop-types";
-import { useNavigate } from "react-router-dom";
 import moodOptions from "../../../data/moodOptions.jsx";
-import { Chip } from "@mui/material";
 
 const formatDate = (date) => dayjs(date).format("ll");
 
@@ -18,6 +16,13 @@ const Actions = ({ data }) => {
                 <IconButton onClick={() => console.log("editing record", data)}>
                     <Icon fontSize="small" color="info">
                       edit
+                    </Icon>
+                </IconButton>
+            </Tooltip>
+            <Tooltip title="Delete" placement="top">
+                <IconButton onClick={() => console.log("delete record", data)}>
+                    <Icon fontSize="small" color="error">
+                        delete
                     </Icon>
                 </IconButton>
             </Tooltip>

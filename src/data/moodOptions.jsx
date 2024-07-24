@@ -8,11 +8,10 @@ const options = [
 ];
 
 const moodChips = {
-    1 :  <Chip label={"Demotivated"} color={"error"}/> ,
-    2 :  <Chip label={"Okay"} color={"warning"}/> ,
-    3 :  <Chip label={"Good"} color={"info"}/> ,
-    4 :  <Chip label={"Very Good"} color={"success"}/> ,
+    1 :  <Chip label="Demotivated" color="error" variant="outlined"/> ,
+    2 :  <Chip label="Okay" color="warning" variant="outlined"/> ,
+    3 :  <Chip label="Good" color="info" variant="outlined"/> ,
+    4 :  <Chip label="Very Good" color="success" variant="outlined"/>
 };
 
-export default { options, moodChips }
-;
+export default { options, moodChips };

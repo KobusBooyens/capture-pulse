@@ -65,6 +65,7 @@ const get = async (req, res) => {
 
 const create = async (req, res) => {
     try {
+        console.log(req.body);
         const { payload, error } = validateAndRespond(schema, req.body);
         if (error) {
             return res.status(400).json({ message: "Validation failed.", errors: error });

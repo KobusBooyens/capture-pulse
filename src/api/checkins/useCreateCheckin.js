@@ -1,18 +1,27 @@
 import { apiClient } from "../api-client.js";
 import checkinQueryKeys from "./useQueryKeys.js";
 import useCustomMutation from "../shared/useCustomMutation.js";
-import { useLocation } from "react-router-dom";
 
-const createCheckinFn = async (data, type) => {
+const createCheckinFn = async (payload) => {
     await new Promise(resolve => setTimeout(resolve, 2000));
-    const response = await apiClient.post(`/checkins/${type}`, data);
+    const { data, type } = payload;
+    console.log("createCheckinFn", { data, type });
+    const response = await apiClient.post(`/checkins/${type}`, payload.data);
     return response.data;
 };
 
 const useCreateCheckin = () => {
     return useCustomMutation(createCheckinFn, checkinQueryKeys.all, {
-        success: "Record was successfully added",
-        error: "An error occurred while creating record"
+        success: {
+            title: "Success!",
+            content: "Nice! Check-in done!",
+            severity: "success"
+        },
+        error: {
+            title: "Failed!",
+            content: "Oh no! An error occurred while adding the check-in. Please try again!",
+            severity: "error"
+        },
     });
 };
 

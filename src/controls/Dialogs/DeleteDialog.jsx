@@ -12,13 +12,13 @@ import Box from "../../components/Box/Box.jsx";
 import Icon from "@mui/material/Icon";
 import Typography from "../../components/Typography/Typography.jsx";
 import Button from "../../components/Button/Button.jsx";
+import PropTypes from "prop-types";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props}/>;
 });
 
 const DeleteDialog = ({ openDialog, onClose, onConfirm, isLoading }) => {
-
     return (
         <>
             <Dialog
@@ -64,4 +64,12 @@ const DeleteDialog = ({ openDialog, onClose, onConfirm, isLoading }) => {
         </>
     );
 };
+
+DeleteDialog.propTypes = {
+    openDialog: PropTypes.bool,
+    onClose: PropTypes.func,
+    onConfirm: PropTypes.func,
+    isLoading: PropTypes.bool
+};
+
 export default DeleteDialog;

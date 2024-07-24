@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import Box from "../../../components/Box/Box.jsx";
 import Icon from "@mui/material/Icon";
 import PropTypes from "prop-types";
@@ -10,12 +10,18 @@ import ClientDetails from "../../shared/ClientDetails.jsx";
 import PackageDetails from "../../shared/PackageDetails.jsx";
 
 export const useWeighingCheckinData = (data) => {
-    const navigate = useNavigate();
 
-    const Actions = ({ data }) =>
-        <Box display="flex" alignItems="center" gap={1}>
+    const [isAdding, setIsAdding] = useState({ adding: false, data: {} });
+
+    const handleAddCheckin = useCallback((data) => {
+        setIsAdding({ adding: true, data });
+    },[]);
+
+    const Actions = ({ data }) => {
+        const navigate = useNavigate();
+        return <Box display="flex" alignItems="center" gap={1}>
             <Tooltip title="Add" placement="top">
-                <IconButton onClick={() => navigate(`./add/${data._id}`)}>
+                <IconButton onClick={() => handleAddCheckin(data)}>
                     <Icon fontSize="small" color="info">inventory_outlined</Icon>
                 </IconButton>
             </Tooltip>
@@ -25,6 +31,7 @@ export const useWeighingCheckinData = (data) => {
                 </IconButton>
             </Tooltip>
         </Box>;
+    };
 
     Actions.propTypes = {
         data: PropTypes.object,
@@ -57,5 +64,5 @@ export const useWeighingCheckinData = (data) => {
             action: <Actions data={row} />,
         };
     });
-    return { columns, rows };
+    return { columns, rows, isAdding, setIsAdding };
 };
