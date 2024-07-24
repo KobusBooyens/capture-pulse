@@ -27,6 +27,7 @@ const getAll = async (req, res) => {
 
         const response = {
             client: {
+                _id: data[0].client._id,
                 firstName: data[0].client.firstName,
                 lastName: data[0].client.lastName,
                 contactNumber: data[0].client.contactNumber,

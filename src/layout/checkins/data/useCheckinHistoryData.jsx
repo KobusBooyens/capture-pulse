@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import dayjs from "dayjs";
 import Box from "../../../components/Box/Box.jsx";
 import Tooltip from "@mui/material/Tooltip";
@@ -7,34 +7,42 @@ import Icon from "@mui/material/Icon";
 import PropTypes from "prop-types";
 import moodOptions from "../../../data/moodOptions.jsx";
 
-const formatDate = (date) => dayjs(date).format("ll");
-
-const Actions = ({ data }) => {
-    return (
-        <Box display="flex" alignItems="center" gap={1}>
-            <Tooltip title="Edit" placement="top">
-                <IconButton onClick={() => console.log("editing record", data)}>
-                    <Icon fontSize="small" color="info">
-                      edit
-                    </Icon>
-                </IconButton>
-            </Tooltip>
-            <Tooltip title="Delete" placement="top">
-                <IconButton onClick={() => console.log("delete record", data)}>
-                    <Icon fontSize="small" color="error">
-                        delete
-                    </Icon>
-                </IconButton>
-            </Tooltip>
-        </Box>
-    );
-};
-
-Actions.propTypes = {
-    data: PropTypes.object,
-};
-
 export const useCheckinHistoryData = (type, data) => {
+    const [isActioned, setIsActioned] = useState({ action: null, data: {} });
+
+    const Actions = ({ data }) => {
+        const handleEditCheckin = useCallback((data) => {
+            setIsActioned({ action: "edit", data });
+        },[]);
+
+        const handleDeleteCheckin = useCallback((data) => {
+            setIsActioned({ action: "delete", data });
+        },[]);
+
+        return (
+            <Box display="flex" alignItems="center" gap={1}>
+                <Tooltip title="Edit" placement="top">
+                    <IconButton onClick={() => handleEditCheckin(data)}>
+                        <Icon fontSize="small" color="info">
+                          edit
+                        </Icon>
+                    </IconButton>
+                </Tooltip>
+                <Tooltip title="Delete" placement="top">
+                    <IconButton onClick={() => handleDeleteCheckin(data)}>
+                        <Icon fontSize="small" color="error">
+                          delete
+                        </Icon>
+                    </IconButton>
+                </Tooltip>
+            </Box>
+        );
+    };
+
+    Actions.propTypes = {
+        data: PropTypes.object,
+    };
+
     const columns = useMemo(() => {
         return [
             { Header: "date", accessor: "date", align: "left" },
@@ -44,6 +52,8 @@ export const useCheckinHistoryData = (type, data) => {
             { Header: "action", accessor: "action", align: "center" },
         ];
     }, [type]);
+
+    const formatDate = (date) => dayjs(date).format("ll");
 
     const rows = useMemo(() => {
         return data?.map(row => ({
@@ -55,5 +65,5 @@ export const useCheckinHistoryData = (type, data) => {
         }));
     }, [data, type]);
 
-    return { columns, rows };
+    return { columns, rows, isActioned, setIsActioned };
 };

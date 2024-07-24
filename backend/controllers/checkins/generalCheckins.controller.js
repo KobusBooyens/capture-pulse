@@ -27,6 +27,7 @@ const getAll = async (req, res) => {
 
         const response = {
             client: {
+                _id: data[0].client._id,
                 firstName: data[0].client.firstName,
                 lastName: data[0].client.lastName,
                 contactNumber: data[0].client.contactNumber,
@@ -89,6 +90,7 @@ const create = async (req, res) => {
 
 const edit = async (req, res) => {
     try {
+        console.log({ params: req.params, body: req.body });
         const data = await db.GeneralCheckins.findByIdAndUpdate(req.params.id, req.body, { new: true });
         if (!data) {
             return res.status(404).send("general checkin not found");

@@ -4,14 +4,22 @@ import useCustomMutation from "../shared/useCustomMutation.js";
 
 const editFn = async ({ id, updatedData, type }) => {
     await new Promise(resolve => setTimeout(resolve, 2000));
-    const response = await apiClient.put(`checkins/${type}/${id}`, updatedData);
+    const response = await apiClient.patch(`checkins/${type}/${id}`, updatedData);
     return response.data;
 };
 
 const useEditCheckin = () => {
     return useCustomMutation(editFn, checkinQueryKeys.all, {
-        success: "Checkin was successfully updated",
-        error: "An error occurred while updating the record"
+        success: {
+            title: "Success!",
+            content: "Nice! Checkin was successfully updated!",
+            severity: "success"
+        },
+        error: {
+            title: "Failed!",
+            content: "Oh no! An error occurred while updating the check-in. Please try again!",
+            severity: "error"
+        },
     });
 };
 

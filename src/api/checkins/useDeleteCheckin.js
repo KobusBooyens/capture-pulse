@@ -9,8 +9,16 @@ const deleteFn = async ({ id, type }) => {
 
 const useDeleteCheckin = () => {
     return useCustomMutation(deleteFn, checkinQueryKeys.all, {
-        success: "Record has been deleted",
-        error: "Failed to delete record"
+        success: {
+            title: "Success!",
+            content: "Record has been deleted!",
+            severity: "success"
+        },
+        error: {
+            title: "Failed!",
+            content: "Oh no! An error occurred while deleting the check-in. Please try again!",
+            severity: "error"
+        },
     });
 };
 
