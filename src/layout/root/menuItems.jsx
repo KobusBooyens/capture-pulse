@@ -4,7 +4,7 @@ import Checkins from "../checkins/Checkins.jsx";
 import Billing from "../billing/billing.jsx";
 
 import Icon from "@mui/material/Icon";
-import Notifications from "../notifications/notifications.jsx";
+import NotificationsMain from "../notifications/NotificationsMain.jsx";
 import Settings from "../settings/settings.jsx";
 import Users from "../users/users.jsx";
 import ViewWeighingCheckinPage from "../checkins/pages/ViewWeighingCheckinPage.jsx";
@@ -69,7 +69,7 @@ const menuItems = [
         key: "notifications",
         icon: <Icon fontSize={"small"}>notifications</Icon>,
         route: "/notifications",
-        component: <Notifications />
+        component: <NotificationsMain />
     },
     {
         type: "collapse",

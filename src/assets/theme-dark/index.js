@@ -62,6 +62,9 @@ import dialogTitle from "../theme-dark/components/dialog/dialogTitle";
 import dialogContent from "../theme-dark/components/dialog/dialogContent";
 import dialogContentText from "../theme-dark/components/dialog/dialogContentText";
 import dialogActions from "../theme-dark/components/dialog/dialogActions";
+import accordion from "../theme-dark/components/accordion/accordion.js";
+import accordionSummary from "./components/accordion/accordionSummary.js";
+import accordionDetail from "./components/accordion/accordionSummary.js";
 
 export default createTheme({
     breakpoints: { ...breakpoints },
@@ -117,6 +120,9 @@ export default createTheme({
         MuiStepConnector: { ...stepConnector },
         MuiStepLabel: { ...stepLabel },
         MuiStepIcon: { ...stepIcon },
+        MuiAccordion: { ...accordion },
+        MuiAccordionSummary: { ...accordionSummary },
+        MuiAccordionDetails: { ...accordionDetail },
         MuiSelect: { ...select },
         MuiFormControlLabel: { ...formControlLabel },
         MuiFormLabel: { ...formLabel },

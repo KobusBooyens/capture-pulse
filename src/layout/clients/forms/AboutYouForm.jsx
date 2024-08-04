@@ -4,15 +4,16 @@ import FormInputText from "../../../components/Input/FormInputText/FormInputText
 import FormInputDropdown from "../../../components/Input/FormInputDropdown/FormInputDropdown.jsx";
 import goalsOptions from "../../../data/goalsOptions.js";
 import { useParams } from "react-router-dom";
+import PropTypes from "prop-types";
 
-const AboutYouForm = () => {
+const AboutYouForm = ({ addPartner }) => {
     const { id } = useParams();
     return (
         <Grid container spacing={3}>
             <Grid item xs={12} md={6}>
                 <FormInputText
-                    key={"weight"}
-                    name={"weight"}
+                    key={addPartner ? "partner.weight" : "weight"}
+                    name={addPartner ? "partner.weight" : "weight"}
                     label={"Weight"}
                     type={"number"}
                     placeholder={"Enter Current Weight (kg) e.g. 80"}
@@ -28,8 +29,8 @@ const AboutYouForm = () => {
             </Grid>
             <Grid item xs={12} md={6}>
                 <FormInputText
-                    key={"length"}
-                    name={"length"}
+                    key={addPartner ? "partner.length" : "length"}
+                    name={addPartner ? "partner.length" : "length"}
                     label={"Length"}
                     type={"number"}
                     placeholder={"Enter Length (m) e.g. 1.8"}
@@ -45,7 +46,7 @@ const AboutYouForm = () => {
             </Grid>
             <Grid item xs={12} md={6}>
                 <FormInputDropdown
-                    name={"goal"}
+                    name={addPartner ? "partner.goal" : "goal"}
                     label={"Goal"}
                     placeholder={"Purpose of the program"}
                     options={goalsOptions}
@@ -55,6 +56,10 @@ const AboutYouForm = () => {
             </Grid>
         </Grid>
     );
+};
+
+AboutYouForm.propTypes = {
+    addPartner: PropTypes.bool
 };
 
 export default AboutYouForm;

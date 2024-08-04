@@ -27,9 +27,10 @@ const AddClientPage = () => {
         if (!isLastStep) return next();
 
         data = { ...data, package: data.package._id };
+
         console.log(data);
 
-        createClient.mutate(data);
+        // createClient.mutate(data);
     };
 
     useEffect(() => {

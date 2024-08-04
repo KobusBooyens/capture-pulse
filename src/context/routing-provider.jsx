@@ -6,7 +6,7 @@ import ClientsMain from "../layout/clients/ClientsMain.jsx";
 import AddClientPage from "../layout/clients/pages/AddClientPage.jsx";
 import EditClientPage from "../layout/clients/pages/EditClientPage.jsx";
 import Checkins from "../layout/checkins/Checkins.jsx";
-import Notifications from "../layout/notifications/notifications.jsx";
+import NotificationsMain from "../layout/notifications/NotificationsMain.jsx";
 import Billing from "../layout/billing/billing.jsx";
 import Settings from "../layout/settings/settings.jsx";
 import Users from "../layout/users/users.jsx";
@@ -36,7 +36,7 @@ const router = createBrowserRouter(
             {/*<Route path="checkins/:id" element={<CheckinManager/>}/>*/}
 
             {/*notifications*/}
-            <Route path="notifications" element={<Notifications />}/>
+            <Route path="notifications" element={<NotificationsMain />}/>
 
             {/*accounts*/}
             <Route path="billing" element={<Billing />}/>

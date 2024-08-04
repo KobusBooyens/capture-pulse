@@ -1,21 +1,21 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import Box from "../../../components/Box/Box.jsx";
-import Typography from "../../../components/Typography/Typography.jsx";
 import FormInputText from "../../../components/Input/FormInputText/FormInputText.jsx";
 import { Grid } from "@mui/material";
 import FormInputDate from "../../../components/Input/FormInputDate/FormInputDate.jsx";
 import FormInputDropdown from "../../../components/Input/FormInputDropdown/FormInputDropdown.jsx";
 import genderOptions from "../../../data/genderOptions.js";
+import PropTypes from "prop-types";
 
-const PersonalForm = () => {
+const PersonalForm = ({ addPartner= false }) => {
     const { id } = useParams();
 
     return (
         <Grid container spacing={3}>
             <Grid item xs={12} md={6}>
                 <FormInputText
-                    name="firstName"
+                    key={addPartner ? "partner.firstName" : "firstName"}
+                    name={addPartner ? "partner.firstName" : "firstName"}
                     label="First Name"
                     placeholder="Enter First Name"
                     required
@@ -24,7 +24,8 @@ const PersonalForm = () => {
             </Grid>
             <Grid item xs={12} md={6}>
                 <FormInputText
-                    name="lastName"
+                    key={addPartner ? "partner.lastName" :"lastName"}
+                    name={addPartner ? "partner.lastName" :"lastName"}
                     label="Last Name"
                     placeholder="Enter Last Name"
                     required
@@ -33,7 +34,8 @@ const PersonalForm = () => {
             </Grid>
             <Grid item xs={12} md={6}>
                 <FormInputDate
-                    name={"dob"}
+                    key={addPartner ? "partner.dob" : "dob"}
+                    name={addPartner ? "partner.dob" : "dob"}
                     label={"Date of birth"}
                     fullWidth
                     required
@@ -42,7 +44,8 @@ const PersonalForm = () => {
             </Grid>
             <Grid item xs={12} md={6}>
                 <FormInputDropdown
-                    name="gender"
+                    key={addPartner ? "partner.dob" : "dob"}
+                    name={addPartner ? "partner.gender" : "gender"}
                     label="Gender"
                     placeholder="Select Gender"
                     options={genderOptions}
@@ -53,7 +56,8 @@ const PersonalForm = () => {
             </Grid>
             <Grid item xs={12} md={6}>
                 <FormInputText
-                    name="email"
+                    key={addPartner ? "partner.dob" : "dob"}
+                    name={addPartner ? "partner.email" : "email"}
                     label="Email"
                     placeholder="Enter Email"
                     required
@@ -63,7 +67,8 @@ const PersonalForm = () => {
             </Grid>
             <Grid item xs={12} md={6}>
                 <FormInputText
-                    name="contactNumber"
+                    key={addPartner ? "partner.dob" : "dob"}
+                    name={addPartner ? "partner.contactNumber" : "contactNumber"}
                     label="Contact Number"
                     placeholder="Enter Contact Number"
                     fullWidth
@@ -75,6 +80,12 @@ const PersonalForm = () => {
                 />
             </Grid>
         </Grid>
+
     );
 };
+
+PersonalForm.propTypes = {
+    addPartner: PropTypes.bool
+};
+
 export default PersonalForm;

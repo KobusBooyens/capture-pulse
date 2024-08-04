@@ -63,6 +63,9 @@ import dialogTitle from "../theme/components/dialog/dialogTitle";
 import dialogContent from "../theme/components/dialog/dialogContent";
 import dialogContentText from "../theme/components/dialog/dialogContentText";
 import dialogActions from "../theme/components/dialog/dialogActions";
+import accordion from "./components/accordion/accordion.js";
+import accordionSummary from "./components/accordion/accordionSummary.js";
+import accordionDetail from "./components/accordion/accordionDetail.js";
 
 export default createTheme({
     breakpoints: { ...breakpoints },
@@ -121,6 +124,9 @@ export default createTheme({
         MuiSelect: { ...select },
         MuiFormControlLabel: { ...formControlLabel },
         MuiFormLabel: { ...formLabel },
+        MuiAccordion: { ...accordion },
+        MuiAccordionSummary: { ...accordionSummary },
+        MuiAccordionDetails: { ...accordionDetail },
         MuiCheckbox: { ...checkbox },
         MuiRadio: { ...radio },
         MuiAutocomplete: { ...autocomplete },

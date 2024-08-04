@@ -43,7 +43,7 @@ const divider = {
                     0.4
                 )}, ${rgba(white.main, 0)}) !important`,
             },
-        },
+        }
     },
 };
 
