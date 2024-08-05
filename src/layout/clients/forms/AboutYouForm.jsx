@@ -12,8 +12,8 @@ const AboutYouForm = ({ addPartner }) => {
         <Grid container spacing={3}>
             <Grid item xs={12} md={6}>
                 <FormInputText
-                    key={addPartner ? "partner.weight" : "weight"}
-                    name={addPartner ? "partner.weight" : "weight"}
+                    key={addPartner ? "partnerWeight" : "weight"}
+                    name={addPartner ? "partnerWeight" : "weight"}
                     label={"Weight"}
                     type={"number"}
                     placeholder={"Enter Current Weight (kg) e.g. 80"}
@@ -29,8 +29,8 @@ const AboutYouForm = ({ addPartner }) => {
             </Grid>
             <Grid item xs={12} md={6}>
                 <FormInputText
-                    key={addPartner ? "partner.length" : "length"}
-                    name={addPartner ? "partner.length" : "length"}
+                    key={addPartner ? "partnerLength" : "length"}
+                    name={addPartner ? "partnerLength" : "length"}
                     label={"Length"}
                     type={"number"}
                     placeholder={"Enter Length (m) e.g. 1.8"}
@@ -46,7 +46,7 @@ const AboutYouForm = ({ addPartner }) => {
             </Grid>
             <Grid item xs={12} md={6}>
                 <FormInputDropdown
-                    name={addPartner ? "partner.goal" : "goal"}
+                    name={addPartner ? "partnerGoal" : "goal"}
                     label={"Goal"}
                     placeholder={"Purpose of the program"}
                     options={goalsOptions}

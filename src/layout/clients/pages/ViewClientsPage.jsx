@@ -58,7 +58,7 @@ const ViewClientsPage = ({ data }) => {
                         <Box pt={3}>
                             <DataTable
                                 table={{ columns, rows }}
-                                entriesPerPage={10}
+                                entriesPerPage={5}
                                 canSearch={true}
                                 noEndBorder
                                 isSorted={true}

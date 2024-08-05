@@ -6,6 +6,7 @@ db.mongoose = mongoose;
 db.Client = require("./clients.model");
 db.Notifications = require("./notifications.model");
 db.Packages = require("./packages.model");
+db.ClientPackage = require("./clientPackage.model");
 db.Checkins = require("./checkins.model");
 db.GeneralCheckins = require("./generalCheckins.model");
 db.WeighingCheckins = require("./weighingCheckins.model");

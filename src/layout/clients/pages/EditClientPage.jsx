@@ -12,7 +12,6 @@ import { CircularProgress, Grid, Step, StepLabel, Stepper } from "@mui/material"
 import Card from "@mui/material/Card";
 import Typography from "../../../components/Typography/Typography.jsx";
 import Button from "../../../components/Button/Button.jsx";
-import { useUISettingsController } from "../../../context/ui-settings-provider.jsx";
 
 const EditClientPage = () => {
     const user = useClient();
@@ -21,7 +20,7 @@ const EditClientPage = () => {
     const methods = useForm();
 
     useEffect(() => {
-        methods.reset(user.data);
+        methods.reset({ ...user.data, package: user.data?.package?._id });
     }, [user.data]);
 
     const { steps, currentStepIndex, step, isFirstStep, isLastStep, back, next } = useMultistepForm([

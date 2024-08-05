@@ -6,53 +6,67 @@ import FormInputDate from "../../../components/Input/FormInputDate/FormInputDate
 import usePackages from "../../../api/packages/usePackages.jsx";
 import { useFormContext } from "react-hook-form";
 import { useParams } from "react-router-dom";
-
 import PersonalForm from "./PersonalForm.jsx";
-import Typography from "../../../components/Typography/Typography.jsx";
 import Divider from "@mui/material/Divider";
 import Box from "../../../components/Box/Box.jsx";
 import AboutYouForm from "./AboutYouForm.jsx";
 import Icon from "@mui/material/Icon";
+import Typography from "../../../components/Typography/Typography.jsx";
 
 const PackageForm = () => {
+    const { id } = useParams();
+
     const { data, isLoading } = usePackages();
     const { watch, setValue, getValues, formState: { defaultValues } } = useFormContext();
 
-    const selectedPackageChange = watch("package._id");
+    const selectedPackageChange = watch("package");
     const [packageOptions, setPackageOptions] = useState([]);
     const [showPartnerSection, setShowPartnerSection] = useState(false);
-    console.log(getValues());
-    const { id } = useParams();
+
     useEffect(() => {
         if (data && !isLoading) {
-            setPackageOptions(data?.map((p) => {
-                return { value: p._id, label: p.name };
-            }));
+            const options = data.map(p => ({ value: p._id, label: p.name }));
+            setPackageOptions(options);
         }
     }, [data, isLoading]);
 
     useEffect(() => {
-        if (selectedPackageChange !== defaultValues.package?._id) {
+        console.log(getValues("package"));
+        console.log(selectedPackageChange);
+        if (selectedPackageChange !== defaultValues.package) {
             const amount = data.find(r => r?._id === selectedPackageChange)?.amount;
             setValue("amount", amount);
         } else {
             setValue("amount", defaultValues.amount);
         }
-        setShowPartnerSection(packageOptions.find(r => r.value === selectedPackageChange)?.label === "Couples");
-    }, [selectedPackageChange]);
+
+        //when id is passed in params then we are editing, we only want to
+        // display the partner section when adding a client
+        if (!id && packageOptions.length > 0) {
+            setShowPartnerSection(packageOptions.find(r =>
+                r.value === selectedPackageChange)?.label === "Couples");
+            setValue("isCouplePackage", packageOptions.find(r =>
+                r.value === selectedPackageChange)?.label === "Couples");
+        }
+    }, [selectedPackageChange, defaultValues, getValues, data, packageOptions]);
 
     const AddPartner = useMemo(() => {
         return (
             <Box padding={3}>
-                <Box padding={3}>
-                    <Divider>Complete Partner's Details</Divider>
+                <Divider/>
+                <Box className={"flex flex-row justify-center m-4"}>
+                    <Typography fontWeight={"light"}>
+                        Complete Partners Details
+                    </Typography>
                 </Box>
                 <Box flex={"display"} gap={2}>
                     <Accordion>
                         <AccordionSummary
                             expandIcon={<Icon>expand_more</Icon>}
                             aria-controls="panel-Personal" id="panel-Personal">
-                            Personal Info
+                            <Typography textTransform={"uppercase"} color={"inherit"}>
+                                Personal Info
+                            </Typography>
                         </AccordionSummary>
                         <AccordionDetails>
                             <PersonalForm addPartner={true} />
@@ -62,7 +76,9 @@ const PackageForm = () => {
                         <AccordionSummary
                             expandIcon={<Icon>expand_more</Icon>}
                             aria-controls="panel-about" id="panel-about">
-                            About You
+                            <Typography textTransform={"uppercase"} color={"inherit"}>
+                                About You
+                            </Typography>
                         </AccordionSummary>
                         <AccordionDetails>
                             <AboutYouForm addPartner={true} />
@@ -73,16 +89,18 @@ const PackageForm = () => {
         );
     }, []);
 
+    console.log(getValues("package"));
+
     return (
         <>
             <Grid container spacing={3}>
                 <Grid item xs={12} md={6}>
                     <FormInputDropdown
                         key={"package"}
-                        name="package._id"
+                        name="package"
                         label="Package"
                         placeholder={isLoading ? "Fetching packages..." : "Select Package"}
-                        disabled={isLoading}
+                        disabled={isLoading }
                         options={packageOptions}
                         required
                         rules={{ required: "Package is required" }}

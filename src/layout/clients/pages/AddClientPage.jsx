@@ -26,11 +26,41 @@ const AddClientPage = () => {
     const onFormSubmit = (data) => {
         if (!isLastStep) return next();
 
-        data = { ...data, package: data.package._id };
+        let dateToSubmit = {
+            firstName: data.firstName,
+            lastName:data.lastName,
+            dob: data.dob,
+            gender: data.gender,
+            email: data.email,
+            contactNumber: data.contactNumber,
+            weight: data.weight,
+            length: data.length,
+            goal: data.goal,
+            package: data.package,
+            joiningDate: data.joiningDate,
+            amount: data.amount
+        };
+
+        if (data.isCouplePackage) {
+            dateToSubmit = {
+                ...dateToSubmit,
+                partner: {
+                    firstName: data.partnerFirstName,
+                    lastName:data.partnerLastName,
+                    dob: data.partnerDob,
+                    gender: data.partnerGender,
+                    email: data.partnerEmail,
+                    contactNumber: data.partnerContactNumber,
+                    weight: data.partnerWeight,
+                    length: data.partnerLength,
+                    goal: data.partnerGoal
+                }
+            };
+        }
 
         console.log(data);
 
-        // createClient.mutate(data);
+        createClient.mutate(dateToSubmit);
     };
 
     useEffect(() => {

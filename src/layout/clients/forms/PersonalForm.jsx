@@ -14,8 +14,8 @@ const PersonalForm = ({ addPartner= false }) => {
         <Grid container spacing={3}>
             <Grid item xs={12} md={6}>
                 <FormInputText
-                    key={addPartner ? "partner.firstName" : "firstName"}
-                    name={addPartner ? "partner.firstName" : "firstName"}
+                    key={addPartner ? "partnerFirstName" : "firstName"}
+                    name={addPartner ? "partnerFirstName" : "firstName"}
                     label="First Name"
                     placeholder="Enter First Name"
                     required
@@ -24,8 +24,8 @@ const PersonalForm = ({ addPartner= false }) => {
             </Grid>
             <Grid item xs={12} md={6}>
                 <FormInputText
-                    key={addPartner ? "partner.lastName" :"lastName"}
-                    name={addPartner ? "partner.lastName" :"lastName"}
+                    key={addPartner ? "partnerLastName" :"lastName"}
+                    name={addPartner ? "partnerLastName" :"lastName"}
                     label="Last Name"
                     placeholder="Enter Last Name"
                     required
@@ -34,8 +34,8 @@ const PersonalForm = ({ addPartner= false }) => {
             </Grid>
             <Grid item xs={12} md={6}>
                 <FormInputDate
-                    key={addPartner ? "partner.dob" : "dob"}
-                    name={addPartner ? "partner.dob" : "dob"}
+                    key={addPartner ? "partnerDob" : "dob"}
+                    name={addPartner ? "partnerDob" : "dob"}
                     label={"Date of birth"}
                     fullWidth
                     required
@@ -44,8 +44,8 @@ const PersonalForm = ({ addPartner= false }) => {
             </Grid>
             <Grid item xs={12} md={6}>
                 <FormInputDropdown
-                    key={addPartner ? "partner.dob" : "dob"}
-                    name={addPartner ? "partner.gender" : "gender"}
+                    key={addPartner ? "partnerGender" : "gender"}
+                    name={addPartner ? "partnerGender" : "gender"}
                     label="Gender"
                     placeholder="Select Gender"
                     options={genderOptions}
@@ -56,8 +56,8 @@ const PersonalForm = ({ addPartner= false }) => {
             </Grid>
             <Grid item xs={12} md={6}>
                 <FormInputText
-                    key={addPartner ? "partner.dob" : "dob"}
-                    name={addPartner ? "partner.email" : "email"}
+                    key={addPartner ? "partnerEmail" : "email"}
+                    name={addPartner ? "partnerEmail" : "email"}
                     label="Email"
                     placeholder="Enter Email"
                     required
@@ -67,8 +67,8 @@ const PersonalForm = ({ addPartner= false }) => {
             </Grid>
             <Grid item xs={12} md={6}>
                 <FormInputText
-                    key={addPartner ? "partner.dob" : "dob"}
-                    name={addPartner ? "partner.contactNumber" : "contactNumber"}
+                    key={addPartner ? "partnerContactNumber" : "contactNumber"}
+                    name={addPartner ? "partnerContactNumber" : "contactNumber"}
                     label="Contact Number"
                     placeholder="Enter Contact Number"
                     fullWidth

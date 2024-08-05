@@ -2,19 +2,33 @@ const db = require("../models");
 const { z } = require("zod");
 const validateAndRespond = require("../utils/zodValidation");
 
-const schema = z.object({
+const clientDetail = {
     firstName: z.string({ required_error: "firstName is required" }),
     lastName: z.string({ required_error: "lastName is required" }),
     dob: z.string({ required_error: "dob is required" }),
     gender: z.enum(["Male", "Female"], { required_error: "gender is required" }),
     email: z.string({ required_error: "email is required" }),
     contactNumber: z.string({ required_error: "contactNumber is required" }),
-    joiningDate: z.string({ required_error: "joiningDate is required" }),
     weight: z.string({ required_error: "weight is required" }),
     length: z.string({ required_error: "length is required" }),
     goal: z.string({ required_error: "goal is required" }),
+};
+const partnerDetail = z.object(clientDetail);
+
+const schema = z.object({
+    ...clientDetail,
+    joiningDate: z.string({ required_error: "joiningDate is required" }),
     package: z.string({ required_error: "package is required" }),
     amount: z.string({ required_error: "amount is required" }),
+    partner: partnerDetail.optional(),
+}).refine(data => {
+    if (data.package === "Couple") {
+        return partnerDetail.safeParse(data.partner).success;
+    }
+    return true;
+}, {
+    message: "Partner details are required for Couple package",
+    path: ["partner"],
 });
 
 const getAll = async (req, res) => {
@@ -46,22 +60,36 @@ const get = async (req, res) => {
 
 const create = async (req, res) => {
     try {
-
         const { payload, error } = validateAndRespond(schema, req.body);
+        console.log(payload);
         if (error) {
             return res.status(400).json({ message: "Validation failed.", errors: error });
         }
-        if (Array.isArray(payload)) {
-            const data = await Promise.all(req.body.map(async (item) => {
-                const newItem = new db.Client(item);
-                return await newItem.save();
-            }));
-            res.status(201).json(data);
-        } else {
-            const data = new db.Client(payload);
-            await data.save();
-            res.status(201).json(data);
-        }
+
+        const saveClients = (item) => {
+            const bulkOps = [];
+            const clientData = { ...item };
+            delete clientData.partner;
+            bulkOps.push({ insertOne: { document: clientData } });
+
+            if (item.partner) {
+                bulkOps.push({ insertOne: {
+                    document: {
+                        ...item.partner,
+                        package: item.package,
+                        amount: item.amount,
+                        joiningDate: item.joiningDate } }
+                });
+            }
+            return bulkOps;
+        };
+
+        const insertOperations = Array.isArray(payload) ?
+            payload.forEach(saveClients) :
+            saveClients(payload);
+
+        const result = await db.Client.bulkWrite(insertOperations);
+        res.status(201).json(result);
     } catch (err) {
         console.error(err);
         res.status(500).send({ message: "Internal Server Error", error: err });

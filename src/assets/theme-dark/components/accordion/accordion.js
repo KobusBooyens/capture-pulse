@@ -18,7 +18,7 @@ const accordion = {
             color: "#9fc9ff",
             fontWeight: fontWeightRegular,
             fontSize: size.md,
-            textTransform: "uppercase",
+            // textTransform: "uppercase",
             marginBottom: `${pxToRem(16)}`,
             "&:before": {
                 display: "none",
