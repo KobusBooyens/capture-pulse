@@ -12,6 +12,7 @@ import Box from "../../../components/Box/Box.jsx";
 import AboutYouForm from "./AboutYouForm.jsx";
 import Icon from "@mui/material/Icon";
 import Typography from "../../../components/Typography/Typography.jsx";
+import Tooltip from "@mui/material/Tooltip";
 
 const PackageForm = () => {
     const { id } = useParams();
@@ -25,14 +26,12 @@ const PackageForm = () => {
 
     useEffect(() => {
         if (data && !isLoading) {
-            const options = data.map(p => ({ value: p._id, label: p.name }));
+            const options = data.map(p => ({ value: p._id.toString(), label: p.name }));
             setPackageOptions(options);
         }
     }, [data, isLoading]);
 
     useEffect(() => {
-        console.log(getValues("package"));
-        console.log(selectedPackageChange);
         if (selectedPackageChange !== defaultValues.package) {
             const amount = data.find(r => r?._id === selectedPackageChange)?.amount;
             setValue("amount", amount);
@@ -49,6 +48,21 @@ const PackageForm = () => {
                 r.value === selectedPackageChange)?.label === "Couples");
         }
     }, [selectedPackageChange, defaultValues, getValues, data, packageOptions]);
+
+    const PartnersDetails = useMemo(() => {
+        return (
+            <Tooltip title={
+                <Box display="flex" flexDirection="column" color={"white"}>
+                    {defaultValues.packagePartners.map(p =>
+                        <Typography key={p._id} display="block" color={"inherit"} variant={"body"}>
+                            {p.name}
+                        </Typography>
+                    )}
+                </Box>} placement={"top"}>
+                <Icon fontSize="small" color="info">person</Icon>
+            </Tooltip>
+        );
+    }, [defaultValues.packagePartners]);
 
     const AddPartner = useMemo(() => {
         return (
@@ -88,9 +102,7 @@ const PackageForm = () => {
             </Box>
         );
     }, []);
-
-    console.log(getValues("package"));
-
+    console.log("defaultValues", defaultValues);
     return (
         <>
             <Grid container spacing={3}>
@@ -98,7 +110,7 @@ const PackageForm = () => {
                     <FormInputDropdown
                         key={"package"}
                         name="package"
-                        label="Package"
+                        label={"Package"}
                         placeholder={isLoading ? "Fetching packages..." : "Select Package"}
                         disabled={isLoading }
                         options={packageOptions}

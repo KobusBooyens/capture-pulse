@@ -12,6 +12,8 @@ import { CircularProgress, Grid, Step, StepLabel, Stepper } from "@mui/material"
 import Card from "@mui/material/Card";
 import Typography from "../../../components/Typography/Typography.jsx";
 import Button from "../../../components/Button/Button.jsx";
+import Tooltip from "@mui/material/Tooltip";
+import Icon from "@mui/material/Icon";
 
 const EditClientPage = () => {
     const user = useClient();
@@ -20,7 +22,7 @@ const EditClientPage = () => {
     const methods = useForm();
 
     useEffect(() => {
-        methods.reset({ ...user.data, package: user.data?.package?._id });
+        methods.reset(user.data);
     }, [user.data]);
 
     const { steps, currentStepIndex, step, isFirstStep, isLastStep, back, next } = useMultistepForm([
@@ -31,6 +33,7 @@ const EditClientPage = () => {
 
     const onFormSubmit = (data) => {
         if (!isLastStep) return next();
+        console.log(data);
         editUser.mutate({ id: user.data._id, updatedData: data });
     };
 
@@ -47,9 +50,22 @@ const EditClientPage = () => {
                 <Grid item xs={12}>
                     <Card>
                         <Box mx={2} mt={-3} py={3} px={2} variant="gradient" bgColor="primary" borderRadius="lg"
-                            coloredShadow="primary" className={"flex flex-row justify-center"}
+                            coloredShadow="primary" className={"flex flex-row justify-center gap-3"}
                         >
-                            <Typography variant="h5" color="white">Update Client</Typography>
+                            <Typography variant="h5" color="white">
+                                Update Client
+                            </Typography>
+                            {user.data?.packagePartners && <Tooltip title={
+                                <Box display="flex" flexDirection="column" color={"white"}>
+                                    {user.data?.packagePartners?.map(p =>
+                                        <Typography key={p._id} display="block" color={"inherit"} variant={"body"}>
+                                            {p.name}
+                                        </Typography>
+                                    )}
+                                </Box>} placement={"top"}>
+                                <Icon fontSize="medium" color="info">people</Icon>
+                            </Tooltip>}
+
                         </Box>
                         <Box pt={3} pb={3} >
                             <FormProvider {...methods}>

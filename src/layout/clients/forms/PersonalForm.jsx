@@ -24,8 +24,8 @@ const PersonalForm = ({ addPartner= false }) => {
             </Grid>
             <Grid item xs={12} md={6}>
                 <FormInputText
-                    key={addPartner ? "partnerLastName" :"lastName"}
-                    name={addPartner ? "partnerLastName" :"lastName"}
+                    key={addPartner ? "partnerLastName" : "lastName"}
+                    name={addPartner ? "partnerLastName" : "lastName"}
                     label="Last Name"
                     placeholder="Enter Last Name"
                     required

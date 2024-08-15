@@ -33,8 +33,8 @@ const AddClientPage = () => {
             gender: data.gender,
             email: data.email,
             contactNumber: data.contactNumber,
-            weight: data.weight,
-            length: data.length,
+            weight: Number(data.weight),
+            length: Number(data.length),
             goal: data.goal,
             package: data.package,
             joiningDate: data.joiningDate,
@@ -51,8 +51,8 @@ const AddClientPage = () => {
                     gender: data.partnerGender,
                     email: data.partnerEmail,
                     contactNumber: data.partnerContactNumber,
-                    weight: data.partnerWeight,
-                    length: data.partnerLength,
+                    weight: Number(data.partnerWeight),
+                    length: Number(data.partnerLength),
                     goal: data.partnerGoal
                 }
             };

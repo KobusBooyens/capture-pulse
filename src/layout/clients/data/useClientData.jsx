@@ -10,7 +10,7 @@ import ClientDetails from "../../shared/ClientDetails.jsx";
 import PackageDetails from "../../shared/PackageDetails.jsx";
 
 export default function useClientData(data) {
-
+    console.log(data);
     const [isDeleting, setIsDeleting] = useState({ deleting: false, data: {} });
 
     const handleDeleteClient = useCallback((data) => {
@@ -59,7 +59,10 @@ export default function useClientData(data) {
                 gender={row.gender}
                 contactNumber={row.contactNumber}
             />,
-            package: <PackageDetails name={row.package.name} goal={row.goal} />,
+            package: <PackageDetails
+                name={row?.packageName ?? "N/A"}
+                goal={row.goal}
+                partnersDetail={row.packagePartners} />,
             joined: formatDate(row.joiningDate) ,
             action: <Actions data={row} />,
         };

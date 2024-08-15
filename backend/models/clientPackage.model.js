@@ -3,11 +3,6 @@ const mongoose_delete = require("mongoose-delete");
 
 const schema = new mongoose.Schema(
     {
-        client: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Clients",
-            required: true
-        },
         package: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Packages",
@@ -23,7 +18,7 @@ const schema = new mongoose.Schema(
     }
 );
 
-schema.index({ name: 1 });
+schema.index({ client: 1 });
 
 schema.plugin(mongoose_delete, { deletedAt: true, deletedBy: true, overrideMethods: "all" });
 const ClientPackage = mongoose.model("ClientPackage", schema);

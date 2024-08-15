@@ -58,7 +58,10 @@ export const useWeighingCheckinData = (data) => {
                 gender={row.gender}
                 contactNumber={row.contactNumber}
             />,
-            package: <PackageDetails name={row.package.name} goal={row.goal} />,
+            package: <PackageDetails
+                name={row?.packageName ?? "N/A"}
+                goal={row.goal}
+                partnersDetail={row.packagePartners} />,
             joined: formatDate(row.joiningDate),
             lastWeighing: formatDate(new Date()),
             action: <Actions data={row} />,

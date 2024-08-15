@@ -1,6 +1,7 @@
 const db = require("../models");
 const { z } = require("zod");
 const validateAndRespond = require("../utils/zodValidation");
+const { startSession } = require("mongoose");
 
 const clientDetail = {
     firstName: z.string({ required_error: "firstName is required" }),
@@ -9,8 +10,8 @@ const clientDetail = {
     gender: z.enum(["Male", "Female"], { required_error: "gender is required" }),
     email: z.string({ required_error: "email is required" }),
     contactNumber: z.string({ required_error: "contactNumber is required" }),
-    weight: z.string({ required_error: "weight is required" }),
-    length: z.string({ required_error: "length is required" }),
+    weight: z.number({ required_error: "weight is required" }),
+    length: z.number({ required_error: "length is required" }),
     goal: z.string({ required_error: "goal is required" }),
 };
 const partnerDetail = z.object(clientDetail);
@@ -34,9 +35,15 @@ const schema = z.object({
 const getAll = async (req, res) => {
     try {
         const data = await db.Client.find({})
-            .populate("package")
+            .populate({
+                path: "clientPackage",
+                populate: "package"
+            })
             .lean();
-        res.status(200).json(data);
+
+        const response = await formatClientResponse(data);
+
+        res.status(200).json(response);
     } catch (err) {
         console.error(err);
         res.status(500).send({ message: "Internal Server Error", error: err });
@@ -46,12 +53,19 @@ const getAll = async (req, res) => {
 const get = async (req, res) => {
     try {
         const data = await db.Client.findById(req.params.id)
-            .populate("package")
+            .populate({
+                path: "clientPackage",
+                populate: "package"
+            })
             .lean();
+
         if (!data) {
             return res.status(404).send("Client not found");
         }
-        res.json(data);
+        
+        const response = await formatClientResponse([data]);
+
+        res.json(response[0]);
     } catch (err) {
         console.error(err);
         res.status(500).send({ message: "Internal Server Error", error: err });
@@ -59,16 +73,25 @@ const get = async (req, res) => {
 };
 
 const create = async (req, res) => {
+    const session = await startSession();
+    session.startTransaction();
     try {
         const { payload, error } = validateAndRespond(schema, req.body);
-        console.log(payload);
+
         if (error) {
             return res.status(400).json({ message: "Validation failed.", errors: error });
         }
 
+        const clientPackage = new db.ClientPackage({
+            package: payload.package,
+            amount: payload.amount
+        });
+
+        await clientPackage.save({ session });
+        
         const saveClients = (item) => {
             const bulkOps = [];
-            const clientData = { ...item };
+            const clientData = { ...item, clientPackage };
             delete clientData.partner;
             bulkOps.push({ insertOne: { document: clientData } });
 
@@ -76,8 +99,7 @@ const create = async (req, res) => {
                 bulkOps.push({ insertOne: {
                     document: {
                         ...item.partner,
-                        package: item.package,
-                        amount: item.amount,
+                        clientPackage,
                         joiningDate: item.joiningDate } }
                 });
             }
@@ -85,27 +107,63 @@ const create = async (req, res) => {
         };
 
         const insertOperations = Array.isArray(payload) ?
-            payload.forEach(saveClients) :
+            payload.flatMap(saveClients) :
             saveClients(payload);
 
-        const result = await db.Client.bulkWrite(insertOperations);
-        res.status(201).json(result);
+        const result = await db.Client.bulkWrite(insertOperations, { session });
+        await session.commitTransaction();
+
+        return res.status(201).json(result);
     } catch (err) {
+        await session.abortTransaction();
         console.error(err);
-        res.status(500).send({ message: "Internal Server Error", error: err });
+        return res.status(500).send({ message: "Internal Server Error", error: err });
+    } finally {
+        await session.endSession();
     }
 };
 
 const edit = async (req, res) => {
+    const session = await startSession();
+    session.startTransaction();
+
     try {
-        const data = await db.Client.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        if (!data) {
+        const { payload, error } = validateAndRespond(schema, req.body);
+        if (error) {
+            return res.status(400).json({ message: "Validation failed.", errors: error });
+        }
+
+        const client = await db.Client.findById(req.params.id).session(session);
+        if (!client) {
             return res.status(404).send("Client not found");
         }
-        res.json(data);
+
+        client.set(payload);
+
+        if (client.clientPackage) {
+            await db.ClientPackage.findByIdAndUpdate(client.clientPackage, {
+                package: payload.package,
+                amount: payload.amount
+            }, { session });
+        } else {
+            const clientPackage = new db.ClientPackage({
+                package: payload.package,
+                amount: payload.amount
+            });
+            await clientPackage.save({ session });
+            client.clientPackage = clientPackage._id;
+        }
+
+        await client.save({ session });
+        await session.commitTransaction();
+
+        res.json(client);
     } catch (err) {
+        await session.abortTransaction();
         console.error(err);
         res.status(500).send({ message: "Internal Server Error", error: err });
+    } finally {
+        await session.endSession();
     }
 };
 
@@ -120,6 +178,76 @@ const deleteItem = async (req, res) => {
         console.error(err);
         res.status(500).send({ message: "Internal Server Error", error: err });
     }
+};
+
+const formatClientResponse = async (data) => {
+    const clientPackageList = await getClientPackageList();
+    console.log("clientPackageList", clientPackageList);
+    console.log(data);
+    return data.map(d => {
+        const resp = {
+            ...d,
+            package: d?.clientPackage?.package._id,
+            packageName: d?.clientPackage?.package.name,
+            amount: d?.clientPackage?.amount,
+            packagePartners:
+                clientPackageList[d?.clientPackage?._id] ?? undefined
+        };
+
+        delete resp.clientPackage;
+        return resp;
+    });
+};
+
+const getClientPackageList = async () => {
+    const data = await db.Packages.aggregate([
+        { $match: { name: "Couples" } },
+        {
+            $lookup: {
+                from: "clientPackage",
+                localField: "_id",
+                foreignField: "package",
+                as: "clientPackage"
+            }
+        },
+        { $unwind: "$clientPackage" },
+        {
+            $lookup: {
+                from: "clients",
+                localField: "clientPackage._id",
+                foreignField: "clientPackage",
+                as: "clients"
+            }
+        },
+        { $unwind: "$clients" },
+        {
+            $group: {
+                _id: "$clientPackage._id",
+                clients: {
+                    $push: {
+                        id: "$clients._id",
+                        firstName: "$clients.firstName",
+                        lastName: "$clients.lastName"
+                    }
+                }
+            }
+        },
+        {
+            $project: {
+                clientPackageId: "$_id",
+                _id: 0,
+                clients: 1
+            }
+        }
+    ]);
+
+    return data ? data?.reduce((acc, record) => {
+        acc[record.clientPackageId] = record.clients.map(client => ({
+            id: client.id,
+            name: `${client.firstName} ${client.lastName}`,
+        }));
+        return acc;
+    }, {}) : undefined;
 };
 
 module.exports = { getAll, get, create, edit, deleteItem };
