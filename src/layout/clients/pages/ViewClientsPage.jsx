@@ -4,19 +4,26 @@ import Box from "../../../components/Box/Box.jsx";
 import { Grid } from "@mui/material";
 import Card from "@mui/material/Card";
 import Typography from "../../../components/Typography/Typography.jsx";
-import DataTable from "../../../controls/Tables/DataTable/DataTable.jsx";
 import Button from "../../../components/Button/Button.jsx";
 import Icon from "@mui/material/Icon";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import DeleteDialog from "../../../controls/Dialogs/DeleteDialog.jsx";
 import useDeleteClient from "../../../api/clients/useDeleteClient.js";
+import DataTableGrid from "../../../controls/Tables/DataTableGrid/DataTableGrid.jsx";
 
-const ViewClientsPage = ({ data }) => {
+const ViewClientsPage = ({
+    data,
+    isLoading,
+    paginationModel,
+    onPaginationModelChange,
+    onSearchModelChange,
+    onSortModelChange
+}) => {
     const navigate = useNavigate();
     const deleteClient = useDeleteClient();
 
-    const { columns, rows, isDeleting, setIsDeleting } = useClientTableData(data);
+    const { columns, rows, isDeleting, setIsDeleting } = useClientTableData(data.records);
 
     const handleCloseDeleteDialog = () => {
         setIsDeleting({ deleting: false, data: {} });
@@ -55,14 +62,16 @@ const ViewClientsPage = ({ data }) => {
                                 <Icon>add</Icon> Add Client
                             </Button>
                         </Box>
-                        <Box pt={3}>
-                            <DataTable
+                        <Box p={3}>
+                            <DataTableGrid
                                 table={{ columns, rows }}
-                                entriesPerPage={5}
-                                canSearch={true}
-                                noEndBorder
-                                isSorted={true}
-                                showTotalEntries={true}
+                                totalRecords={data.recordCount}
+                                isDataLoading={isLoading}
+                                paginationModel={paginationModel}
+                                onPaginationModelChange={onPaginationModelChange}
+                                searchModel={{ enabled: true, placeholder: "Search client", label:"Search" }}
+                                onSearchModelChange={onSearchModelChange}
+                                onSortModelChange={onSortModelChange}
                             />
                         </Box>
                     </Card>
@@ -79,7 +88,12 @@ const ViewClientsPage = ({ data }) => {
 };
 
 ViewClientsPage.propTypes = {
-    data: PropTypes.objectOf(PropTypes.array).isRequired
+    data: PropTypes.objectOf(PropTypes.array).isRequired,
+    isLoading: PropTypes.bool,
+    onPaginationModelChange: PropTypes.func,
+    onSearchModelChange: PropTypes.func,
+    onSortModelChange: PropTypes.func,
+    paginationModel: PropTypes.object
 };
 
 export default ViewClientsPage;

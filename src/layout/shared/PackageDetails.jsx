@@ -28,7 +28,8 @@ const PackageDetails = ({ name, goal, partnersDetail }) =>
 
 PackageDetails.propTypes = {
     name: PropTypes.string,
-    goal: PropTypes.string
+    goal: PropTypes.string,
+    partnersDetail: PropTypes.node
 };
 
 export default PackageDetails;

@@ -33,17 +33,18 @@ const AddClientPage = () => {
             gender: data.gender,
             email: data.email,
             contactNumber: data.contactNumber,
-            weight: Number(data.weight),
-            length: Number(data.length),
+            weight: data.weight.toString(),
+            length: data.length.toString(),
             goal: data.goal,
             package: data.package,
             joiningDate: data.joiningDate,
-            amount: data.amount
+            amount: data.amount.toString()
         };
 
         if (data.isCouplePackage) {
             dateToSubmit = {
                 ...dateToSubmit,
+
                 partner: {
                     firstName: data.partnerFirstName,
                     lastName:data.partnerLastName,
@@ -51,8 +52,8 @@ const AddClientPage = () => {
                     gender: data.partnerGender,
                     email: data.partnerEmail,
                     contactNumber: data.partnerContactNumber,
-                    weight: Number(data.partnerWeight),
-                    length: Number(data.partnerLength),
+                    weight: data.partnerWeight.toString(),
+                    length: data.partnerLength.toString(),
                     goal: data.partnerGoal
                 }
             };

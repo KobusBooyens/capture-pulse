@@ -33,15 +33,21 @@ const EditClientPage = () => {
 
     const onFormSubmit = (data) => {
         if (!isLastStep) return next();
-        console.log(data);
-        editUser.mutate({ id: user.data._id, updatedData: data });
+        editUser.mutate({
+            id: user.data._id,
+            updatedData: {
+                ...data,
+                weight: data.weight.toString(),
+                length: data.length.toString(),
+                amount: data.amount.toString(),
+            }
+        });
     };
 
     useEffect(() => {
         if (!editUser.isPending && editUser.isSuccess) {
             navigate("../clients");
         }
-
     }, [editUser.isPending, editUser.isSuccess]);
 
     return (

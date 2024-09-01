@@ -3,28 +3,38 @@ const { z } = require("zod");
 const validateAndRespond = require("../utils/zodValidation");
 const { startSession } = require("mongoose");
 
-const clientDetail = {
+const clientDetailSchema = {
     firstName: z.string({ required_error: "firstName is required" }),
     lastName: z.string({ required_error: "lastName is required" }),
     dob: z.string({ required_error: "dob is required" }),
     gender: z.enum(["Male", "Female"], { required_error: "gender is required" }),
     email: z.string({ required_error: "email is required" }),
     contactNumber: z.string({ required_error: "contactNumber is required" }),
-    weight: z.number({ required_error: "weight is required" }),
-    length: z.number({ required_error: "length is required" }),
+    weight: z.string({ required_error: "weight is required" }),
+    length: z.string({ required_error: "length is required" }),
     goal: z.string({ required_error: "goal is required" }),
 };
-const partnerDetail = z.object(clientDetail);
+
+const basicSchema = z.object({
+    page: z.string({ required_error: "page is required" }),
+    perPage: z.string({ required_error: "perPage is required" }),
+    searchText: z.string().optional(),
+    sortColumn: z.string().optional(),
+    sortDirection: z.string().optional(),
+
+});
+
+const partnerDetailSchema = z.object(clientDetailSchema);
 
 const schema = z.object({
-    ...clientDetail,
+    ...clientDetailSchema,
     joiningDate: z.string({ required_error: "joiningDate is required" }),
     package: z.string({ required_error: "package is required" }),
     amount: z.string({ required_error: "amount is required" }),
-    partner: partnerDetail.optional(),
+    partner: partnerDetailSchema.optional(),
 }).refine(data => {
     if (data.package === "Couple") {
-        return partnerDetail.safeParse(data.partner).success;
+        return partnerDetailSchema.safeParse(data.partner).success;
     }
     return true;
 }, {
@@ -34,16 +44,53 @@ const schema = z.object({
 
 const getAll = async (req, res) => {
     try {
-        const data = await db.Client.find({})
-            .populate({
-                path: "clientPackage",
-                populate: "package"
-            })
-            .lean();
+        console.log("getAll", req.query);
+        const { payload, error } = validateAndRespond(basicSchema, req.query);
+        if (error) {
+            return res.status(400).json({ message: "Validation failed.", errors: error });
+        }
+        const perPage = payload.perPage ? Number(payload.perPage) : 10;
+        const page = payload.page ? Number(payload.page) : 1;
 
-        const response = await formatClientResponse(data);
+        let queryFilter = {};
 
-        res.status(200).json(response);
+        if (payload.searchText) {
+            queryFilter["$or"] = [
+                { firstName: { $regex: ".*" + payload.searchText + ".*", $options: "i", }, },
+                { lastName: { $regex: ".*" + payload.searchText + ".*", $options: "i", }, }
+            ];
+        }
+
+        let sortFilter = {};
+        if (payload.sortColumn && payload.sortDirection) {
+            const sortDirection = payload.sortDirection === "asc" ? 1 : -1;
+
+            if (payload.sortColumn === "client") {
+                sortFilter = { lastName: sortDirection, firstName: sortDirection };
+            } else if (payload.sortColumn === "package") {
+                sortFilter = { "clientPackage.package.name": sortDirection };
+            } else if (payload.sortColumn === "joined") {
+                sortFilter = { joined: sortDirection };
+            }
+        }
+
+        const [ data, recordCount ] = await Promise.all([
+            db.Client.find(queryFilter)
+                .populate({
+                    path: "clientPackage",
+                    populate: "package"
+                })
+                .sort(sortFilter)
+                .limit(perPage)
+                .skip(perPage * (page - 1))
+                .lean(),
+            db.Client.countDocuments(queryFilter)
+        ]);
+
+        res.status(200).json({
+            records: data ? await formatClientResponse(data) : [],
+            recordCount: recordCount
+        });
     } catch (err) {
         console.error(err);
         res.status(500).send({ message: "Internal Server Error", error: err });
@@ -182,8 +229,6 @@ const deleteItem = async (req, res) => {
 
 const formatClientResponse = async (data) => {
     const clientPackageList = await getClientPackageList();
-    console.log("clientPackageList", clientPackageList);
-    console.log(data);
     return data.map(d => {
         const resp = {
             ...d,

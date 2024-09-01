@@ -1,8 +1,8 @@
-const checkinQueryKeys = {
+const packagesQueryKeys = {
     all: ["packages"],
-    details: () => [...checkinQueryKeys.all, "detail"],
-    detail: (id) => [...checkinQueryKeys.details(), id],
-    pagination: (page) => [...checkinQueryKeys.all, "pagination", page],
+    details: () => [...packagesQueryKeys.all, "detail"],
+    detail: (id) => [...packagesQueryKeys.details(), id],
+    pagination: (page) => [...packagesQueryKeys.all, "pagination", page],
 };
 
-export default checkinQueryKeys;
+export default packagesQueryKeys;

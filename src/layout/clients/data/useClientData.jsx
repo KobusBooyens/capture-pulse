@@ -8,9 +8,9 @@ import { useNavigate } from "react-router-dom";
 import { useCallback, useState } from "react";
 import ClientDetails from "../../shared/ClientDetails.jsx";
 import PackageDetails from "../../shared/PackageDetails.jsx";
+import Typography from "../../../components/Typography/Typography.jsx";
 
 export default function useClientData(data) {
-    console.log(data);
     const [isDeleting, setIsDeleting] = useState({ deleting: false, data: {} });
 
     const handleDeleteClient = useCallback((data) => {
@@ -44,29 +44,66 @@ export default function useClientData(data) {
     };
 
     const columns = [
-        { Header: "client", accessor: "client", align: "left" },
-        { Header: "package", accessor: "package", align: "left" },
-        { Header: "joined", accessor: "joined", align: "left" },
-        { Header: "action", accessor: "action", align: "center" },
+        {
+            headerName: "Client",
+            field: "client",
+            flex: 1,
+            renderCell: (params) =>
+                <Box sx={{ ml: 2, maxHeight: "100%" }} >
+                    <ClientDetails
+                        name={params.row.firstName}
+                        surname={params.row.lastName}
+                        gender={params.row.gender}
+                        contactNumber={params.row.contactNumber}
+                    />
+                </Box>,
+            sortable: true
+        },
+        {
+            headerName: "Package",
+            field: "package",
+            flex: 1,
+            renderCell: (params) =>
+                <PackageDetails
+                    name={params.row?.packageName ?? "N/A"}
+                    goal={params.row.goal}
+                    partnersDetail={params.row.packagePartners}
+                />,
+            sortable: true
+        },
+        {
+            headerName: "Joined",
+            field: "joined",
+            renderCell: (params) =>
+                <Typography variant="normal" color="text">
+                    {formatDate(params.row.joined)}
+                </Typography>,
+            flex: 0.5,
+            sortable: true
+        },
+        {
+            headerName: "Action",
+            field: "action",
+            align: "center",
+            flex: 0.5,
+            renderCell: (params) =>
+                <Actions data={params.row} />,
+            sortable: false
+        }
     ];
 
-    const rows = data.map(row => {
-        return {
-            id: row._id,
-            client: <ClientDetails
-                name={row.firstName}
-                surname={row.lastName}
-                gender={row.gender}
-                contactNumber={row.contactNumber}
-            />,
-            package: <PackageDetails
-                name={row?.packageName ?? "N/A"}
-                goal={row.goal}
-                partnersDetail={row.packagePartners} />,
-            joined: formatDate(row.joiningDate) ,
-            action: <Actions data={row} />,
-        };
-    });
+    const rows = data.map((row) => ({
+        id: row._id,
+        firstName: row.firstName,
+        lastName: row.lastName,
+        gender: row.gender,
+        contactNumber: row.contactNumber,
+        packageName: row?.packageName,
+        goal: row.goal,
+        packagePartners: row.packagePartners,
+        joined: row.joiningDate,
+        _id: row._id,
+    }));
 
     return {
         columns,

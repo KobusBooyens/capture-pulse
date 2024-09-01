@@ -1,7 +1,14 @@
 import clientQueryKeys from "./useQueryKeys.js";
 import useCustomFetch from "../shared/useCustomFetch.js";
 
-const useClients = () => {
-    return useCustomFetch(clientQueryKeys.all, "/clients");
+const useClients = ({ page, perPage, searchText, sortColumn, sortDirection }) => {
+    const params = new URLSearchParams({ page: page + 1, perPage });
+    if (searchText) { params.set("searchText", searchText); }
+    if (sortColumn) { params.set("sortColumn", sortColumn); }
+    if (sortDirection) { params.set("sortDirection", sortDirection); }
+
+    const url = `/clients?${params.toString()}`;
+
+    return useCustomFetch([...clientQueryKeys.PAGINATED, url], url);
 };
 export default useClients;

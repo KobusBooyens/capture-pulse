@@ -15,6 +15,7 @@ import ViewWeighingCheckinPage from "../layout/checkins/pages/ViewWeighingChecki
 import GeneralCheckinsMain from "../layout/checkins/GeneralCheckinsMain.jsx";
 import WeighingCheckinsMain from "../layout/checkins/WeighingCheckinsMain.jsx";
 import ViewCheckinHistoryPage from "../layout/checkins/pages/ViewCheckinHistoryPage.jsx";
+import TableQueryProvider from "./table-query-provider.jsx";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -23,7 +24,11 @@ const router = createBrowserRouter(
             <Route path="dashboard" element={<DashboardMain />}/>
 
             {/*clients*/}
-            <Route path="clients" element={<ClientsMain />}/>
+            <Route path="clients" element={
+                <TableQueryProvider>
+                    <ClientsMain />
+                </TableQueryProvider>
+            }/>
             <Route path="clients/edit/:id" element={<EditClientPage />}/>
             <Route path="clients/add" element={<AddClientPage />}/>
 

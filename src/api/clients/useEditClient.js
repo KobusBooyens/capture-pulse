@@ -10,7 +10,7 @@ const editFn = async ({ id, updatedData }) => {
 };
 
 const useEditClient = () => {
-    return useCustomMutation(editFn, clientQueryKeys.all, {
+    return useCustomMutation(editFn, clientQueryKeys.PAGINATED, {
         success: {
             title: "Success!",
             content: "Nice! Client was successfully updated!",

@@ -4,7 +4,7 @@ import useCustomFetch from "../shared/useCustomFetch.js";
 
 const useClient = () => {
     const { id } = useParams();
-    return useCustomFetch(clientQueryKeys.detail(id), `clients/${id}`);
+    return useCustomFetch(clientQueryKeys.DETAIL, `clients/${id}`);
 };
 
 export default useClient;

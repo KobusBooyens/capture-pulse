@@ -9,7 +9,7 @@ const createClientFn = async (data) => {
 };
 
 const useCreateClient = () => {
-    return useCustomMutation(createClientFn, clientQueryKeys.all, {
+    return useCustomMutation(createClientFn, clientQueryKeys.PAGINATED, {
         success: {
             title: "Success!",
             content: "Nice! Client was successfully created!",

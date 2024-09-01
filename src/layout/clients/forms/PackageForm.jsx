@@ -49,21 +49,6 @@ const PackageForm = () => {
         }
     }, [selectedPackageChange, defaultValues, getValues, data, packageOptions]);
 
-    const PartnersDetails = useMemo(() => {
-        return (
-            <Tooltip title={
-                <Box display="flex" flexDirection="column" color={"white"}>
-                    {defaultValues.packagePartners.map(p =>
-                        <Typography key={p._id} display="block" color={"inherit"} variant={"body"}>
-                            {p.name}
-                        </Typography>
-                    )}
-                </Box>} placement={"top"}>
-                <Icon fontSize="small" color="info">person</Icon>
-            </Tooltip>
-        );
-    }, [defaultValues.packagePartners]);
-
     const AddPartner = useMemo(() => {
         return (
             <Box padding={3}>
@@ -102,7 +87,7 @@ const PackageForm = () => {
             </Box>
         );
     }, []);
-    console.log("defaultValues", defaultValues);
+
     return (
         <>
             <Grid container spacing={3}>
