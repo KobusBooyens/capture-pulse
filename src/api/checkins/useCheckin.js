@@ -7,7 +7,7 @@ const useCheckin = () => {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const type = searchParams.get("type");
-    return useCustomFetch(checkinQueryKeys.detail(Number(id)), `checkins/${type}/${id}`);
+    return useCustomFetch(checkinQueryKeys.DETAIL, `checkins/${type}/${id}`);
 };
 
 export default useCheckin;

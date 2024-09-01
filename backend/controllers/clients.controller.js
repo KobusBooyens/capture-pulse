@@ -44,7 +44,6 @@ const schema = z.object({
 
 const getAll = async (req, res) => {
     try {
-        console.log("getAll", req.query);
         const { payload, error } = validateAndRespond(basicSchema, req.query);
         if (error) {
             return res.status(400).json({ message: "Validation failed.", errors: error });

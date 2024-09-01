@@ -11,7 +11,7 @@ const createCheckinFn = async (payload) => {
 };
 
 const useCreateCheckin = () => {
-    return useCustomMutation(createCheckinFn, checkinQueryKeys.all, {
+    return useCustomMutation(createCheckinFn, checkinQueryKeys.PAGINATED, {
         success: {
             title: "Success!",
             content: "Nice! Check-in done!",

@@ -3,7 +3,6 @@ import { Grid } from "@mui/material";
 import Card from "@mui/material/Card";
 import Box from "../../../components/Box/Box.jsx";
 import Typography from "../../../components/Typography/Typography.jsx";
-import DataTable from "../../../controls/Tables/DataTable/DataTable.jsx";
 import PropTypes from "prop-types";
 import { useWeighingCheckinData } from "../data/useWeighingCheckinData.jsx";
 import AddEditCheckin from "../dialogs/AddEditCheckin.jsx";
@@ -96,7 +95,12 @@ const ViewWeighingCheckinPage = ({
 };
 
 ViewWeighingCheckinPage.propTypes = {
-    data: PropTypes.objectOf(PropTypes.array).isRequired
+    data: PropTypes.objectOf(PropTypes.array).isRequired,
+    isLoading: PropTypes.bool,
+    onPaginationModelChange: PropTypes.func,
+    onSearchModelChange: PropTypes.func,
+    onSortModelChange: PropTypes.func,
+    paginationModel: PropTypes.object
 };
 
 export default ViewWeighingCheckinPage;

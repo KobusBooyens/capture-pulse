@@ -1,11 +1,9 @@
 import { DataGrid } from "@mui/x-data-grid";
-
 import React, { useMemo } from "react";
 import PropTypes from "prop-types";
 import { TableContainer } from "@mui/material";
 import Box from "../../../components/Box/Box.jsx";
 import SearchInput from "../../Inputs/SearchInput.jsx";
-import { useTableQuery } from "../../../context/table-query-provider.jsx";
 
 const DataTableGrid = ({
     table,
@@ -75,10 +73,7 @@ DataTableGrid.propTypes = {
         placeholder: PropTypes.string
     }),
     onSearchModelChange: PropTypes.func,
-    onSortModelChange: PropTypes.func,
-    sortModel: PropTypes.shape({
-        field: PropTypes.string,
-        sort: PropTypes.sort,
-    }),
+    onSortModelChange: PropTypes.func
 };
+
 export default DataTableGrid;

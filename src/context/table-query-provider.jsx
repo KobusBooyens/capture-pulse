@@ -39,7 +39,6 @@ export const TableQueryProvider = ({ children }) => {
     };
 
     const updateSort = (sortParams) => {
-        console.log("updateSort", sortParams[0]);
         setSortColumn(sortParams && sortParams.length > 0 ? sortParams[0].field : "");
         setSortDirection(sortParams && sortParams.length > 0 ? sortParams[0].sort : "");
     };
@@ -69,6 +68,7 @@ export const TableQueryProvider = ({ children }) => {
 export const useTableQuery = () => {
     const context = useContext(TableQueryContext);
 
+    console.log("useTableQuery", context);
     if (!context) {
         throw new Error("useTableQuery must be used within a TableQueryProvider");
     }

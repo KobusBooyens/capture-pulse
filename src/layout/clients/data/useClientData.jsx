@@ -26,11 +26,17 @@ export default function useClientData(data) {
                         <Icon fontSize="small" color="info">edit</Icon>
                     </IconButton>
                 </Tooltip>
+                <Tooltip title="Notes" placement="top">
+                    <IconButton onClick={() => console.log("view notes")}>
+                        <Icon fontSize="small" color="action">notes</Icon>
+                    </IconButton>
+                </Tooltip>
                 <Tooltip title="Remove" placement="top">
                     <IconButton onClick={() => handleDeleteClient(data)}>
                         <Icon fontSize="small" color="error">delete</Icon>
                     </IconButton>
                 </Tooltip>
+
             </Box>
         );
     };
@@ -39,9 +45,7 @@ export default function useClientData(data) {
         data: PropTypes.object,
     };
 
-    const formatDate = (date) => {
-        return dayjs(date).format("ll");
-    };
+    const formatDate = (date) => dayjs(date).format("ll");
 
     const columns = [
         {

@@ -12,6 +12,7 @@ import useCreateCheckin from "../../../api/checkins/useCreateCheckin.js";
 import DataTableGrid from "../../../controls/Tables/DataTableGrid/DataTableGrid.jsx";
 
 const ViewGeneralCheckinPage = ({
+    type,
     data,
     isLoading,
     paginationModel,
@@ -19,9 +20,7 @@ const ViewGeneralCheckinPage = ({
     onSearchModelChange,
     onSortModelChange
 }) => {
-
-    console.log("ViewGeneralCheckinPage", data);
-
+    console.log("ViewGeneralCheckinPage", data.records);
     const { columns, rows, isAdding, setIsAdding } = useGeneralCheckinData(data.records);
     const createCheckin = useCreateCheckin();
     const methods = useForm();
@@ -97,6 +96,7 @@ const ViewGeneralCheckinPage = ({
 };
 
 ViewGeneralCheckinPage.propTypes = {
+    type: PropTypes.string,
     data: PropTypes.objectOf(PropTypes.array).isRequired,
     isLoading: PropTypes.bool,
     onPaginationModelChange: PropTypes.func,

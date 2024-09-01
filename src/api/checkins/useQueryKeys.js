@@ -1,8 +1,8 @@
+export const checkinQueryKey = "checkins";
 const checkinQueryKeys = {
-    all: ["checkins"],
-    details: () => [...checkinQueryKeys.all, "detail"],
-    detail: (id, type) => [...checkinQueryKeys.details(), id, type],
-    pagination: (page) => [...checkinQueryKeys.all, "pagination", page],
+    PAGINATED: [checkinQueryKey, "pagination"],
+    SEARCH: [checkinQueryKey, "search"],
+    DETAIL: [checkinQueryKey, "detail"]
 };
 
 export default checkinQueryKeys;

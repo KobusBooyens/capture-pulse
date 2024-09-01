@@ -5,10 +5,7 @@ import Card from "@mui/material/Card";
 import Typography from "../../../components/Typography/Typography.jsx";
 import ClientDetails from "../../shared/ClientDetails.jsx";
 import PropTypes from "prop-types";
-import useCheckins from "../../../api/checkins/useCheckins.js";
 import { useCheckinHistoryData } from "../data/useCheckinHistoryData.jsx";
-import DataTable from "../../../controls/Tables/DataTable/DataTable.jsx";
-import DataTableSkeleton from "../../../controls/Tables/Skeleton/DataTable.jsx";
 import { FormProvider, useForm } from "react-hook-form";
 import useEditCheckin from "../../../api/checkins/useEditCheckin.js";
 import AddEditCheckin from "../dialogs/AddEditCheckin.jsx";
@@ -16,13 +13,20 @@ import AddEditGeneralCheckinForm from "../forms/AddEditGeneralCheckinForm.jsx";
 import AddEditWeighingCheckinForm from "../forms/AddEditWeighingCheckinForm.jsx";
 import DeleteDialog from "../../../controls/Dialogs/DeleteDialog.jsx";
 import useDeleteCheckin from "../../../api/checkins/useDeleteCheckin.js";
+import DataTableGrid from "../../../controls/Tables/DataTableGrid/DataTableGrid.jsx";
 
-const ViewCheckinHistoryPage = ({ type }) => {
-
-    const { isLoading, data: checkInData } = useCheckins(type);
+const ViewCheckinHistoryPage = ({
+    type,
+    data,
+    isLoading,
+    paginationModel,
+    onPaginationModelChange,
+    onSearchModelChange,
+    onSortModelChange
+}) => {
     const editCheckin = useEditCheckin();
     const deleteCheckin = useDeleteCheckin();
-    const { columns, rows, isActioned, setIsActioned } = useCheckinHistoryData(type, checkInData?.records);
+    const { columns, rows, isActioned, setIsActioned } = useCheckinHistoryData(type, data?.records);
     const methods = useForm();
 
     const handleCloseDialog = () => {
@@ -30,7 +34,6 @@ const ViewCheckinHistoryPage = ({ type }) => {
     };
 
     useEffect(() => {
-        console.log(isActioned);
         methods.reset({ ...isActioned.data });
     }, [isActioned.action]);
 
@@ -46,42 +49,18 @@ const ViewCheckinHistoryPage = ({ type }) => {
     const onFormSubmit = (data) => {
         const dataToSave = {
             ...data,
-            client: checkInData.client._id
+            client: data.records.client._id
         };
         console.log(dataToSave);
-        editCheckin.mutate({ id: data._id, updatedData: dataToSave, type });
+        editCheckin.mutate({ id: data.records.client._id, updatedData: dataToSave, type });
     };
 
-    const fullName = useMemo(() => {
-        return checkInData ?
-            <ClientDetails
-                name={checkInData.client?.firstName}
-                surname={checkInData.client?.lastName}
-                contactNumber={checkInData.client?.contactNumber}
-            />
-            : 
-            <CircularProgress />
-        ;
-    }, [checkInData]);
-    
-    const dataTable = useMemo(() => {
-        return checkInData ?
-            <DataTable
-                table={{ columns, rows }}
-                entriesPerPage={10}
-                canSearch={true}
-                noEndBorder
-                isSorted={true}
-                showTotalEntries={true}
-            />
-            : 
-            <DataTableSkeleton />
-        ;
-    }, [checkInData, columns, rows]);
-
-    if (isLoading) {
-        return <CircularProgress />;
-    }
+    const fullName = data ?
+        <ClientDetails
+            name={data.records.client?.firstName}
+            surname={data.records.client?.lastName}
+            contactNumber={data.records.client?.contactNumber}
+        /> : <CircularProgress /> ;
     
     return (
         <Box pt={6} pb={3}>
@@ -104,8 +83,16 @@ const ViewCheckinHistoryPage = ({ type }) => {
                                 {type}
                             </Typography>
                         </Box>
-                        <Box pt={3}>
-                            {dataTable}
+                        <Box p={3}>
+                            <DataTableGrid
+                                table={{ columns, rows }}
+                                totalRecords={data.recordCount}
+                                isDataLoading={isLoading}
+                                paginationModel={paginationModel}
+                                onPaginationModelChange={onPaginationModelChange}
+                                onSearchModelChange={onSearchModelChange}
+                                onSortModelChange={onSortModelChange}
+                            />
                         </Box>
                     </Card>
                 </Grid>
@@ -114,7 +101,7 @@ const ViewCheckinHistoryPage = ({ type }) => {
                 openDialog={isActioned.action === "edit"}
                 onClose={handleCloseDialog}
                 title={"Edit Check-in"}
-                fullName={`${checkInData.client.firstName} ${checkInData.client.lastName}`}
+                fullName={`${data.records.client?.firstName} ${data.records.client?.lastName}`}
             >
                 <FormProvider {...methods}>
                     <form onSubmit={methods.handleSubmit(onFormSubmit)} noValidate>
@@ -140,7 +127,13 @@ const ViewCheckinHistoryPage = ({ type }) => {
 };
 
 ViewCheckinHistoryPage.propTypes = {
-    type: PropTypes.oneOf(["General", "Weighing"])
+    type: PropTypes.oneOf(["General", "Weighing"]),
+    data: PropTypes.objectOf(PropTypes.array).isRequired,
+    isLoading: PropTypes.bool,
+    onPaginationModelChange: PropTypes.func,
+    onSearchModelChange: PropTypes.func,
+    onSortModelChange: PropTypes.func,
+    paginationModel: PropTypes.object
 };
 
 export default ViewCheckinHistoryPage;

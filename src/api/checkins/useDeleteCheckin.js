@@ -8,7 +8,7 @@ const deleteFn = async ({ id, type }) => {
 };
 
 const useDeleteCheckin = () => {
-    return useCustomMutation(deleteFn, checkinQueryKeys.all, {
+    return useCustomMutation(deleteFn, checkinQueryKeys.PAGINATED, {
         success: {
             title: "Success!",
             content: "Record has been deleted!",

@@ -9,46 +9,88 @@ const schema = z.object({
     feedback: z.string({ required_error: "feedback is required" })
 });
 
+const basicSchema = z.object({
+    page: z.string({ required_error: "page is required" }),
+    pageSize: z.string({ required_error: "pageSize is required" }),
+    searchText: z.string().optional(),
+    sortColumn: z.string().optional(),
+    sortDirection: z.string().optional(),
+});
+
 const getAll = async (req, res) => {
     try {
-        const schema = z.object({
-            //searching by client, date range, mood
-            searchText: z.string().optional(),
-        });
-
-        const { payload, error } = validateAndRespond(schema, req.query);
+        const { payload, error } = validateAndRespond(basicSchema, req.query);
         if (error) {
             return res.status(400).json({ message: "Validation failed.", errors: error });
         }
 
-        const data = await db.GeneralCheckins.find({ client: req.params.id })
-            .populate("client")
-            .lean();
+        const pageSize = payload.pageSize ? Number(payload.pageSize) : 10;
+        const page = payload.page ? Number(payload.page) : 1;
 
-        const response = {
-            client: {
-                _id: data[0].client._id,
-                firstName: data[0].client.firstName,
-                lastName: data[0].client.lastName,
-                contactNumber: data[0].client.contactNumber,
-            },
-            records: data.map(r => {
-                return {
-                    _id: r._id,
-                    date: r.date,
-                    mood: r.mood,
-                    feedback: r.feedback
-                };
-            })
-        };
-        
-        res.status(200).json(response);
+        let queryFilter = { client: req.params.id };
+
+        if (payload.searchText) {
+            queryFilter["$or"] = [
+                { date: { $regex: ".*" + payload.searchText + ".*", $options: "i", }, },
+                { mood: { $regex: ".*" + payload.searchText + ".*", $options: "i", }, }
+            ];
+        }
+
+        let sortFilter = {};
+        if (payload.sortColumn && payload.sortDirection) {
+            const sortDirection = payload.sortDirection === "asc" ? 1 : -1;
+
+            if (payload.sortColumn === "date") {
+                sortFilter = { date: sortDirection };
+            } else if (payload.sortColumn === "mood") {
+                sortFilter = { "mood": sortDirection };
+            }
+        }
+
+        const [ data, recordCount ] = await Promise.all([
+            db.GeneralCheckins.find(queryFilter)
+                .populate("client")
+                .sort(sortFilter)
+                .limit(pageSize)
+                .skip(pageSize * (page - 1))
+                .lean(),
+            db.GeneralCheckins.countDocuments(queryFilter)
+        ]);
+
+        res.status(200).json({
+            records: data && data?.length ? formatResponse(data) : [],
+            recordCount: recordCount
+        });
+
     } catch (err) {
         console.error(err);
         res.status(500).send({ message: "Internal Server Error", error: err });
     }
 };
 
+const formatResponse = (data) => {
+    if (!data || data.length === 0) {
+        return {
+            client: null,
+            records: []
+        };
+    }
+
+    return {
+        client: {
+            _id: data[0].client._id,
+            firstName: data[0].client.firstName,
+            lastName: data[0].client.lastName,
+            contactNumber: data[0].client.contactNumber,
+        },
+        records: data.map(r => ({
+            _id: r._id,
+            date: r.date,
+            mood: r.mood,
+            feedback: r.feedback
+        }))
+    };
+};
 const get = async (req, res) => {
     try {
         const data = await db.GeneralCheckins.findById(req.params.id)

@@ -9,7 +9,7 @@ const editFn = async ({ id, updatedData, type }) => {
 };
 
 const useEditCheckin = () => {
-    return useCustomMutation(editFn, checkinQueryKeys.all, {
+    return useCustomMutation(editFn, checkinQueryKeys.PAGINATED, {
         success: {
             title: "Success!",
             content: "Nice! Checkin was successfully updated!",
