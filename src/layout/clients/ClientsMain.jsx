@@ -20,7 +20,7 @@ const ClientsMain = () => {
 
     const { isLoading, error, data } = useClients({
         page,
-        perPage: pageSize,
+        pageSize,
         searchText,
         sortColumn,
         sortDirection

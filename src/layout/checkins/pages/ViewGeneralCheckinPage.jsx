@@ -3,16 +3,26 @@ import { Grid } from "@mui/material";
 import Card from "@mui/material/Card";
 import Box from "../../../components/Box/Box.jsx";
 import Typography from "../../../components/Typography/Typography.jsx";
-import DataTable from "../../../controls/Tables/DataTable/DataTable.jsx";
 import { useGeneralCheckinData } from "../data/useGeneralCheckinData.jsx";
 import PropTypes from "prop-types";
 import AddEditCheckin from "../dialogs/AddEditCheckin.jsx";
 import AddEditGeneralCheckinForm from "../forms/AddEditGeneralCheckinForm.jsx";
 import { FormProvider, useForm } from "react-hook-form";
 import useCreateCheckin from "../../../api/checkins/useCreateCheckin.js";
+import DataTableGrid from "../../../controls/Tables/DataTableGrid/DataTableGrid.jsx";
 
-const ViewGeneralCheckinPage = ({ data }) => {
-    const { columns, rows, isAdding, setIsAdding } = useGeneralCheckinData(data);
+const ViewGeneralCheckinPage = ({
+    data,
+    isLoading,
+    paginationModel,
+    onPaginationModelChange,
+    onSearchModelChange,
+    onSortModelChange
+}) => {
+
+    console.log("ViewGeneralCheckinPage", data);
+
+    const { columns, rows, isAdding, setIsAdding } = useGeneralCheckinData(data.records);
     const createCheckin = useCreateCheckin();
     const methods = useForm();
 
@@ -54,14 +64,16 @@ const ViewGeneralCheckinPage = ({ data }) => {
                         >
                             <Typography variant="h5" color="white">Clients General Check-in</Typography>
                         </Box>
-                        <Box pt={3}>
-                            <DataTable
+                        <Box p={3}>
+                            <DataTableGrid
                                 table={{ columns, rows }}
-                                entriesPerPage={5}
-                                canSearch={true}
-                                noEndBorder
-                                isSorted={true}
-                                showTotalEntries={true}
+                                totalRecords={data.recordCount}
+                                isDataLoading={isLoading}
+                                paginationModel={paginationModel}
+                                onPaginationModelChange={onPaginationModelChange}
+                                searchModel={{ enabled: true, placeholder: "Search client", label:"Search" }}
+                                onSearchModelChange={onSearchModelChange}
+                                onSortModelChange={onSortModelChange}
                             />
                         </Box>
                     </Card>
@@ -85,7 +97,12 @@ const ViewGeneralCheckinPage = ({ data }) => {
 };
 
 ViewGeneralCheckinPage.propTypes = {
-    data: PropTypes.objectOf(PropTypes.array).isRequired
+    data: PropTypes.objectOf(PropTypes.array).isRequired,
+    isLoading: PropTypes.bool,
+    onPaginationModelChange: PropTypes.func,
+    onSearchModelChange: PropTypes.func,
+    onSortModelChange: PropTypes.func,
+    paginationModel: PropTypes.object
 };
 
 export default ViewGeneralCheckinPage;

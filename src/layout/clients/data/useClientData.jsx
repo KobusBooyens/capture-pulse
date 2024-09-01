@@ -40,7 +40,7 @@ export default function useClientData(data) {
     };
 
     const formatDate = (date) => {
-        return dayjs(date).format("YYYY-MM-DD");
+        return dayjs(date).format("ll");
     };
 
     const columns = [

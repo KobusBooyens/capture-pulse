@@ -17,7 +17,7 @@ const clientDetailSchema = {
 
 const basicSchema = z.object({
     page: z.string({ required_error: "page is required" }),
-    perPage: z.string({ required_error: "perPage is required" }),
+    pageSize: z.string({ required_error: "pageSize is required" }),
     searchText: z.string().optional(),
     sortColumn: z.string().optional(),
     sortDirection: z.string().optional(),
@@ -49,7 +49,7 @@ const getAll = async (req, res) => {
         if (error) {
             return res.status(400).json({ message: "Validation failed.", errors: error });
         }
-        const perPage = payload.perPage ? Number(payload.perPage) : 10;
+        const pageSize = payload.pageSize ? Number(payload.pageSize) : 10;
         const page = payload.page ? Number(payload.page) : 1;
 
         let queryFilter = {};
@@ -81,8 +81,8 @@ const getAll = async (req, res) => {
                     populate: "package"
                 })
                 .sort(sortFilter)
-                .limit(perPage)
-                .skip(perPage * (page - 1))
+                .limit(pageSize)
+                .skip(pageSize * (page - 1))
                 .lean(),
             db.Client.countDocuments(queryFilter)
         ]);

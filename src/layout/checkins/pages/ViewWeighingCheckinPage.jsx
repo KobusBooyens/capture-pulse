@@ -10,9 +10,17 @@ import AddEditCheckin from "../dialogs/AddEditCheckin.jsx";
 import { FormProvider, useForm } from "react-hook-form";
 import useCreateCheckin from "../../../api/checkins/useCreateCheckin.js";
 import AddEditWeighingCheckinForm from "../forms/AddEditWeighingCheckinForm.jsx";
+import DataTableGrid from "../../../controls/Tables/DataTableGrid/DataTableGrid.jsx";
 
-const ViewWeighingCheckinPage = ({ data }) => {
-    const { columns, rows, isAdding, setIsAdding } = useWeighingCheckinData(data);
+const ViewWeighingCheckinPage = ({
+    data,
+    isLoading,
+    paginationModel,
+    onPaginationModelChange,
+    onSearchModelChange,
+    onSortModelChange
+}) => {
+    const { columns, rows, isAdding, setIsAdding } = useWeighingCheckinData(data.records);
 
     const createCheckin = useCreateCheckin();
     const methods = useForm();
@@ -55,14 +63,16 @@ const ViewWeighingCheckinPage = ({ data }) => {
                         >
                             <Typography variant="h5" color="white">Clients Weighing Check-in</Typography>
                         </Box>
-                        <Box pt={3}>
-                            <DataTable
+                        <Box p={3}>
+                            <DataTableGrid
                                 table={{ columns, rows }}
-                                entriesPerPage={5}
-                                canSearch={true}
-                                noEndBorder
-                                isSorted={true}
-                                showTotalEntries={true}
+                                totalRecords={data.recordCount}
+                                isDataLoading={isLoading}
+                                paginationModel={paginationModel}
+                                onPaginationModelChange={onPaginationModelChange}
+                                searchModel={{ enabled: true, placeholder: "Search client", label:"Search" }}
+                                onSearchModelChange={onSearchModelChange}
+                                onSortModelChange={onSortModelChange}
                             />
                         </Box>
                     </Card>
