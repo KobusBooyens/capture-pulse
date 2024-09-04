@@ -51,7 +51,7 @@ const ViewClientsPage = ({
                             coloredShadow="dark"
                             className={"flex flex-row justify-between"}
                         >
-                            <Typography variant="h5" color="white">Clients</Typography>
+                            <Typography variant="subtitle" color="white">Clients</Typography>
                             <Button variant={"gradient"}
                                 color={"secondary"}
                                 className={"flex gap-2"}

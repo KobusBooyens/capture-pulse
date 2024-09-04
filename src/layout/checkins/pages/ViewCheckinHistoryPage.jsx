@@ -80,7 +80,7 @@ const ViewCheckinHistoryPage = ({
                             className={"flex flex-row justify-between"}
                         >
                             {fullName}
-                            <Typography variant="h5" color="white" textTransform={"uppercase"}>
+                            <Typography variant="subtitle" color="white" textTransform={"uppercase"}>
                                 {type}
                             </Typography>
                         </Box>

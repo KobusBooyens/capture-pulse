@@ -61,7 +61,7 @@ const ViewGeneralCheckinPage = ({
                             coloredShadow="dark"
                             className={"flex flex-row justify-between"}
                         >
-                            <Typography variant="h5" color="white">Clients General Check-in</Typography>
+                            <Typography variant="subtitle" color="white">Clients General Check-in</Typography>
                         </Box>
                         <Box p={3}>
                             <DataTableGrid

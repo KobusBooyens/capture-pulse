@@ -10,13 +10,13 @@ const ClientDetails = ({ name, surname, contactNumber, gender }) => {
     return (
         <Box display="flex" alignItems="center" lineHeight={1}>
             <Avatar sx={{ bgcolor: gender && avatarColor }}>
-                <Icon fontSize={"small"}>account_circle</Icon>
+                <Icon fontSize={gender ? "small" : "large"}>account_circle</Icon>
             </Avatar>
             <Box ml={2} lineHeight={1}>
-                <Typography display="block" variant="button" fontWeight="medium">
+                <Typography display="block" variant={gender ? "button" : "subtitle1"} fontWeight="medium">
                     {name} {surname}
                 </Typography>
-                <Typography variant="caption" >
+                <Typography variant={gender ?"caption" : "subtitle2"} >
                     {contactNumber}
                 </Typography>
             </Box>

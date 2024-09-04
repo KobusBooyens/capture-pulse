@@ -60,7 +60,7 @@ const ViewWeighingCheckinPage = ({
                             coloredShadow="dark"
                             className={"flex flex-row justify-between"}
                         >
-                            <Typography variant="h5" color="white">Clients Weighing Check-in</Typography>
+                            <Typography variant="subtitle" color="white">Clients Weighing Check-in</Typography>
                         </Box>
                         <Box p={3}>
                             <DataTableGrid
