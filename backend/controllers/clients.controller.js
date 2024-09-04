@@ -21,7 +21,6 @@ const basicSchema = z.object({
     searchText: z.string().optional(),
     sortColumn: z.string().optional(),
     sortDirection: z.string().optional(),
-
 });
 
 const partnerDetailSchema = z.object(clientDetailSchema);

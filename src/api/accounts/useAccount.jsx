@@ -4,7 +4,8 @@ import useCustomFetch from "../shared/useCustomFetch.js";
 
 const useAccount = () => {
     const { id } = useParams();
-    return useCustomFetch(queryKeys.detail(Number(id)), `accounts/${id}`);
+
+    return useCustomFetch(queryKeys.DETAIL, `accounts/${id}`);
 };
 
 export default useAccount;

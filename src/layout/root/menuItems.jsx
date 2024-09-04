@@ -1,7 +1,7 @@
 import DashboardMain from "../dashboard/DashboardMain.jsx";
 import ViewClients from "../clients/ClientsMain.jsx";
 import Checkins from "../checkins/Checkins.jsx";
-import Billing from "../billing/billing.jsx";
+import BillingMain from "../billing/BillingMain.jsx";
 
 import Icon from "@mui/material/Icon";
 import NotificationsMain from "../notifications/NotificationsMain.jsx";
@@ -61,7 +61,7 @@ const menuItems = [
         key: "billing",
         icon: <Icon fontSize={"small"}>receipt_long</Icon>,
         route: "/billing",
-        component: <Billing />
+        component: <BillingMain />
     },
     {
         type: "collapse",

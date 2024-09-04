@@ -1,8 +1,8 @@
-const queryKeys = {
-    all: ["accounts"],
-    details: () => [...queryKeys.all, "detail"],
-    detail: (id, type) => [...queryKeys.details(), id, type],
-    pagination: (page) => [...queryKeys.all, "pagination", page],
+export const queryKey = "accounts";
+const accountsQueryKeys = {
+    PAGINATED: [queryKey, "pagination"],
+    SEARCH: [queryKey, "search"],
+    DETAIL: [queryKey, "detail"]
 };
 
-export default queryKeys;
+export default accountsQueryKeys;

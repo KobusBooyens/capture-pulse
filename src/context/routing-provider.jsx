@@ -7,7 +7,7 @@ import AddClientPage from "../layout/clients/pages/AddClientPage.jsx";
 import EditClientPage from "../layout/clients/pages/EditClientPage.jsx";
 import Checkins from "../layout/checkins/Checkins.jsx";
 import NotificationsMain from "../layout/notifications/NotificationsMain.jsx";
-import Billing from "../layout/billing/billing.jsx";
+import BillingMain from "../layout/billing/BillingMain.jsx";
 import Settings from "../layout/settings/settings.jsx";
 import Users from "../layout/users/users.jsx";
 import ViewGeneralCheckinPage from "../layout/checkins/pages/ViewGeneralCheckinPage.jsx";
@@ -61,7 +61,11 @@ const router = createBrowserRouter(
             <Route path="notifications" element={<NotificationsMain />}/>
 
             {/*accounts*/}
-            <Route path="billing" element={<Billing />}/>
+            <Route path="billing" element={
+                <TableQueryProvider>
+                    <BillingMain />
+                </TableQueryProvider>
+            }/>
             {/*<Route path="billing/:id" element={<BillingManger/>}/>*/}
 
             {/*users*/}

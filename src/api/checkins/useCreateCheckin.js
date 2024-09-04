@@ -4,8 +4,7 @@ import useCustomMutation from "../shared/useCustomMutation.js";
 
 const createCheckinFn = async (payload) => {
     await new Promise(resolve => setTimeout(resolve, 2000));
-    const { data, type } = payload;
-    console.log("createCheckinFn", { data, type });
+    const { type } = payload;
     const response = await apiClient.post(`/checkins/${type}`, payload.data);
     return response.data;
 };

@@ -8,9 +8,17 @@ const deleteFn = async ({ id }) => {
 };
 
 const useDeleteAccount = () => {
-    return useCustomMutation(deleteFn, queryKeys.all, {
-        success: "Record has been deleted",
-        error: "Failed to delete record"
+    return useCustomMutation(deleteFn, queryKeys.PAGINATED, {
+        success: {
+            title: "Success!",
+            content: "Record has been deleted!",
+            severity: "success"
+        },
+        error: {
+            title: "Failed!",
+            content: "Oh no! An error occurred while deleting the payment. Please try again!",
+            severity: "error"
+        },
     });
 };
 

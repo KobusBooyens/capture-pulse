@@ -9,9 +9,17 @@ const createFn = async (data) => {
 };
 
 const useCreateAccount = () => {
-    return useCustomMutation(createFn, queryKeys.all, {
-        success: "Record was successfully added",
-        error: "An error occurred while creating record"
+    return useCustomMutation(createFn, queryKeys.PAGINATED, {
+        success: {
+            title: "Success!",
+            content: "Nice! Payment has been recorded!",
+            severity: "success"
+        },
+        error: {
+            title: "Failed!",
+            content: "Oh no! An error occurred while adding the payment. Please try again!",
+            severity: "error"
+        },
     });
 };
 

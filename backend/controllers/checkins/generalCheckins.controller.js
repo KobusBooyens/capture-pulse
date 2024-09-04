@@ -1,7 +1,7 @@
 const db = require("../../models");
 const { z } = require("zod");
 const validateAndRespond = require("../../utils/zodValidation");
-const { formatResponse } = require("./shared");
+const { formatResponse } = require("./_shared");
 
 const schema = z.object({
     client: z.string({ required_error: "client is required" }),

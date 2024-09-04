@@ -91,7 +91,7 @@ const DashboardMain = () => {
                             <ComplexStatisticsCard
                                 color="success"
                                 icon="receipt_long"
-                                title="Billing"
+                                title="BillingMain"
                                 count="4500"
                             >
                                 <Typography component="p" variant="button" color="text" display="flex" gap={1}>
@@ -136,7 +136,7 @@ const DashboardMain = () => {
                             <Box mb={3}>
                                 <ReportsLineChart
                                     color="dark"
-                                    title="Billing"
+                                    title="BillingMain"
                                     description="Payments Received Insights"
                                     date="just updated"
                                     chart={payments}

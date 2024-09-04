@@ -9,9 +9,17 @@ const editFn = async ({ id, updatedData }) => {
 };
 
 const useEditAccount = () => {
-    return useCustomMutation(editFn, queryKeys.all, {
-        success: "Checkin was successfully updated",
-        error: "An error occurred while updating the record"
+    return useCustomMutation(editFn, queryKeys.PAGINATED, {
+        success: {
+            title: "Success!",
+            content: "Nice! Payment was successfully updated!",
+            severity: "success"
+        },
+        error: {
+            title: "Failed!",
+            content: "Oh no! An error occurred while updating the payment. Please try again!",
+            severity: "error"
+        },
     });
 };
 
