@@ -1,6 +1,7 @@
 const db = require("../../models");
 const { z } = require("zod");
 const validateAndRespond = require("../../utils/zodValidation");
+const { formatResponse } = require("./shared");
 
 const schema = z.object({
     client: z.string({ required_error: "client is required" }),
@@ -9,40 +10,58 @@ const schema = z.object({
     feedback: z.string({ required_error: "feedback is required" })
 });
 
+const basicSchema = z.object({
+    page: z.string({ required_error: "page is required" }),
+    pageSize: z.string({ required_error: "pageSize is required" }),
+    searchText: z.string().optional(),
+    sortColumn: z.string().optional(),
+    sortDirection: z.string().optional(),
+});
+
 const getAll = async (req, res) => {
     try {
-        const schema = z.object({
-            //searching by client, date range
-            searchText: z.string().optional(),
-        });
-
-        const { payload, error } = validateAndRespond(schema, req.query);
+        const { payload, error } = validateAndRespond(basicSchema, req.query);
         if (error) {
             return res.status(400).json({ message: "Validation failed.", errors: error });
         }
 
-        const data = await db.WeighingCheckins.find({ client: req.params.id })
-            .populate("client")
-            .lean();
+        const pageSize = payload.pageSize ? Number(payload.pageSize) : 10;
+        const page = payload.page ? Number(payload.page) : 1;
 
-        const response = {
-            client: {
-                _id: data[0].client._id,
-                firstName: data[0].client.firstName,
-                lastName: data[0].client.lastName,
-                contactNumber: data[0].client.contactNumber,
-            },
-            records: data.map(r => {
-                return {
-                    _id: r._id,
-                    date: r.date,
-                    weight: r.weight,
-                    feedback: r.feedback
-                };
-            })
-        };
+        let queryFilter = { client: req.params.id };
 
-        res.status(200).json(response);
+        if (payload.searchText) {
+            queryFilter["$or"] = [
+                { date: { $regex: ".*" + payload.searchText + ".*", $options: "i", }, },
+                { mood: { $regex: ".*" + payload.searchText + ".*", $options: "i", }, }
+            ];
+        }
+
+        let sortFilter = {};
+        if (payload.sortColumn && payload.sortDirection) {
+            const sortDirection = payload.sortDirection === "asc" ? 1 : -1;
+
+            if (payload.sortColumn === "date") {
+                sortFilter = { date: sortDirection };
+            } else if (payload.sortColumn === "mood") {
+                sortFilter = { "mood": sortDirection };
+            }
+        }
+
+        const [ data, recordCount ] = await Promise.all([
+            db.WeighingCheckins.find(queryFilter)
+                .populate("client")
+                .sort(sortFilter)
+                .limit(pageSize)
+                .skip(pageSize * (page - 1))
+                .lean(),
+            db.GeneralCheckins.countDocuments(queryFilter)
+        ]);
+
+        return res.status(200).json({
+            records: data && data?.length ? formatResponse(data) : [],
+            recordCount: recordCount
+        });
     } catch (err) {
         console.error(err);
         res.status(500).send({ message: "Internal Server Error", error: err });
@@ -89,7 +108,12 @@ const create = async (req, res) => {
 
 const edit = async (req, res) => {
     try {
-        const data = await db.WeighingCheckins.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        const { payload, error } = validateAndRespond(schema, req.body);
+        if (error) {
+            return res.status(400).json({ message: "Validation failed.", errors: error });
+        }
+        const data = await db.WeighingCheckins.updateOne({ _id: req.params.id },
+            { ...payload });
         if (!data) {
             return res.status(404).send("weighing checkin not found");
         }

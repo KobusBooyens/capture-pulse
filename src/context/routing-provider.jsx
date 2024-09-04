@@ -50,7 +50,11 @@ const router = createBrowserRouter(
                     <CheckinHistoryMain type={"general"} />
                 </TableQueryProvider>
             }/>
-            <Route path="checkins/weighing/history/:id" element={<ViewCheckinHistoryPage type={"weighing"} />}/>
+            <Route path="checkins/weighing/history/:id" element={
+                <TableQueryProvider>
+                    <CheckinHistoryMain type={"weighing"} />
+                </TableQueryProvider>
+            }/>
             {/*<Route path="checkins/:id" element={<CheckinManager/>}/>*/}
 
             {/*notifications*/}

@@ -3,7 +3,6 @@ import { useTableQuery } from "../../context/table-query-provider.jsx";
 import useCheckins from "../../api/checkins/useCheckins.js";
 import DataTableSkeleton from "../../controls/Tables/Skeleton/DataTable.jsx";
 import Typography from "../../components/Typography/Typography.jsx";
-import ViewGeneralCheckinPage from "./pages/ViewGeneralCheckinPage.jsx";
 import ViewCheckinHistoryPage from "./pages/ViewCheckinHistoryPage.jsx";
 
 const CheckinHistoryMain = ({ type }) => {
@@ -25,7 +24,7 @@ const CheckinHistoryMain = ({ type }) => {
         searchText,
         sortColumn,
         sortDirection);
-  
+
     return (
         <>
             {isLoading && <DataTableSkeleton/>}

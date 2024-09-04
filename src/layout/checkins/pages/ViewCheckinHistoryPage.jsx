@@ -47,12 +47,13 @@ const ViewCheckinHistoryPage = ({
         deleteCheckin.isPending, deleteCheckin.isSuccess]);
 
     const onFormSubmit = (data) => {
+        console.log("onFormSubmit", data);
         const dataToSave = {
             ...data,
-            client: data.records.client._id
+            client: data.client._id
         };
         console.log(dataToSave);
-        editCheckin.mutate({ id: data.records.client._id, updatedData: dataToSave, type });
+        editCheckin.mutate({ id: data._id, updatedData: dataToSave, type });
     };
 
     const fullName = data ?

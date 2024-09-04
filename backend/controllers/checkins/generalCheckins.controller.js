@@ -1,6 +1,7 @@
 const db = require("../../models");
 const { z } = require("zod");
 const validateAndRespond = require("../../utils/zodValidation");
+const { formatResponse } = require("./shared");
 
 const schema = z.object({
     client: z.string({ required_error: "client is required" }),
@@ -57,7 +58,7 @@ const getAll = async (req, res) => {
             db.GeneralCheckins.countDocuments(queryFilter)
         ]);
 
-        res.status(200).json({
+        return res.status(200).json({
             records: data && data?.length ? formatResponse(data) : [],
             recordCount: recordCount
         });
@@ -68,29 +69,6 @@ const getAll = async (req, res) => {
     }
 };
 
-const formatResponse = (data) => {
-    if (!data || data.length === 0) {
-        return {
-            client: null,
-            records: []
-        };
-    }
-
-    return {
-        client: {
-            _id: data[0].client._id,
-            firstName: data[0].client.firstName,
-            lastName: data[0].client.lastName,
-            contactNumber: data[0].client.contactNumber,
-        },
-        records: data.map(r => ({
-            _id: r._id,
-            date: r.date,
-            mood: r.mood,
-            feedback: r.feedback
-        }))
-    };
-};
 const get = async (req, res) => {
     try {
         const data = await db.GeneralCheckins.findById(req.params.id)
@@ -132,8 +110,12 @@ const create = async (req, res) => {
 
 const edit = async (req, res) => {
     try {
-        console.log({ params: req.params, body: req.body });
-        const data = await db.GeneralCheckins.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        const { payload, error } = validateAndRespond(schema, req.body);
+        if (error) {
+            return res.status(400).json({ message: "Validation failed.", errors: error });
+        }
+        const data = await db.GeneralCheckins.updateOne({ _id: req.params.id },
+            { ...payload });
         if (!data) {
             return res.status(404).send("general checkin not found");
         }
