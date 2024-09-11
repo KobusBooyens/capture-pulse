@@ -17,8 +17,6 @@ export const useBillingData = (data) => {
         setIsAdding({ adding: true, data });
     },[]);
 
-    console.log("useBillingData", data);
-
     const Actions = ({ data }) => {
         const navigate = useNavigate();
         return <Box display="flex" alignItems="center" gap={1}>
@@ -104,6 +102,7 @@ export const useBillingData = (data) => {
 
     const rows = data.map((row) => ({
         id: row._id,
+        _id: row._id,
         firstName: row.firstName,
         lastName: row.lastName,
         gender: row.gender,
@@ -113,7 +112,8 @@ export const useBillingData = (data) => {
         packagePartners: row.packagePartners,
         joined: row.joiningDate,
         lastPaidDate: row.joiningDate,
-        _id: row._id,
+        amount: row.amount,
+        client: row.clientId
     }));
 
     return { columns, rows, isAdding, setIsAdding };

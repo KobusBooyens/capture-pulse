@@ -2,9 +2,10 @@ import { apiClient } from "../api-client.js";
 import queryKeys from "./useQueryKeys.js";
 import useCustomMutation from "../shared/useCustomMutation.js";
 
-const createFn = async (data) => {
+const createFn = async (payload) => {
     await new Promise(resolve => setTimeout(resolve, 2000));
-    const response = await apiClient.post("/accounts", data);
+    console.log("createFn", payload);
+    const response = await apiClient.post("/accounts", payload.data);
     return response.data;
 };
 

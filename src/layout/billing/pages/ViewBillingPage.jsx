@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Box from "../../../components/Box/Box.jsx";
 import { CircularProgress, Grid } from "@mui/material";
 import Card from "@mui/material/Card";
@@ -11,6 +11,11 @@ import DataTableGrid from "../../../controls/Tables/DataTableGrid/DataTableGrid.
 // import DeleteDialog from "../../../controls/Dialogs/DeleteDialog.jsx";
 import { useBillingData } from "../data/useBillingData.jsx";
 import PropTypes from "prop-types";
+import AddEditPayment from "../dialogs/AddEditPayment.jsx";
+import { FormProvider, useForm } from "react-hook-form";
+import AddEditPaymentForm from "../forms/AddEditPaymentForm.jsx";
+import useCreateAccount from "../../../api/accounts/useCreateAccount.jsx";
+import dayjs from "dayjs";
 
 const ViewBillingPage = ({
     data,
@@ -22,8 +27,39 @@ const ViewBillingPage = ({
 },
 ) => {
 
-    const { columns, rows } = useBillingData(data.records);
-  
+    const { columns, rows, isAdding, setIsAdding } = useBillingData(data.records);
+    const createPayment = useCreateAccount();
+    const methods = useForm();
+
+    const handleCloseDialog = () => {
+        setIsAdding({ adding: false, data: {} });
+        methods.reset({});
+    };
+
+    useEffect(() => {
+        methods.reset({
+            date: dayjs(),
+            amount: isAdding.data.amount
+        });
+    },[isAdding.data]);
+
+    useEffect(() => {
+        if (!createPayment.isPending && createPayment.isSuccess) {
+            handleCloseDialog();
+        }
+
+    }, [createPayment.isPending, createPayment.isSuccess]);
+
+    const onFormSubmit = (data) => {
+        console.log("onFormSubmit", isAdding.data);
+        const dataToSave = {
+            ...data,
+            client: isAdding.data.client
+        };
+        console.log("dataToSave", dataToSave);
+        createPayment.mutate({ data: dataToSave });
+    };
+
     return (
         <Box pt={6} pb={3}>
             <Grid container spacing={6}>
@@ -56,25 +92,18 @@ const ViewBillingPage = ({
                     </Card>
                 </Grid>
             </Grid>
-            {/*<AddEditCheckin*/}
-            {/*  openDialog={isActioned.action === "edit"}*/}
-            {/*  onClose={handleCloseDialog}*/}
-            {/*  title={"Edit Check-in"}*/}
-            {/*  fullName={`${data.records.client?.firstName} ${data.records.client?.lastName}`}*/}
-            {/*>*/}
-            {/*  <FormProvider {...methods}>*/}
-            {/*    <form onSubmit={methods.handleSubmit(onFormSubmit)} noValidate>*/}
-            {/*      {type === "general" ?*/}
-            {/*        <AddEditGeneralCheckinForm onCancel={handleCloseDialog}*/}
-            {/*                                   isLoading={editCheckin.isPending}*/}
-            {/*        /> :*/}
-            {/*        <AddEditWeighingCheckinForm onCancel={handleCloseDialog}*/}
-            {/*                                    isLoading={editCheckin.isPending}*/}
-            {/*        />*/}
-            {/*      }*/}
-            {/*    </form>*/}
-            {/*  </FormProvider>*/}
-            {/*</AddEditCheckin>*/}
+            <AddEditPayment
+                openDialog={isAdding.adding}
+                onClose={handleCloseDialog}
+                title={"Add Payment"}
+                fullName={`${isAdding.data?.firstName} ${isAdding.data?.lastName}`}
+            >
+                <FormProvider {...methods}>
+                    <form onSubmit={methods.handleSubmit(onFormSubmit)} noValidate>
+                        <AddEditPaymentForm isLoading={createPayment.isPending} onCancel={handleCloseDialog}/>
+                    </form>
+                </FormProvider>
+            </AddEditPayment>
             {/*<DeleteDialog*/}
             {/*  openDialog={isActioned.action === "delete"}*/}
             {/*  onClose={handleCloseDialog}*/}

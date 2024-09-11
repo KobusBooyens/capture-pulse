@@ -154,6 +154,7 @@ const formatClientResponse = async (data) => {
     return data.map(d => {
         const resp = {
             ...d,
+            clientId: d._id,
             package: d?.clientPackage?.package._id,
             packageName: d?.clientPackage?.package.name,
             amount: d?.clientPackage?.amount,
