@@ -2,21 +2,19 @@ import React, { useEffect } from "react";
 import Box from "../../../components/Box/Box.jsx";
 import { CircularProgress, Grid } from "@mui/material";
 import Card from "@mui/material/Card";
-import Typography from "../../../components/Typography/Typography.jsx";
 import ClientDetails from "../../shared/ClientDetails.jsx";
 import PropTypes from "prop-types";
-import { useCheckinHistoryData } from "../data/useCheckinHistoryData.jsx";
 import { FormProvider, useForm } from "react-hook-form";
-import useEditCheckin from "../../../api/checkins/useEditCheckin.js";
-import AddEditCheckin from "../dialogs/AddEditCheckin.jsx";
-import AddEditGeneralCheckinForm from "../forms/AddEditGeneralCheckinForm.jsx";
-import AddEditWeighingCheckinForm from "../forms/AddEditWeighingCheckinForm.jsx";
 import DeleteDialog from "../../../controls/Dialogs/DeleteDialog.jsx";
-import useDeleteCheckin from "../../../api/checkins/useDeleteCheckin.js";
 import DataTableGrid from "../../../controls/Tables/DataTableGrid/DataTableGrid.jsx";
+import useDeleteBilling from "../../../api/billing/useDeleteBilling.jsx";
+import useEditBilling from "../../../api/billing/useEditBilling.jsx";
+import AddEditBillingForm from "../forms/AddEditBillingForm.jsx";
+import useBillingHistoryData from "../data/useBillingHistoryData.jsx";
+import AddEditBilling from "../dialogs/AddEditBilling.jsx";
+import Typography from "../../../components/Typography/Typography.jsx";
 
-const ViewCheckinHistoryPage = ({
-    type,
+const ViewBillingHistoryPage = ({
     data,
     isLoading,
     paginationModel,
@@ -24,9 +22,10 @@ const ViewCheckinHistoryPage = ({
     onSearchModelChange,
     onSortModelChange
 }) => {
-    const editCheckin = useEditCheckin();
-    const deleteCheckin = useDeleteCheckin();
-    const { columns, rows, isActioned, setIsActioned } = useCheckinHistoryData(type, data?.records);
+    const editBilling = useEditBilling();
+    const deleteBilling = useDeleteBilling();
+
+    const { columns, rows, isActioned, setIsActioned } = useBillingHistoryData(data);
     const methods = useForm();
 
     const handleCloseDialog = () => {
@@ -38,31 +37,30 @@ const ViewCheckinHistoryPage = ({
     }, [isActioned.action]);
 
     useEffect(() => {
-        if (!editCheckin.isPending && editCheckin.isSuccess ||
-          !deleteCheckin.isPending && deleteCheckin.isSuccess) {
+        if (!editBilling.isPending && editBilling.isSuccess ||
+          !deleteBilling.isPending && deleteBilling.isSuccess) {
             handleCloseDialog();
         }
 
-    }, [editCheckin.isPending, editCheckin.isSuccess,
-        deleteCheckin.isPending, deleteCheckin.isSuccess]);
+    }, [editBilling.isPending, editBilling.isSuccess,
+        deleteBilling.isPending, deleteBilling.isSuccess]);
 
     const onFormSubmit = (data) => {
-        console.log("onFormSubmit", data);
         const dataToSave = {
             ...data,
-            client: data.client._id
+            amount: data.amount.toString(),
+            client: data.client
         };
-        console.log(dataToSave);
-        editCheckin.mutate({ id: data._id, updatedData: dataToSave, type });
+        editBilling.mutate({ id: data._id, updatedData: dataToSave });
     };
 
     const fullName = data ?
         <ClientDetails
-            name={data.records.client?.firstName}
-            surname={data.records.client?.lastName}
-            contactNumber={data.records.client?.contactNumber}
+            name={data.client?.firstName}
+            surname={data.client?.lastName}
+            contactNumber={data.client?.contactNumber}
         /> : <CircularProgress /> ;
-    
+
     return (
         <Box pt={6} pb={3}>
             <Grid container spacing={6}>
@@ -80,9 +78,7 @@ const ViewCheckinHistoryPage = ({
                             className={"flex flex-row justify-between"}
                         >
                             {fullName}
-                            <Typography variant="subtitle" color="white" textTransform={"uppercase"}>
-                                {type}
-                            </Typography>
+                            <Typography variant="subtitle" color="white">Payment History</Typography>
                         </Box>
                         <Box p={3}>
                             <DataTableGrid
@@ -98,37 +94,29 @@ const ViewCheckinHistoryPage = ({
                     </Card>
                 </Grid>
             </Grid>
-            <AddEditCheckin
+            <AddEditBilling
                 openDialog={isActioned.action === "edit"}
                 onClose={handleCloseDialog}
-                title={"Edit Check-in"}
-                fullName={`${data.records.client?.firstName} ${data.records.client?.lastName}`}
+                title={"Edit Payment"}
+                fullName={`${data.client?.firstName} ${data.client?.lastName}`}
             >
                 <FormProvider {...methods}>
                     <form onSubmit={methods.handleSubmit(onFormSubmit)} noValidate>
-                        {type === "general" ?
-                            <AddEditGeneralCheckinForm onCancel={handleCloseDialog}
-                                isLoading={editCheckin.isPending}
-                            /> :
-                            <AddEditWeighingCheckinForm onCancel={handleCloseDialog}
-                                isLoading={editCheckin.isPending}
-                            />
-                        }
+                        <AddEditBillingForm isLoading={editBilling.isPending} onCancel={handleCloseDialog}/>
                     </form>
                 </FormProvider>
-            </AddEditCheckin>
+            </AddEditBilling>
             <DeleteDialog
                 openDialog={isActioned.action === "delete"}
                 onClose={handleCloseDialog}
-                onConfirm={() => deleteCheckin.mutate({ id: isActioned.data._id, type })}
-                isLoading={deleteCheckin.isPending}
+                onConfirm={() => deleteBilling.mutate({ id: isActioned.data._id })}
+                isLoading={deleteBilling.isPending}
             />
         </Box>
     );
 };
 
-ViewCheckinHistoryPage.propTypes = {
-    type: PropTypes.oneOf(["General", "Weighing"]),
+ViewBillingHistoryPage.propTypes = {
     data: PropTypes.objectOf(PropTypes.array).isRequired,
     isLoading: PropTypes.bool,
     onPaginationModelChange: PropTypes.func,
@@ -137,4 +125,4 @@ ViewCheckinHistoryPage.propTypes = {
     paginationModel: PropTypes.object
 };
 
-export default ViewCheckinHistoryPage;
+export default ViewBillingHistoryPage;

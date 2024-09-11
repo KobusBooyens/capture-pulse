@@ -4,11 +4,11 @@ import useCustomMutation from "../shared/useCustomMutation.js";
 
 const editFn = async ({ id, updatedData }) => {
     await new Promise(resolve => setTimeout(resolve, 2000));
-    const response = await apiClient.put(`accounts/${id}`, updatedData);
+    const response = await apiClient.patch(`billing/${id}`, updatedData);
     return response.data;
 };
 
-const useEditAccount = () => {
+const useEditBilling = () => {
     return useCustomMutation(editFn, queryKeys.PAGINATED, {
         success: {
             title: "Success!",
@@ -23,4 +23,4 @@ const useEditAccount = () => {
     });
 };
 
-export default useEditAccount;
+export default useEditBilling;

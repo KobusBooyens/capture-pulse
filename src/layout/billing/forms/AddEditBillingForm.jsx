@@ -6,7 +6,7 @@ import Button from "../../../components/Button/Button.jsx";
 import Box from "../../../components/Box/Box.jsx";
 import PropTypes from "prop-types";
 
-const AddEditPaymentForm = ({ onCancel, isLoading }) => {
+const AddEditBillingForm = ({ onCancel, isLoading }) => {
     return (
         <Grid container spacing={3}>
             <Grid item xs={12} md={6}>
@@ -60,9 +60,9 @@ const AddEditPaymentForm = ({ onCancel, isLoading }) => {
     );
 };
 
-AddEditPaymentForm.propTypes = {
+AddEditBillingForm.propTypes = {
     onCancel: PropTypes.func,
     isLoading: PropTypes.bool
 };
 
-export default AddEditPaymentForm;
+export default AddEditBillingForm;

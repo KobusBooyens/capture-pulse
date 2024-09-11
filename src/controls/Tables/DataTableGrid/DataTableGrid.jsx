@@ -50,6 +50,7 @@ const DataTableGrid = ({
                 paginationMode={"server"}
                 disableColumnFilter
                 disableColumnMenu
+                disableRowSelectionOnClick
             />
         </TableContainer>
     );

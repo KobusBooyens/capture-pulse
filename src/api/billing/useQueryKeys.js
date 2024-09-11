@@ -1,8 +1,8 @@
-export const queryKey = "accounts";
-const accountsQueryKeys = {
+export const queryKey = "billing";
+const billingQueryKeys = {
     PAGINATED: [queryKey, "pagination"],
     SEARCH: [queryKey, "search"],
     DETAIL: [queryKey, "detail"]
 };
 
-export default accountsQueryKeys;
+export default billingQueryKeys;

@@ -17,6 +17,8 @@ import WeighingCheckinsMain from "../layout/checkins/WeighingCheckinsMain.jsx";
 import ViewCheckinHistoryPage from "../layout/checkins/pages/ViewCheckinHistoryPage.jsx";
 import TableQueryProvider from "./table-query-provider.jsx";
 import CheckinHistoryMain from "../layout/checkins/CheckinHistoryMain.jsx";
+import ViewBillingHistoryPage from "../layout/billing/pages/ViewBillingHistoryPage.jsx";
+import BillingHistoryMain from "../layout/billing/BillingHistoryMain.jsx";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -55,10 +57,6 @@ const router = createBrowserRouter(
                     <CheckinHistoryMain type={"weighing"} />
                 </TableQueryProvider>
             }/>
-            {/*<Route path="checkins/:id" element={<CheckinManager/>}/>*/}
-
-            {/*notifications*/}
-            <Route path="notifications" element={<NotificationsMain />}/>
 
             {/*accounts*/}
             <Route path="billing" element={
@@ -66,7 +64,14 @@ const router = createBrowserRouter(
                     <BillingMain />
                 </TableQueryProvider>
             }/>
-            {/*<Route path="billing/:id" element={<BillingManger/>}/>*/}
+            <Route path={"billing/history/:id"} element={
+                <TableQueryProvider>
+                    <BillingHistoryMain />
+                </TableQueryProvider>
+            }/>
+          
+            {/*notifications*/}
+            <Route path="notifications" element={<NotificationsMain />}/>
 
             {/*users*/}
             <Route path="users" element={<Users />}/>

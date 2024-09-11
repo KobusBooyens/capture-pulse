@@ -1,20 +1,15 @@
 import React, { useEffect } from "react";
 import Box from "../../../components/Box/Box.jsx";
-import { CircularProgress, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import Card from "@mui/material/Card";
 import Typography from "../../../components/Typography/Typography.jsx";
 import DataTableGrid from "../../../controls/Tables/DataTableGrid/DataTableGrid.jsx";
-// import AddEditCheckin from "../../checkins/dialogs/AddEditCheckin.jsx";
-// import { FormProvider } from "react-hook-form";
-// import AddEditGeneralCheckinForm from "../../checkins/forms/AddEditGeneralCheckinForm.jsx";
-// import AddEditWeighingCheckinForm from "../../checkins/forms/AddEditWeighingCheckinForm.jsx";
-// import DeleteDialog from "../../../controls/Dialogs/DeleteDialog.jsx";
 import { useBillingData } from "../data/useBillingData.jsx";
 import PropTypes from "prop-types";
-import AddEditPayment from "../dialogs/AddEditPayment.jsx";
+import AddEditBilling from "../dialogs/AddEditBilling.jsx";
 import { FormProvider, useForm } from "react-hook-form";
-import AddEditPaymentForm from "../forms/AddEditPaymentForm.jsx";
-import useCreateAccount from "../../../api/accounts/useCreateAccount.jsx";
+import AddEditBillingForm from "../forms/AddEditBillingForm.jsx";
+import useCreateBilling from "../../../api/billing/useCreateBilling.jsx";
 import dayjs from "dayjs";
 
 const ViewBillingPage = ({
@@ -24,11 +19,10 @@ const ViewBillingPage = ({
     onPaginationModelChange,
     onSearchModelChange,
     onSortModelChange,
-},
-) => {
+}) => {
 
     const { columns, rows, isAdding, setIsAdding } = useBillingData(data.records);
-    const createPayment = useCreateAccount();
+    const createPayment = useCreateBilling();
     const methods = useForm();
 
     const handleCloseDialog = () => {
@@ -51,12 +45,11 @@ const ViewBillingPage = ({
     }, [createPayment.isPending, createPayment.isSuccess]);
 
     const onFormSubmit = (data) => {
-        console.log("onFormSubmit", isAdding.data);
         const dataToSave = {
             ...data,
+            amount: data.amount.toString(),
             client: isAdding.data.client
         };
-        console.log("dataToSave", dataToSave);
         createPayment.mutate({ data: dataToSave });
     };
 
@@ -92,7 +85,7 @@ const ViewBillingPage = ({
                     </Card>
                 </Grid>
             </Grid>
-            <AddEditPayment
+            <AddEditBilling
                 openDialog={isAdding.adding}
                 onClose={handleCloseDialog}
                 title={"Add Payment"}
@@ -100,16 +93,10 @@ const ViewBillingPage = ({
             >
                 <FormProvider {...methods}>
                     <form onSubmit={methods.handleSubmit(onFormSubmit)} noValidate>
-                        <AddEditPaymentForm isLoading={createPayment.isPending} onCancel={handleCloseDialog}/>
+                        <AddEditBillingForm isLoading={createPayment.isPending} onCancel={handleCloseDialog}/>
                     </form>
                 </FormProvider>
-            </AddEditPayment>
-            {/*<DeleteDialog*/}
-            {/*  openDialog={isActioned.action === "delete"}*/}
-            {/*  onClose={handleCloseDialog}*/}
-            {/*  onConfirm={() => deleteCheckin.mutate({ id: isActioned.data._id, type })}*/}
-            {/*  isLoading={deleteCheckin.isPending}*/}
-            {/*/>*/}
+            </AddEditBilling>
         </Box>
     );
 };

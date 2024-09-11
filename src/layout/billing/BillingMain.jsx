@@ -1,7 +1,7 @@
 import React from "react";
 import Typography from "../../components/Typography/Typography.jsx";
 import { useTableQuery } from "../../context/table-query-provider.jsx";
-import useAccounts from "../../api/accounts/useAccounts.jsx";
+import useBillings from "../../api/billing/useBillings.jsx";
 import DataTableSkeleton from "../../controls/Tables/Skeleton/DataTable.jsx";
 import ViewBillingPage from "./pages/ViewBillingPage.jsx";
 
@@ -17,7 +17,7 @@ const BillingMain = () => {
         updateSort,
     } = useTableQuery();
 
-    const { isLoading, error, data } = useAccounts(
+    const { isLoading, error, data } = useBillings(
         page,
         pageSize,
         searchText,
@@ -30,7 +30,6 @@ const BillingMain = () => {
             {isLoading && <DataTableSkeleton/>}
             {error && <Typography>An error has occurred {error}</Typography>}
             {data && !error && !isLoading &&
-            // <Typography>Welcome to the Billing Page</Typography>
                   <ViewBillingPage
                       data={data}
                       isLoading={isLoading}

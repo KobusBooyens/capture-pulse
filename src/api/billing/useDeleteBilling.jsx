@@ -4,10 +4,10 @@ import useCustomMutation from "../shared/useCustomMutation.js";
 
 const deleteFn = async ({ id }) => {
     await new Promise(resolve => setTimeout(resolve, 2000));
-    return await apiClient.delete(`/accounts/${id}`);
+    return await apiClient.delete(`/billing/${id}`);
 };
 
-const useDeleteAccount = () => {
+const useDeleteBilling = () => {
     return useCustomMutation(deleteFn, queryKeys.PAGINATED, {
         success: {
             title: "Success!",
@@ -22,4 +22,4 @@ const useDeleteAccount = () => {
     });
 };
 
-export default useDeleteAccount;
+export default useDeleteBilling;

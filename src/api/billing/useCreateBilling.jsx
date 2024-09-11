@@ -5,11 +5,11 @@ import useCustomMutation from "../shared/useCustomMutation.js";
 const createFn = async (payload) => {
     await new Promise(resolve => setTimeout(resolve, 2000));
     console.log("createFn", payload);
-    const response = await apiClient.post("/accounts", payload.data);
+    const response = await apiClient.post("/billing", payload.data);
     return response.data;
 };
 
-const useCreateAccount = () => {
+const useCreateBilling = () => {
     return useCustomMutation(createFn, queryKeys.PAGINATED, {
         success: {
             title: "Success!",
@@ -24,5 +24,5 @@ const useCreateAccount = () => {
     });
 };
 
-export default useCreateAccount;
+export default useCreateBilling;
 

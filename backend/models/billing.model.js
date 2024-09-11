@@ -20,7 +20,7 @@ const schema = new mongoose.Schema(
             type: String
         },
     }, {
-        collection: "accounts",
+        collection: "billing",
         timestamps: true
     }
 );
@@ -28,5 +28,5 @@ const schema = new mongoose.Schema(
 schema.index({ client: 1 });
 
 schema.plugin(mongoose_delete, { deletedAt: true, deletedBy: true, overrideMethods: "all" });
-const Accounts = mongoose.model("Accounts", schema);
-module.exports = Accounts;
+const Billing = mongoose.model("Billing", schema);
+module.exports = Billing;

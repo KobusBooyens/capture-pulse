@@ -15,7 +15,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props}/>;
 });
 
-const AddEditPayment = ({ openDialog, onClose, title, fullName, isLoading, children }) => {
+const AddEditBilling = ({ openDialog, onClose, title, fullName, isLoading, children }) => {
     return (
         <>
             <Dialog
@@ -48,7 +48,7 @@ const AddEditPayment = ({ openDialog, onClose, title, fullName, isLoading, child
     );
 };
 
-AddEditPayment.propTypes = {
+AddEditBilling.propTypes = {
     openDialog: PropTypes.bool,
     onClose: PropTypes.func,
     title: PropTypes.string,
@@ -58,4 +58,4 @@ AddEditPayment.propTypes = {
     children: PropTypes.node
 };
 
-export default AddEditPayment;
+export default AddEditBilling;

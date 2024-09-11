@@ -10,6 +10,6 @@ db.ClientPackage = require("./clientPackage.model");
 db.Checkins = require("./checkins.model");
 db.GeneralCheckins = require("./generalCheckins.model");
 db.WeighingCheckins = require("./weighingCheckins.model");
-db.Accounts = require("./accounts.model");
+db.Billing = require("./billing.model");
 
 module.exports = db;
