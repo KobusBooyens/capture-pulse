@@ -4,6 +4,7 @@ import Typography from "../../components/Typography/Typography.jsx";
 import useClients from "../../api/clients/useClients.js";
 import ViewWeighingCheckinPage from "./pages/ViewWeighingCheckinPage.jsx";
 import { useTableQuery } from "../../context/table-query-provider.jsx";
+import useCheckins from "../../api/checkins/useCheckins.js";
 
 const WeighingCheckinsMain = () => {
     const {
@@ -17,13 +18,14 @@ const WeighingCheckinsMain = () => {
         updateSort,
     } = useTableQuery();
 
-    const { isLoading, error, data } = useClients({
+    const { isLoading, error, data } = useCheckins(
+        "weighing",
         page,
         pageSize,
         searchText,
         sortColumn,
         sortDirection
-    });
+    );
 
     return (
         <>

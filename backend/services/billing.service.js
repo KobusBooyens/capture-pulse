@@ -1,5 +1,6 @@
 const db = require("../models");
-const { formatClientResponse, formatClientBillingResponse } = require("../controllers/billing/utils");
+const { formatClientResponse, formatClientBillingResponse } = require("../controllers/utils");
+const { ObjectId } = require("mongodb");
 
 exports.getAll = async (payload) => {
     const pageSize = payload.pageSize ? Number(payload.pageSize) : 10;
@@ -14,15 +15,15 @@ exports.getAll = async (payload) => {
         ];
     }
 
-    let sortFilter = {};
+    let sortFilter = { latestPaidDate: 1, lastName: 1, firstName: 1 };
     if (payload.sortColumn && payload.sortDirection) {
         const sortDirection = payload.sortDirection === "asc" ? 1 : -1;
 
         if (payload.sortColumn === "client") {
             sortFilter = { lastName: sortDirection, firstName: sortDirection };
 
-        } else if (payload.sortColumn === "date") {
-            sortFilter = { date: sortDirection };
+        } else if (payload.sortColumn === "latestPaidDate") {
+            sortFilter = { latestPaidDate: sortDirection };
         }
     }
 
@@ -59,7 +60,7 @@ exports.get = async (clientId, payload) => {
         ];
     }
 
-    let sortFilter = {};
+    let sortFilter = { date: -1 };
     if (payload.sortColumn && payload.sortDirection) {
         const sortDirection = payload.sortDirection === "asc" ? 1 : -1;
 
@@ -86,4 +87,51 @@ exports.get = async (clientId, payload) => {
         ...formatClientBillingResponse(data),
         recordCount: recordCount
     };
+};
+
+exports.create = async (payload) => {
+    const handleBillingRecord = async (item) => {
+        const newBilling = new db.Billing(item);
+        const savedBilling = await newBilling.save();
+
+        await db.Client.findOneAndUpdate(
+            { _id: savedBilling.client },
+            { $max: { latestPaidDate: savedBilling.date } }
+        );
+
+        return savedBilling;
+    };
+
+    if (Array.isArray(payload)) {
+        return await Promise.all(payload.map(handleBillingRecord));
+    }
+
+    return await handleBillingRecord(payload);
+};
+
+exports.edit = async (id, payload) => {
+    const updateLatestPaidDate = async (originalBilling) => {
+        if (payload.date && new Date(payload.date).getTime() !== originalBilling.date.getTime()) {
+            const latestBilling = await db.Billing
+                .find({ client: originalBilling.client })
+                .sort({ date: -1 })
+                .limit(1);
+
+            const latestPaidDate = latestBilling.length > 0 ? latestBilling[0].date : null;
+            await db.Client.findOneAndUpdate(
+                { _id: originalBilling.client },
+                { $set: { latestPaidDate } }
+            );
+
+        }
+    };
+
+    const originalBilling = await db.Billing.findById(id);
+
+    const updatedBilling = await db.Billing.updateOne({ _id: id },
+        { ...payload });
+
+    await updateLatestPaidDate(originalBilling);
+
+    return updatedBilling;
 };

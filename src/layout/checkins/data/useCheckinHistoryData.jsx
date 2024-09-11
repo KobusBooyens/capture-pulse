@@ -19,7 +19,6 @@ export const useCheckinHistoryData = (type, data) => {
     },[]);
 
     const Actions = ({ data }) => {
-        console.log("Actions", data);
         return (
             <Box display="flex" alignItems="center" gap={1}>
                 <Tooltip title="Edit" placement="top">
@@ -82,7 +81,7 @@ export const useCheckinHistoryData = (type, data) => {
         }
     ];
 
-    const rows = data.records.map(row => ({
+    const rows = data?.records?.map(row => ({
         id: row._id,
         date: row.date,
         [type === "general" ? "mood" : "weight"]: type === "general" ? row.mood : row.weight,

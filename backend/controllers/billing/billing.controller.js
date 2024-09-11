@@ -24,7 +24,9 @@ const getAll = async (req, res) => {
         if (error) {
             return res.status(400).json({ message: "Validation failed.", errors: error });
         }
+
         const response = await BillingService.getAll(payload);
+
         res.status(200).json(response);
     } catch (err) {
         console.error(err);
@@ -40,6 +42,7 @@ const get = async (req, res) => {
         }
 
         const response = await BillingService.get(req.params.id, payload);
+
         res.status(200).json(response);
     } catch (err) {
         console.error(err);
@@ -49,22 +52,14 @@ const get = async (req, res) => {
 
 const create = async (req, res) => {
     try {
-
         const { payload, error } = validateAndRespond(schema, req.body);
         if (error) {
             return res.status(400).json({ message: "Validation failed.", errors: error });
         }
-        if (Array.isArray(payload)) {
-            const data = await Promise.all(req.body.map(async (item) => {
-                const newItem = new db.Billing(item);
-                return await newItem.save();
-            }));
-            res.status(201).json(data);
-        } else {
-            const data = new db.Billing(payload);
-            await data.save();
-            res.status(201).json(data);
-        }
+
+        const response = await BillingService.create(payload);
+
+        res.status(201).json(response);
     } catch (err) {
         console.error(err);
         res.status(500).send({ message: "Internal Server Error", error: err });
@@ -77,12 +72,13 @@ const edit = async (req, res) => {
         if (error) {
             return res.status(400).json({ message: "Validation failed.", errors: error });
         }
+        const response = await BillingService.edit(req.params.id, payload);
         const data = await db.Billing.updateOne({ _id: req.params.id },
             { ...payload });
         if (!data) {
             return res.status(404).send("weighing checkin not found");
         }
-        res.json(data);
+        res.json(response);
     } catch (err) {
         console.error(err);
         res.status(500).send({ message: "Internal Server Error", error: err });

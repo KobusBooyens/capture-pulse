@@ -4,6 +4,7 @@ import useCheckins from "../../api/checkins/useCheckins.js";
 import DataTableSkeleton from "../../controls/Tables/Skeleton/DataTable.jsx";
 import Typography from "../../components/Typography/Typography.jsx";
 import ViewCheckinHistoryPage from "./pages/ViewCheckinHistoryPage.jsx";
+import useCheckin from "../../api/checkins/useCheckin.js";
 
 const CheckinHistoryMain = ({ type }) => {
     const {
@@ -17,7 +18,7 @@ const CheckinHistoryMain = ({ type }) => {
         updateSort,
     } = useTableQuery();
 
-    const { isLoading, error, data } = useCheckins(
+    const { isLoading, error, data } = useCheckin(
         type,
         page,
         pageSize,

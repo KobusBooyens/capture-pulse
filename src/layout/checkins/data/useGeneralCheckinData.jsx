@@ -12,7 +12,7 @@ import Typography from "../../../components/Typography/Typography.jsx";
 
 export const useGeneralCheckinData = (data) => {
     const [isAdding, setIsAdding] = useState({ adding: false, data: {} });
-    console.log("useGeneralCheckinData", data);
+
     const handleAddCheckin = useCallback((data) => {
         setIsAdding({ adding: true, data });
     },[]);
@@ -83,10 +83,11 @@ export const useGeneralCheckinData = (data) => {
         },
         {
             headerName: "Last check-in",
-            field: "lastCheckin",
+            field: "latestCheckinDate",
+            align:"center",
             renderCell: (params) =>
                 <Typography variant="normal" color="text">
-                    {formatDate(params.row.joined)}
+                    {params.row.latestCheckinDate ? formatDate(params.row.latestCheckinDate) : "-"}
                 </Typography>,
             flex: 0.5,
             sortable: true
@@ -112,7 +113,7 @@ export const useGeneralCheckinData = (data) => {
         goal: row.goal,
         packagePartners: row.packagePartners,
         joined: row.joiningDate,
-        lastCheckin: row.lastCheckin,
+        latestCheckinDate: row.latestCheckinDate,
         _id: row._id,
     }));
     return { columns, rows, isAdding, setIsAdding };

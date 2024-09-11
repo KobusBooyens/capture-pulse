@@ -4,6 +4,7 @@ import Typography from "../../components/Typography/Typography.jsx";
 import useClients from "../../api/clients/useClients.js";
 import ViewGeneralCheckinPage from "./pages/ViewGeneralCheckinPage.jsx";
 import { useTableQuery } from "../../context/table-query-provider.jsx";
+import useCheckins from "../../api/checkins/useCheckins.js";
 
 const GeneralCheckinsMain = () => {
     const {
@@ -17,13 +18,14 @@ const GeneralCheckinsMain = () => {
         updateSort,
     } = useTableQuery();
 
-    const { isLoading, error, data } = useClients({
+    const { isLoading, error, data } = useCheckins(
+        "general",
         page,
         pageSize,
         searchText,
         sortColumn,
         sortDirection
-    });
+    );
     return (
         <>
             {isLoading && <DataTableSkeleton/>}

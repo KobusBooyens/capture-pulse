@@ -47,6 +47,15 @@ const schema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "ClientPackage",
             required: true,
+        },
+        latestPaidDate: {
+            type: mongoose.Schema.Types.Date
+        },
+        latestCheckinDate: {
+            type: mongoose.Schema.Types.Date
+        },
+        latestWeighingDate: {
+            type: mongoose.Schema.Types.Date
         }
     }, {
         collection: "clients",

@@ -12,6 +12,7 @@ exports.formatResponse = (data) => {
             firstName: data[0].client.firstName,
             lastName: data[0].client.lastName,
             contactNumber: data[0].client.contactNumber,
+            lastCheckinDate: data[0].client.lastCheckinDate
         },
         records: data.map(r => ({
             _id: r._id,

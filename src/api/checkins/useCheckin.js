@@ -1,13 +1,15 @@
-import { useLocation, useParams } from "react-router-dom";
-import checkinQueryKeys from "./useQueryKeys.js";
+import { useParams } from "react-router-dom";
+import queryKeys from "./useQueryKeys.js";
 import useCustomFetch from "../shared/useCustomFetch.js";
+import { buildUrlParams } from "../api-client.js";
 
-const useCheckin = () => {
+const useCheckin = (type, page, pageSize, searchText, sortColumn, sortDirection) => {
+
     const { id } = useParams();
-    const location = useLocation();
-    const searchParams = new URLSearchParams(location.search);
-    const type = searchParams.get("type");
-    return useCustomFetch(checkinQueryKeys.DETAIL, `checkins/${type}/${id}`);
+    const url = `/checkins/${type}/${id}?`+
+      `${buildUrlParams(page, pageSize, searchText, sortColumn, sortDirection)}`;
+
+    return useCustomFetch([...queryKeys.PAGINATED, url], url);
 };
 
 export default useCheckin;

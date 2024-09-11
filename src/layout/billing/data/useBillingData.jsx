@@ -9,6 +9,7 @@ import dayjs from "dayjs";
 import ClientDetails from "../../shared/ClientDetails.jsx";
 import PackageDetails from "../../shared/PackageDetails.jsx";
 import Typography from "../../../components/Typography/Typography.jsx";
+import billingStatus from "../../../data/billingStatus.jsx";
 
 export const useBillingData = (data) => {
     const [isAdding, setIsAdding] = useState({ adding: false, data: {} });
@@ -37,6 +38,20 @@ export const useBillingData = (data) => {
         data: PropTypes.object,
     };
 
+    //TODO:: This logic should be updated to accumulate the fees paid up to date
+    const BillingStatus = ({ data }) => {
+        const indicator = dayjs(data.latestPaidDate).diff(dayjs(), "days");
+        return !data.latestPaidDate ? billingStatus.statusChips["3"] :
+            indicator <= -30 ? billingStatus.statusChips["2"] : //older than 20 days then flag as arrears
+                indicator <= -15 ? billingStatus.statusChips["1"] : //older than 10 days then flag as follow up
+                    billingStatus.statusChips["0"]; //up to date
+     
+    };
+
+    BillingStatus.propTypes = {
+        data: PropTypes.object,
+    };
+
     const formatDate = (date) => {
         return dayjs(date).format("ll");
     };
@@ -60,34 +75,33 @@ export const useBillingData = (data) => {
         {
             headerName: "Package",
             field: "package",
-            flex: 1,
+            flex: 0.5,
             renderCell: (params) =>
                 <PackageDetails
                     name={params.row?.packageName ?? "N/A"}
                     goal={params.row.goal}
                     partnersDetail={params.row.packagePartners}
                 />,
-            sortable: true
-        },
-        {
-            headerName: "Joined",
-            field: "joined",
-            renderCell: (params) =>
-                <Typography variant="normal" color="text">
-                    {formatDate(params.row.joined)}
-                </Typography>,
-            flex: 0.5,
-            sortable: true
+            sortable: false
         },
         {
             headerName: "Last Paid Date",
-            field: "lastPaidDate",
+            field: "latestPaidDate",
+            align:"center",
             renderCell: (params) =>
                 <Typography variant="normal" color="text">
-                    {formatDate(params.row.joined)}
+                    { params.row.latestPaidDate ? formatDate(params.row.latestPaidDate) : "-"}
                 </Typography>,
             flex: 0.5,
             sortable: true
+        },
+        {
+            headerName: "Status",
+            field: "billingStatus",
+            renderCell: (params) =>
+                <BillingStatus data={params.row}/>,
+            flex: 0.5,
+            sortable: false
         },
         {
             headerName: "Action",
@@ -111,7 +125,7 @@ export const useBillingData = (data) => {
         goal: row.goal,
         packagePartners: row.packagePartners,
         joined: row.joiningDate,
-        lastPaidDate: row.joiningDate,
+        latestPaidDate: row.latestPaidDate,
         amount: row.amount,
         client: row.clientId
     }));

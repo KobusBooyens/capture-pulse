@@ -2,6 +2,8 @@ const db = require("../../models");
 const { z } = require("zod");
 const validateAndRespond = require("../../utils/zodValidation");
 const { formatResponse } = require("./_shared");
+const CheckinWeighingService = require("../../services/checkin-weighing.service");
+const { formatClientResponse } = require("../utils");
 
 const schema = z.object({
     client: z.string({ required_error: "client is required" }),
@@ -25,43 +27,9 @@ const getAll = async (req, res) => {
             return res.status(400).json({ message: "Validation failed.", errors: error });
         }
 
-        const pageSize = payload.pageSize ? Number(payload.pageSize) : 10;
-        const page = payload.page ? Number(payload.page) : 1;
-
-        let queryFilter = { client: req.params.id };
-
-        if (payload.searchText) {
-            queryFilter["$or"] = [
-                { date: { $regex: ".*" + payload.searchText + ".*", $options: "i", }, },
-                { mood: { $regex: ".*" + payload.searchText + ".*", $options: "i", }, }
-            ];
-        }
-
-        let sortFilter = {};
-        if (payload.sortColumn && payload.sortDirection) {
-            const sortDirection = payload.sortDirection === "asc" ? 1 : -1;
-
-            if (payload.sortColumn === "date") {
-                sortFilter = { date: sortDirection };
-            } else if (payload.sortColumn === "mood") {
-                sortFilter = { "mood": sortDirection };
-            }
-        }
-
-        const [ data, recordCount ] = await Promise.all([
-            db.GeneralCheckins.find(queryFilter)
-                .populate("client")
-                .sort(sortFilter)
-                .limit(pageSize)
-                .skip(pageSize * (page - 1))
-                .lean(),
-            db.GeneralCheckins.countDocuments(queryFilter)
-        ]);
-
-        return res.status(200).json({
-            records: data && data?.length ? formatResponse(data) : [],
-            recordCount: recordCount
-        });
+        const response = await CheckinWeighingService.getAll(payload);
+        
+        return res.status(200).json(response);
 
     } catch (err) {
         console.error(err);
@@ -71,12 +39,13 @@ const getAll = async (req, res) => {
 
 const get = async (req, res) => {
     try {
-        const data = await db.GeneralCheckins.findById(req.params.id)
-            .populate("client")
-            .lean();
-        if (!data) {
-            return res.status(404).send("general checkin not found");
+        const { payload, error } = validateAndRespond(basicSchema, req.query);
+        if (error) {
+            return res.status(400).json({ message: "Validation failed.", errors: error });
         }
+        
+        const data = await CheckinWeighingService.getByClient(req.params.clientId, payload);
+
         res.json(data);
     } catch (err) {
         console.error(err);
@@ -86,22 +55,12 @@ const get = async (req, res) => {
 
 const create = async (req, res) => {
     try {
-        console.log(req.body);
         const { payload, error } = validateAndRespond(schema, req.body);
         if (error) {
             return res.status(400).json({ message: "Validation failed.", errors: error });
         }
-        if (Array.isArray(payload)) {
-            const data = await Promise.all(req.body.map(async (item) => {
-                const newItem = new db.GeneralCheckins(item);
-                return await newItem.save();
-            }));
-            res.status(201).json(data);
-        } else {
-            const data = new db.GeneralCheckins(payload);
-            await data.save();
-            res.status(201).json(data);
-        }
+        const response = await CheckinWeighingService.create(payload);
+        res.status(200).send(response);
     } catch (err) {
         console.error(err);
         res.status(500).send({ message: "Internal Server Error", error: err });
@@ -114,12 +73,8 @@ const edit = async (req, res) => {
         if (error) {
             return res.status(400).json({ message: "Validation failed.", errors: error });
         }
-        const data = await db.GeneralCheckins.updateOne({ _id: req.params.id },
-            { ...payload });
-        if (!data) {
-            return res.status(404).send("general checkin not found");
-        }
-        res.json(data);
+        const response = await CheckinWeighingService.edit(req.params.id, payload);
+        res.status(200).send(response);
     } catch (err) {
         console.error(err);
         res.status(500).send({ message: "Internal Server Error", error: err });

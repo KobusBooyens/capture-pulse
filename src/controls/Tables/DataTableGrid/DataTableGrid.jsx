@@ -14,6 +14,7 @@ const DataTableGrid = ({
     searchModel,
     onSearchModelChange,
     onSortModelChange,
+    TableHeaderComponent
 }) => {
     const pageSizeOptions = [10, 30, 50, 70, 100];
     const columns = useMemo(() => table.columns, [table]);
@@ -23,14 +24,22 @@ const DataTableGrid = ({
         <TableContainer>
             {searchModel && searchModel.enabled &&
               <Box display="flex"
-                  justifyContent="flex-end"
+                  justifyContent={TableHeaderComponent ? "space-between" : "flex-end"}
                   alignItems="center"
                   p={2}
                   width="100%" >
-                  <SearchInput
-                      label={searchModel.label}
-                      placeholder={searchModel.placeholder}
-                      onChange={onSearchModelChange}/>
+                  {TableHeaderComponent && 
+                    <Box display="flex" justifyContent="flex-start">
+                        <TableHeaderComponent />
+                    </Box>
+                  }
+                  <Box display="flex" justifyContent="flex-end">
+                      <SearchInput
+                          label={searchModel.label}
+                          placeholder={searchModel.placeholder}
+                          onChange={onSearchModelChange}
+                      />
+                  </Box>
               </Box>
 
             }
@@ -64,6 +73,7 @@ DataTableGrid.propTypes = {
         perPage: PropTypes.number,
     }),
     onPaginationModelChange: PropTypes.func,
+    TableHeaderComponent: PropTypes.node,
     table: PropTypes.shape({
         columns: PropTypes.array.isRequired,
         rows: PropTypes.array.isRequired,

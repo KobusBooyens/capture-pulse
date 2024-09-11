@@ -1,4 +1,4 @@
-const db = require("../../models");
+const db = require("../models");
 
 exports.formatClientBillingResponse = (data) => {
     const client = data[0]?.client;
@@ -13,8 +13,8 @@ exports.formatClientBillingResponse = (data) => {
     return {
         client, records
     };
-
 };
+
 exports.formatClientResponse = async (data) => {
     const clientPackageList = await getClientPackageList();
     return data.map(d => {
@@ -54,25 +54,21 @@ const getClientPackageList = async () => {
             }
         },
         { $unwind: "$clients" },
-        {
-            $group: {
-                _id: "$clientPackage._id",
-                clients: {
-                    $push: {
-                        id: "$clients._id",
-                        firstName: "$clients.firstName",
-                        lastName: "$clients.lastName"
-                    }
+        { $group: {
+            _id: "$clientPackage._id",
+            clients: {
+                $push: {
+                    id: "$clients._id",
+                    firstName: "$clients.firstName",
+                    lastName: "$clients.lastName"
                 }
             }
-        },
-        {
-            $project: {
-                clientPackageId: "$_id",
-                _id: 0,
-                clients: 1
-            }
-        }
+        } },
+        { $project: {
+            clientPackageId: "$_id",
+            _id: 0,
+            clients: 1
+        } }
     ]);
 
     return data ? data?.reduce((acc, record) => {

@@ -34,6 +34,7 @@ const BillingMain = () => {
                       data={data}
                       isLoading={isLoading}
                       paginationModel={{ page, pageSize }}
+                      searchModel={{ enabled: true, placeholder: "Search client", label:"Search" }}
                       onPaginationModelChange={(model) => updatePagination(model.page, model.pageSize)}
                       onSearchModelChange={updateSearchText}
                       onSortModelChange={updateSort}

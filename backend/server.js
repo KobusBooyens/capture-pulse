@@ -16,7 +16,7 @@ app.use(cors());
         require("./routes/billing.routes")(app);
         require("./routes/notification.routes")(app);
         require("./routes/packages.routes")(app);
-        require("./routes/checkins/checkins.routes")(app);
+        // require("./routes/checkins/checkins.routes")(app);
         require("./routes/checkins/generalCheckins.routes")(app);
         require("./routes/checkins/weighingCheckins.routes")(app);
 

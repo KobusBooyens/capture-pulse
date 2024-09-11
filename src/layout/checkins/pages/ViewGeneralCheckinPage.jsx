@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { Grid } from "@mui/material";
 import Card from "@mui/material/Card";
 import Box from "../../../components/Box/Box.jsx";
@@ -10,9 +10,9 @@ import AddEditGeneralCheckinForm from "../forms/AddEditGeneralCheckinForm.jsx";
 import { FormProvider, useForm } from "react-hook-form";
 import useCreateCheckin from "../../../api/checkins/useCreateCheckin.js";
 import DataTableGrid from "../../../controls/Tables/DataTableGrid/DataTableGrid.jsx";
+import dayjs from "dayjs";
 
 const ViewGeneralCheckinPage = ({
-    type,
     data,
     isLoading,
     paginationModel,
@@ -20,22 +20,29 @@ const ViewGeneralCheckinPage = ({
     onSearchModelChange,
     onSortModelChange
 }) => {
-    console.log("ViewGeneralCheckinPage", data.records);
     const { columns, rows, isAdding, setIsAdding } = useGeneralCheckinData(data.records);
     const createCheckin = useCreateCheckin();
     const methods = useForm();
 
-    const handleCloseDialog = () => {
+    const handleCloseDialog = useCallback(() => {
         setIsAdding({ adding: false, data: {} });
-        methods.reset({});
-    };
+        methods.reset({
+            date: dayjs()
+        });
+    });
+
+    useEffect(() => {
+        methods.reset({
+            date: dayjs()
+        });
+    }, [isAdding.data, methods]);
 
     useEffect(() => {
         if (!createCheckin.isPending && createCheckin.isSuccess) {
             handleCloseDialog();
         }
 
-    }, [createCheckin.isPending, createCheckin.isSuccess]);
+    }, [createCheckin.isPending, createCheckin.isSuccess, handleCloseDialog]);
 
     const onFormSubmit = (data) => {
         const dataToSave = {

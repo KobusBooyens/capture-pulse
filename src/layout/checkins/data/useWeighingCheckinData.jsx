@@ -82,7 +82,8 @@ export const useWeighingCheckinData = (data) => {
         },
         {
             headerName: "Last Weighing",
-            field: "lastWeighing",
+            field: "latestWeighingDate",
+            align:"center",
             renderCell: (params) =>
                 <Typography variant="normal" color="text">
                     {formatDate(params.row.joined)}
@@ -111,7 +112,7 @@ export const useWeighingCheckinData = (data) => {
         goal: row.goal,
         packagePartners: row.packagePartners,
         joined: row.joiningDate,
-        lastWeighing: row.joiningDate,
+        latestWeighingDate: row.latestWeighingDate,
         _id: row._id,
     }));
     return { columns, rows, isAdding, setIsAdding };

@@ -7,8 +7,8 @@ module.exports = function (app) {
         next();
     });
 
-    app.get("/api/checkins/general/client/:id", generalCheckinsController.getAll);
-    app.get("/api/checkins/general/:id", generalCheckinsController.get);
+    app.get("/api/checkins/general", generalCheckinsController.getAll);
+    app.get("/api/checkins/general/:clientId", generalCheckinsController.get);
     app.post("/api/checkins/general/", generalCheckinsController.create);
     app.patch("/api/checkins/general/:id", generalCheckinsController.edit);
     app.delete("/api/checkins/general/:id", generalCheckinsController.deleteItem);
