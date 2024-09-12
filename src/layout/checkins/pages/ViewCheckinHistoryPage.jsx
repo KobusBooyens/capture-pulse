@@ -52,15 +52,14 @@ const ViewCheckinHistoryPage = ({
             ...data,
             client: data.client._id
         };
-        console.log(dataToSave);
         editCheckin.mutate({ id: data._id, updatedData: dataToSave, type });
     };
 
     const fullName = data ?
         <ClientDetails
-            name={data.records.client?.firstName}
-            surname={data.records.client?.lastName}
-            contactNumber={data.records.client?.contactNumber}
+            name={data?.records?.client?.firstName}
+            surname={data?.records?.client?.lastName}
+            contactNumber={data?.records?.client?.contactNumber}
         /> : <CircularProgress /> ;
     
     return (
@@ -102,7 +101,7 @@ const ViewCheckinHistoryPage = ({
                 openDialog={isActioned.action === "edit"}
                 onClose={handleCloseDialog}
                 title={"Edit Check-in"}
-                fullName={`${data.records.client?.firstName} ${data.records.client?.lastName}`}
+                fullName={`${data?.records?.client?.firstName} ${data?.records?.client?.lastName}`}
             >
                 <FormProvider {...methods}>
                     <form onSubmit={methods.handleSubmit(onFormSubmit)} noValidate>

@@ -18,7 +18,7 @@ const PackageDetails = ({ name, goal, partnersDetail }) =>
                           </Typography>
                       )}
                   </Box>} placement={"top"}>
-                  <Icon fontSize="small" color="info">person</Icon>
+                  <Icon fontSize="small" color="info" className={"-mb-1"}>people</Icon>
               </Tooltip>
             }
 
