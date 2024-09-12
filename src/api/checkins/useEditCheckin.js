@@ -1,5 +1,5 @@
 import { apiClient } from "../api-client.js";
-import checkinQueryKeys from "./useQueryKeys.js";
+import queryKeys from "./useQueryKeys.js";
 import useCustomMutation from "../shared/useCustomMutation.js";
 
 const editFn = async ({ id, updatedData, type }) => {
@@ -9,7 +9,7 @@ const editFn = async ({ id, updatedData, type }) => {
 };
 
 const useEditCheckin = () => {
-    return useCustomMutation(editFn, checkinQueryKeys.PAGINATED, {
+    return useCustomMutation(editFn, queryKeys.PAGINATED, {
         success: {
             title: "Success!",
             content: "Nice! Checkin was successfully updated!",

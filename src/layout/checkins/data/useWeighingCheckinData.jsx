@@ -68,7 +68,7 @@ export const useWeighingCheckinData = (data) => {
                     goal={params.row.goal}
                     partnersDetail={params.row.packagePartners}
                 />,
-            sortable: true
+            sortable: false
         },
         {
             headerName: "Joined",
@@ -86,7 +86,7 @@ export const useWeighingCheckinData = (data) => {
             align:"center",
             renderCell: (params) =>
                 <Typography variant="normal" color="text">
-                    {formatDate(params.row.joined)}
+                    {params.row.latestWeighingDate ? formatDate(params.row.latestWeighingDate) : "-"}
                 </Typography>,
             flex: 0.5,
             sortable: true

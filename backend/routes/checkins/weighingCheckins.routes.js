@@ -7,8 +7,8 @@ module.exports = function (app) {
         next();
     });
 
-    app.get("/api/checkins/weighing/client/:id", weighingCheckinsController.getAll);
-    app.get("/api/checkins/weighing/:id", weighingCheckinsController.get);
+    app.get("/api/checkins/weighing", weighingCheckinsController.getAll);
+    app.get("/api/checkins/weighing/:clientId", weighingCheckinsController.get);
     app.post("/api/checkins/weighing/", weighingCheckinsController.create);
     app.patch("/api/checkins/weighing/:id", weighingCheckinsController.edit);
     app.delete("/api/checkins/weighing/:id", weighingCheckinsController.deleteItem);

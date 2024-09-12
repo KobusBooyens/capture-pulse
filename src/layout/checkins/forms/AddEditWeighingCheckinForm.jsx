@@ -38,8 +38,10 @@ const AddEditWeighingCheckinForm = ({ onCancel, isLoading }) => {
                     label="Feedback"
                     minValue={0}
                     placeholder="Add any feedback"
+                    required
                     multiline
                     minRows={3}
+                    rules={{ required: "Feedback is required" }}
                     fullWidth />
             </Grid>
             <Box display="flex" justifyContent="end" marginTop={2} width="100%" mb={2}>

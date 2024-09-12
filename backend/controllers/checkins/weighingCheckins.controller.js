@@ -1,7 +1,6 @@
-const db = require("../../models");
 const { z } = require("zod");
 const validateAndRespond = require("../../utils/zodValidation");
-const { formatResponse } = require("./_shared");
+const CheckinService = require("../../services/checkin-weighing.service");
 
 const schema = z.object({
     client: z.string({ required_error: "client is required" }),
@@ -25,43 +24,9 @@ const getAll = async (req, res) => {
             return res.status(400).json({ message: "Validation failed.", errors: error });
         }
 
-        const pageSize = payload.pageSize ? Number(payload.pageSize) : 10;
-        const page = payload.page ? Number(payload.page) : 1;
+        const response = await CheckinService.getAll(payload);
 
-        let queryFilter = { client: req.params.id };
-
-        if (payload.searchText) {
-            queryFilter["$or"] = [
-                { date: { $regex: ".*" + payload.searchText + ".*", $options: "i", }, },
-                { mood: { $regex: ".*" + payload.searchText + ".*", $options: "i", }, }
-            ];
-        }
-
-        let sortFilter = {};
-        if (payload.sortColumn && payload.sortDirection) {
-            const sortDirection = payload.sortDirection === "asc" ? 1 : -1;
-
-            if (payload.sortColumn === "date") {
-                sortFilter = { date: sortDirection };
-            } else if (payload.sortColumn === "mood") {
-                sortFilter = { "mood": sortDirection };
-            }
-        }
-
-        const [ data, recordCount ] = await Promise.all([
-            db.WeighingCheckins.find(queryFilter)
-                .populate("client")
-                .sort(sortFilter)
-                .limit(pageSize)
-                .skip(pageSize * (page - 1))
-                .lean(),
-            db.GeneralCheckins.countDocuments(queryFilter)
-        ]);
-
-        return res.status(200).json({
-            records: data && data?.length ? formatResponse(data) : [],
-            recordCount: recordCount
-        });
+        return res.status(200).send(response);
     } catch (err) {
         console.error(err);
         res.status(500).send({ message: "Internal Server Error", error: err });
@@ -70,13 +35,14 @@ const getAll = async (req, res) => {
 
 const get = async (req, res) => {
     try {
-        const data = await db.WeighingCheckins.findById(req.params.id)
-            .populate("client")
-            .lean();
-        if (!data) {
-            return res.status(404).send("weighing checkin not found");
+        const { payload, error } = validateAndRespond(basicSchema, req.query);
+        if (error) {
+            return res.status(400).send({ message: "Validation failed.", errors: error });
         }
-        res.json(data);
+
+        const data = await CheckinService.get(req.params.clientId, payload);
+
+        res.status(200).send(data);
     } catch (err) {
         console.error(err);
         res.status(500).send({ message: "Internal Server Error", error: err });
@@ -89,17 +55,9 @@ const create = async (req, res) => {
         if (error) {
             return res.status(400).json({ message: "Validation failed.", errors: error });
         }
-        if (Array.isArray(payload)) {
-            const data = await Promise.all(req.body.map(async (item) => {
-                const newItem = new db.WeighingCheckins(item);
-                return await newItem.save();
-            }));
-            res.status(201).json(data);
-        } else {
-            const data = new db.WeighingCheckins(payload);
-            await data.save();
-            res.status(201).json(data);
-        }
+
+        const response = CheckinService.create(payload);
+        res.status(201).json(response);
     } catch (err) {
         console.error(err);
         res.status(500).send({ message: "Internal Server Error", error: err });
@@ -112,12 +70,8 @@ const edit = async (req, res) => {
         if (error) {
             return res.status(400).json({ message: "Validation failed.", errors: error });
         }
-        const data = await db.WeighingCheckins.updateOne({ _id: req.params.id },
-            { ...payload });
-        if (!data) {
-            return res.status(404).send("weighing checkin not found");
-        }
-        res.json(data);
+        const response = await CheckinService.edit(req.params.id, payload);
+        res.status(200).send(response);
     } catch (err) {
         console.error(err);
         res.status(500).send({ message: "Internal Server Error", error: err });
@@ -126,11 +80,8 @@ const edit = async (req, res) => {
 
 const deleteItem = async (req, res) => {
     try {
-        const data = await db.WeighingCheckins.delete({ _id: req.params.id });
-        if (!data) {
-            return res.status(404).send("weighing checkin not found");
-        }
-        res.send("Weighing Checkin deleted");
+        await CheckinService.deleteItem(req.params.id);
+        res.status(200).send("Weighing Checkin deleted");
     } catch (err) {
         console.error(err);
         res.status(500).send({ message: "Internal Server Error", error: err });

@@ -1,5 +1,5 @@
 import { apiClient } from "../api-client.js";
-import checkinQueryKeys from "./useQueryKeys.js";
+import queryKeys from "./useQueryKeys.js";
 import useCustomMutation from "../shared/useCustomMutation.js";
 
 const deleteFn = async ({ id, type }) => {
@@ -8,7 +8,7 @@ const deleteFn = async ({ id, type }) => {
 };
 
 const useDeleteCheckin = () => {
-    return useCustomMutation(deleteFn, checkinQueryKeys.PAGINATED, {
+    return useCustomMutation(deleteFn, queryKeys.PAGINATED, {
         success: {
             title: "Success!",
             content: "Record has been deleted!",

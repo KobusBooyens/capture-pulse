@@ -10,6 +10,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import useCreateCheckin from "../../../api/checkins/useCreateCheckin.js";
 import AddEditWeighingCheckinForm from "../forms/AddEditWeighingCheckinForm.jsx";
 import DataTableGrid from "../../../controls/Tables/DataTableGrid/DataTableGrid.jsx";
+import dayjs from "dayjs";
 
 const ViewWeighingCheckinPage = ({
     data,
@@ -26,9 +27,17 @@ const ViewWeighingCheckinPage = ({
 
     const handleCloseDialog = () => {
         setIsAdding({ adding: false, data: {} });
-        methods.reset({});
+        methods.reset({
+            date: dayjs()
+        });
     };
 
+    useEffect(() => {
+        methods.reset({
+            date: dayjs()
+        });
+    }, [isAdding.data, methods]);
+    
     useEffect(() => {
         if (!createCheckin.isPending && createCheckin.isSuccess) {
             handleCloseDialog();

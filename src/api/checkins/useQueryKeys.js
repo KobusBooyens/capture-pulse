@@ -1,8 +1,8 @@
-export const checkinQueryKey = "checkins";
-const checkinQueryKeys = {
-    PAGINATED: [checkinQueryKey, "pagination"],
-    SEARCH: [checkinQueryKey, "search"],
-    DETAIL: [checkinQueryKey, "detail"]
+export const queryKey = "checkins";
+const queryKeys = {
+    PAGINATED: [queryKey, "pagination"],
+    SEARCH: [queryKey, "search"],
+    DETAIL: [queryKey, "detail"]
 };
 
-export default checkinQueryKeys;
+export default queryKeys;

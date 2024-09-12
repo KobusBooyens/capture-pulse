@@ -1,4 +1,3 @@
-const validateAndRespond = require("../utils/zodValidation");
 const db = require("../models");
 const { formatResponse } = require("../controllers/checkins/_shared");
 const { formatClientResponse } = require("../controllers/utils");
@@ -16,12 +15,12 @@ exports.getAll = async (payload) => {
         ];
     }
 
-    let sortFilter = { lastCheckinDate: 1, lastName: 1, firstName: 1 };
+    let sortFilter = {};
     if (payload.sortColumn && payload.sortDirection) {
         const sortDirection = payload.sortDirection === "asc" ? 1 : -1;
 
         if (payload.sortColumn === "date") {
-            sortFilter = { lastCheckinDate: sortDirection };
+            sortFilter = { date: sortDirection };
         } else if (payload.sortColumn === "mood") {
             sortFilter = { "mood": sortDirection };
         }
@@ -46,7 +45,7 @@ exports.getAll = async (payload) => {
     };
 };
 
-exports.getByClient = async (clientId, payload) => {
+exports.get = async (clientId, payload) => {
     const pageSize = payload.pageSize ? Number(payload.pageSize) : 10;
     const page = payload.page ? Number(payload.page) : 1;
 
@@ -55,7 +54,7 @@ exports.getByClient = async (clientId, payload) => {
     if (payload.searchText) {
         queryFilter["$or"] = [
             { date: { $regex: ".*" + payload.searchText + ".*", $options: "i", }, },
-            { mood: { $regex: ".*" + payload.searchText + ".*", $options: "i", }, }
+            { weight: { $regex: ".*" + payload.searchText + ".*", $options: "i", }, }
         ];
     }
 
@@ -65,19 +64,19 @@ exports.getByClient = async (clientId, payload) => {
 
         if (payload.sortColumn === "date") {
             sortFilter = { date: sortDirection };
-        } else if (payload.sortColumn === "mood") {
-            sortFilter = { "mood": sortDirection };
+        } else if (payload.sortColumn === "weight") {
+            sortFilter = { "weight": sortDirection };
         }
     }
 
     const [ data, recordCount ] = await Promise.all([
-        db.GeneralCheckins.find(queryFilter)
+        db.WeighingCheckins.find(queryFilter)
             .populate("client")
             .sort(sortFilter)
             .limit(pageSize)
             .skip(pageSize * (page - 1))
             .lean(),
-        db.GeneralCheckins.countDocuments(queryFilter)
+        db.WeighingCheckins.countDocuments(queryFilter)
     ]);
 
     return {
@@ -86,14 +85,14 @@ exports.getByClient = async (clientId, payload) => {
     };
 };
 
-exports.create = async (payload) => {
+exports.create = async(payload) => {
     const handleCheckinRecord = async (item) => {
-        const newCheckin = new db.GeneralCheckins(item);
+        const newCheckin = new db.WeighingCheckins(item);
         const savedCheckin = await newCheckin.save();
 
         await db.Client.findOneAndUpdate(
             { _id: savedCheckin.client },
-            { $max: { latestCheckinDate: savedCheckin.date } }
+            { $max: { latestWeighingDate: savedCheckin.date } }
         );
 
         return savedCheckin;
@@ -109,26 +108,46 @@ exports.create = async (payload) => {
 exports.edit = async (id, payload) => {
     const updateLatestCheckinDate = async (originalCheckin) => {
         if (payload.date && new Date(payload.date).getTime() !== originalCheckin.date.getTime()) {
-            const latestCheckin = await db.GeneralCheckins
+            const latestWeighing = await db.WeighingCheckins
                 .find({ client: originalCheckin.client })
                 .sort({ date: -1 })
                 .limit(1);
 
-            const latestCheckinDate = latestCheckin.length > 0 ? latestCheckin[0].date : null;
+            const latestWeighingDate = latestWeighing.length > 0 ? latestWeighing[0].date : null;
             await db.Client.findOneAndUpdate(
-                { _id: originalBilling.client },
-                { $set: { latestCheckinDate } }
+                { _id: originalCheckin.client },
+                { $set: { latestWeighingDate } }
             );
 
         }
     };
 
-    const originalBilling = await db.GeneralCheckins.findById(id);
+    const originalCheckin = await db.WeighingCheckins.findById(id);
 
-    const updatedBilling = await db.GeneralCheckins.updateOne({ _id: id },
+    const updatedCheckin = await db.WeighingCheckins.updateOne({ _id: id },
         { ...payload });
 
-    await updateLatestCheckinDate(originalBilling);
+    await updateLatestCheckinDate(originalCheckin);
 
-    return updatedBilling;
+    return updatedCheckin;
+};
+
+exports.deleteItem = async (id) => {
+    const updateLatestCheckinDate = async (originalCheckin) => {
+        const latestWeighing = await db.WeighingCheckins
+            .find({ client: originalCheckin.client })
+            .sort({ date: -1 })
+            .limit(1);
+
+        const latestWeighingDate = latestWeighing.length > 0 ? latestWeighing[0].date : null;
+        await db.Client.findOneAndUpdate(
+            { _id: originalCheckin.client },
+            { $set: { latestWeighingDate } }
+        );
+    };
+
+    const originalCheckin = await db.WeighingCheckins.findById(id);
+    await db.WeighingCheckins.delete({ _id: id });
+    await updateLatestCheckinDate(originalCheckin);
+    return originalCheckin;
 };

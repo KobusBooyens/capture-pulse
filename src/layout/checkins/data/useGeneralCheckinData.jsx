@@ -69,7 +69,7 @@ export const useGeneralCheckinData = (data) => {
                     goal={params.row.goal}
                     partnersDetail={params.row.packagePartners}
                 />,
-            sortable: true
+            sortable: false
         },
         {
             headerName: "Joined",
