@@ -19,20 +19,19 @@ export const useGeneralCheckinData = (data) => {
 
     const Actions = ({ data }) => {
         const navigate = useNavigate();
-        return (
-            <Box display="flex" alignItems="center" gap={1}>
-                <Tooltip title="Add" placement="top">
-                    <IconButton onClick={() => handleAddCheckin(data)}>
-                        <Icon fontSize="small" color="info">inventory_outlined</Icon>
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="View History" placement="top">
-                    <IconButton onClick={() => navigate(`./history/${data._id}`)}>
-                        <Icon fontSize="small" color="secondary">history</Icon>
-                    </IconButton>
-                </Tooltip>
-            </Box>
-        );
+        return <Box display="flex" alignItems="center" gap={1}>
+            <Tooltip title="Add" placement="top">
+                <IconButton onClick={() => handleAddCheckin(data)}>
+                    <Icon fontSize="small" color="info">inventory_outlined</Icon>
+                </IconButton>
+            </Tooltip>
+            <Tooltip title="View History" placement="top">
+                <IconButton onClick={() => navigate(`./history/${data._id}`)}>
+                    <Icon fontSize="small" color="secondary">history</Icon>
+                </IconButton>
+            </Tooltip>
+        </Box>;
+        
     };
 
     Actions.propTypes = {
@@ -116,5 +115,6 @@ export const useGeneralCheckinData = (data) => {
         latestCheckinDate: row.latestCheckinDate,
         _id: row._id,
     }));
+
     return { columns, rows, isAdding, setIsAdding };
 };

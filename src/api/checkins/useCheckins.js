@@ -1,6 +1,6 @@
 import useCustomFetch from "../shared/useCustomFetch.js";
 import { buildUrlParams } from "../api-client.js";
-import queryKeys from "../clients/useQueryKeys.js";
+import queryKeys from "./useQueryKeys.js";
 
 const useCheckins = (type, page, pageSize, searchText, sortColumn, sortDirection) => {
     const url = `/checkins/${type}?`+

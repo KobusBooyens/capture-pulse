@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import Box from "../../../components/Box/Box.jsx";
 import { Grid } from "@mui/material";
 import Card from "@mui/material/Card";
@@ -9,16 +9,30 @@ import PropTypes from "prop-types";
 import AddEditBilling from "../dialogs/AddEditBilling.jsx";
 import { FormProvider, useForm } from "react-hook-form";
 import AddEditBillingForm from "../forms/AddEditBillingForm.jsx";
-import useCreateBilling from "../../../api/billing/useCreateBilling.jsx";
+import useCreateBilling from "../../../api/billing/useCreateBilling.js";
 import dayjs from "dayjs";
 import billingStatus from "../../../data/billingStatus.jsx";
 import Tooltip from "@mui/material/Tooltip";
+
+const TableHeader = () => <Box display={"flex"} justifyContent="flex-end" gap={1}>
+    <Tooltip placement={"top"} title={"Account is up to date"} arrow={false}>
+        {billingStatus.statusChips["0"]}
+    </Tooltip>
+    <Tooltip placement={"top"} title={"Have not received a payment in the last 15 days"} arrow={false}>
+        {billingStatus.statusChips["1"]}
+    </Tooltip>
+    <Tooltip placement={"top"} title={"Have not received a payment in the last 30 days"} arrow={false}>
+        {billingStatus.statusChips["2"]}
+    </Tooltip>
+    <Tooltip placement={"top"} title={"Pending first payment"} arrow={false}>
+        {billingStatus.statusChips["3"]}
+    </Tooltip>
+</Box>;
 
 const ViewBillingPage = ({
     data,
     isLoading,
     paginationModel,
-    searchModel,
     onPaginationModelChange,
     onSearchModelChange,
     onSortModelChange,
@@ -28,17 +42,17 @@ const ViewBillingPage = ({
     const createPayment = useCreateBilling();
     const methods = useForm();
 
-    const handleCloseDialog = () => {
+    const handleCloseDialog = useCallback(() => {
         setIsAdding({ adding: false, data: {} });
         methods.reset({});
-    };
+    });
 
     useEffect(() => {
         methods.reset({
             date: dayjs(),
             amount: isAdding.data.amount
         });
-    },[isAdding.data]);
+    },[isAdding.data, methods]);
 
     useEffect(() => {
         if (!createPayment.isPending && createPayment.isSuccess) {
@@ -54,24 +68,6 @@ const ViewBillingPage = ({
             client: isAdding.data.client
         };
         createPayment.mutate({ data: dataToSave });
-    };
-
-    const TableHeader = () => {
-        return <Box display={"flex"} justifyContent="flex-end" gap={1}>
-            <Tooltip placement={"top"} title={"Account is up to date"} arrow={false}>
-                {billingStatus.statusChips["0"]}
-            </Tooltip>
-            <Tooltip placement={"top"} title={"Have not received a payment in the last 15 days"} arrow={false}>
-                {billingStatus.statusChips["1"]}
-            </Tooltip>
-            <Tooltip placement={"top"} title={"Have not received a payment in the last 30 days"} arrow={false}>
-                {billingStatus.statusChips["2"]}
-            </Tooltip>
-            <Tooltip placement={"top"} title={"Pending first payment"} arrow={false}>
-                {billingStatus.statusChips["3"]}
-            </Tooltip>
-
-        </Box>;
     };
 
     return (
@@ -93,14 +89,13 @@ const ViewBillingPage = ({
                             <Typography variant="subtitle" color="white">Payments</Typography>
                         </Box>
                         <Box p={3}>
-
                             <DataTableGrid
                                 table={{ columns, rows }}
                                 TableHeaderComponent={TableHeader}
                                 totalRecords={data.recordCount}
                                 isDataLoading={isLoading}
                                 paginationModel={paginationModel}
-                                searchModel={searchModel}
+                                searchModel={{ enabled: true, placeholder: "Search client", label:"Search" }}
                                 onPaginationModelChange={onPaginationModelChange}
                                 onSearchModelChange={onSearchModelChange}
                                 onSortModelChange={onSortModelChange}
@@ -129,7 +124,6 @@ ViewBillingPage.propTypes = {
     data: PropTypes.objectOf(PropTypes.array).isRequired,
     isLoading: PropTypes.bool,
     onPaginationModelChange: PropTypes.func,
-    searchModel: PropTypes.func,
     onSearchModelChange: PropTypes.func,
     onSortModelChange: PropTypes.func,
     paginationModel: PropTypes.object

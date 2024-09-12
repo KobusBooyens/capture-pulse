@@ -29,7 +29,7 @@ const ViewGeneralCheckinPage = ({
         methods.reset({
             date: dayjs()
         });
-    });
+    }, [setIsAdding, methods]);
 
     useEffect(() => {
         methods.reset({
@@ -41,16 +41,18 @@ const ViewGeneralCheckinPage = ({
         if (!createCheckin.isPending && createCheckin.isSuccess) {
             handleCloseDialog();
         }
-
     }, [createCheckin.isPending, createCheckin.isSuccess, handleCloseDialog]);
 
-    const onFormSubmit = (data) => {
-        const dataToSave = {
-            ...data,
-            client: isAdding.data._id
-        };
-        createCheckin.mutate({ data: dataToSave, type: "general" });
-    };
+    const onFormSubmit = useCallback(
+        (formData) => {
+            const dataToSave = {
+                ...formData,
+                client: isAdding.data._id
+            };
+            createCheckin.mutate({ data: dataToSave, type: "general" });
+        },
+        [createCheckin, isAdding.data._id]
+    );
 
     return (
         <Box pt={6} pb={3}>
@@ -66,9 +68,11 @@ const ViewGeneralCheckinPage = ({
                             bgColor="primary"
                             borderRadius="lg"
                             coloredShadow="dark"
-                            className={"flex flex-row justify-between"}
+                            className="flex flex-row justify-between"
                         >
-                            <Typography variant="subtitle" color="white">Clients General Check-in</Typography>
+                            <Typography variant="subtitle" color="white">
+                              Clients General Check-in
+                            </Typography>
                         </Box>
                         <Box p={3}>
                             <DataTableGrid
@@ -77,7 +81,7 @@ const ViewGeneralCheckinPage = ({
                                 isDataLoading={isLoading}
                                 paginationModel={paginationModel}
                                 onPaginationModelChange={onPaginationModelChange}
-                                searchModel={{ enabled: true, placeholder: "Search client", label:"Search" }}
+                                searchModel={{ enabled: true, placeholder: "Search client", label: "Search" }}
                                 onSearchModelChange={onSearchModelChange}
                                 onSortModelChange={onSortModelChange}
                             />
@@ -89,7 +93,7 @@ const ViewGeneralCheckinPage = ({
             <AddEditCheckin
                 openDialog={isAdding.adding}
                 onClose={handleCloseDialog}
-                title={"Add New Check-in"}
+                title="Add New Check-in"
                 fullName={`${isAdding.data.firstName} ${isAdding.data.lastName}`}
             >
                 <FormProvider {...methods}>
@@ -103,8 +107,7 @@ const ViewGeneralCheckinPage = ({
 };
 
 ViewGeneralCheckinPage.propTypes = {
-    type: PropTypes.string,
-    data: PropTypes.objectOf(PropTypes.array).isRequired,
+    data: PropTypes.object.isRequired,
     isLoading: PropTypes.bool,
     onPaginationModelChange: PropTypes.func,
     onSearchModelChange: PropTypes.func,

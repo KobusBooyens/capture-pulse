@@ -134,3 +134,23 @@ exports.edit = async (id, payload) => {
 
     return updatedCheckin;
 };
+
+exports.deleteItem = async (id) => {
+    const updateLatestCheckinDate = async (originalCheckin) => {
+        const latestCheckin = await db.GeneralCheckins
+            .find({ client: originalCheckin.client })
+            .sort({ date: -1 })
+            .limit(1);
+
+        const latestCheckinDate = latestCheckin.length > 0 ? latestCheckin[0].date : null;
+        await db.Client.findOneAndUpdate(
+            { _id: originalCheckin.client },
+            { $set: { latestCheckinDate } }
+        );
+    };
+
+    const originalCheckin = await db.GeneralCheckins.findById(id);
+    await db.GeneralCheckins.delete({ _id: id });
+    await updateLatestCheckinDate(originalCheckin);
+    return originalCheckin;
+};

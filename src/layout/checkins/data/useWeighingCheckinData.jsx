@@ -11,7 +11,6 @@ import PackageDetails from "../../shared/PackageDetails.jsx";
 import Typography from "../../../components/Typography/Typography.jsx";
 
 export const useWeighingCheckinData = (data) => {
-
     const [isAdding, setIsAdding] = useState({ adding: false, data: {} });
 
     const handleAddCheckin = useCallback((data) => {
@@ -115,5 +114,6 @@ export const useWeighingCheckinData = (data) => {
         latestWeighingDate: row.latestWeighingDate,
         _id: row._id,
     }));
+
     return { columns, rows, isAdding, setIsAdding };
 };

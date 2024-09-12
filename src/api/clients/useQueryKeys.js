@@ -1,8 +1,8 @@
-export const clientQueryKey = "students";
-const clientQueryKeys = {
-    PAGINATED: [clientQueryKey, "pagination"],
-    SEARCH: [clientQueryKey, "search"],
-    DETAIL: [clientQueryKey, "detail"]
+export const queryKey = "clients";
+const queryKeys = {
+    PAGINATED: [queryKey, "pagination"],
+    SEARCH: [queryKey, "search"],
+    DETAIL: [queryKey, "detail"]
 };
 
-export default clientQueryKeys;
+export default queryKeys;

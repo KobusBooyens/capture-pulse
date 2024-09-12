@@ -1,6 +1,6 @@
 import { apiClient } from "../api-client.js";
 import useCustomMutation from "../shared/useCustomMutation.js";
-import clientQueryKeys from "./useQueryKeys.js";
+import queryKeys from "./useQueryKeys.js";
 
 const editFn = async ({ id, updatedData }) => {
     await new Promise(resolve => setTimeout(resolve, 2000));
@@ -10,7 +10,7 @@ const editFn = async ({ id, updatedData }) => {
 };
 
 const useEditClient = () => {
-    return useCustomMutation(editFn, clientQueryKeys.PAGINATED, {
+    return useCustomMutation(editFn, queryKeys.PAGINATED, {
         success: {
             title: "Success!",
             content: "Nice! Client was successfully updated!",

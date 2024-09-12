@@ -15,14 +15,16 @@ exports.getAll = async (payload) => {
         ];
     }
 
-    let sortFilter = {};
+    let sortFilter = { latestWeighingDate: 1, firstName: 1, lastName: 1 };
     if (payload.sortColumn && payload.sortDirection) {
         const sortDirection = payload.sortDirection === "asc" ? 1 : -1;
 
-        if (payload.sortColumn === "date") {
-            sortFilter = { date: sortDirection };
-        } else if (payload.sortColumn === "mood") {
-            sortFilter = { "mood": sortDirection };
+        if (payload.sortColumn === "client") {
+            sortFilter = { firstName: sortDirection, lastName: sortDirection };
+        } else if (payload.sortColumn === "joined") {
+            sortFilter = { "joiningDate": sortDirection };
+        } else if (payload.sortColumn === "latestWeighingDate") {
+            sortFilter = { latestWeighingDate: sortDirection };
         }
     }
 

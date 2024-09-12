@@ -1,6 +1,6 @@
 import { apiClient } from "../api-client.js";
 import useCustomMutation from "../shared/useCustomMutation";
-import clientQueryKeys from "./useQueryKeys.js";
+import queryKeys from "./useQueryKeys.js";
 
 const createClientFn = async (data) => {
     await new Promise(resolve => setTimeout(resolve, 2000));
@@ -9,7 +9,7 @@ const createClientFn = async (data) => {
 };
 
 const useCreateClient = () => {
-    return useCustomMutation(createClientFn, clientQueryKeys.PAGINATED, {
+    return useCustomMutation(createClientFn, queryKeys.PAGINATED, {
         success: {
             title: "Success!",
             content: "Nice! Client was successfully created!",

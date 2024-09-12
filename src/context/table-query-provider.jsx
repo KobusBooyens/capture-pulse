@@ -68,7 +68,6 @@ export const TableQueryProvider = ({ children }) => {
 export const useTableQuery = () => {
     const context = useContext(TableQueryContext);
 
-    console.log("useTableQuery", context);
     if (!context) {
         throw new Error("useTableQuery must be used within a TableQueryProvider");
     }

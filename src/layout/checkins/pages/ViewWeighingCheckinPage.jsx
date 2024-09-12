@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { Grid } from "@mui/material";
 import Card from "@mui/material/Card";
 import Box from "../../../components/Box/Box.jsx";
@@ -11,6 +11,7 @@ import useCreateCheckin from "../../../api/checkins/useCreateCheckin.js";
 import AddEditWeighingCheckinForm from "../forms/AddEditWeighingCheckinForm.jsx";
 import DataTableGrid from "../../../controls/Tables/DataTableGrid/DataTableGrid.jsx";
 import dayjs from "dayjs";
+import { useMemo } from "react";
 
 const ViewWeighingCheckinPage = ({
     data,
@@ -18,41 +19,47 @@ const ViewWeighingCheckinPage = ({
     paginationModel,
     onPaginationModelChange,
     onSearchModelChange,
-    onSortModelChange
+    onSortModelChange,
 }) => {
     const { columns, rows, isAdding, setIsAdding } = useWeighingCheckinData(data.records);
-
     const createCheckin = useCreateCheckin();
-    const methods = useForm();
+    const methods = useForm({
+        defaultValues: {
+            date: dayjs(),
+        },
+    });
 
-    const handleCloseDialog = () => {
+    const handleCloseDialog = useCallback(() => {
         setIsAdding({ adding: false, data: {} });
-        methods.reset({
-            date: dayjs()
-        });
-    };
+        methods.reset({ date: dayjs() });
+    }, [setIsAdding, methods]);
+
+    const onFormSubmit = useCallback(
+        (formData) => {
+            const dataToSave = {
+                ...formData,
+                client: isAdding.data._id,
+            };
+            createCheckin.mutate({ data: dataToSave, type: "weighing" });
+        },
+        [isAdding.data._id, createCheckin]
+    );
 
     useEffect(() => {
-        methods.reset({
-            date: dayjs()
-        });
-    }, [isAdding.data, methods]);
-    
+        if (isAdding.adding) {
+            methods.reset({ date: dayjs() });
+        }
+    }, [isAdding.adding, methods]);
+
     useEffect(() => {
         if (!createCheckin.isPending && createCheckin.isSuccess) {
             handleCloseDialog();
         }
+    }, [createCheckin.isPending, createCheckin.isSuccess, handleCloseDialog]);
 
-    }, [createCheckin.isPending, createCheckin.isSuccess]);
+    const memoizedColumns = useMemo(() => columns, [columns]);
+    const memoizedRows = useMemo(() => rows, [rows]);
 
-    const onFormSubmit = (data) => {
-        const dataToSave = {
-            ...data,
-            client: isAdding.data._id
-        };
-        createCheckin.mutate({ data: dataToSave, type: "weighing" });
-    };
-    
     return (
         <Box pt={6} pb={3}>
             <Grid container spacing={6}>
@@ -69,16 +76,18 @@ const ViewWeighingCheckinPage = ({
                             coloredShadow="dark"
                             className={"flex flex-row justify-between"}
                         >
-                            <Typography variant="subtitle" color="white">Clients Weighing Check-in</Typography>
+                            <Typography variant="subtitle" color="white">
+                              Clients Weighing Check-in
+                            </Typography>
                         </Box>
                         <Box p={3}>
                             <DataTableGrid
-                                table={{ columns, rows }}
+                                table={{ columns: memoizedColumns, rows: memoizedRows }}
                                 totalRecords={data.recordCount}
                                 isDataLoading={isLoading}
                                 paginationModel={paginationModel}
                                 onPaginationModelChange={onPaginationModelChange}
-                                searchModel={{ enabled: true, placeholder: "Search client", label:"Search" }}
+                                searchModel={{ enabled: true, placeholder: "Search client", label: "Search" }}
                                 onSearchModelChange={onSearchModelChange}
                                 onSortModelChange={onSortModelChange}
                             />
@@ -90,7 +99,7 @@ const ViewWeighingCheckinPage = ({
             <AddEditCheckin
                 openDialog={isAdding.adding}
                 onClose={handleCloseDialog}
-                title={"Add New Check-in"}
+                title="Add New Check-in"
                 fullName={`${isAdding.data.firstName} ${isAdding.data.lastName}`}
             >
                 <FormProvider {...methods}>
@@ -104,12 +113,15 @@ const ViewWeighingCheckinPage = ({
 };
 
 ViewWeighingCheckinPage.propTypes = {
-    data: PropTypes.objectOf(PropTypes.array).isRequired,
+    data: PropTypes.shape({
+        records: PropTypes.array.isRequired,
+        recordCount: PropTypes.number.isRequired,
+    }).isRequired,
     isLoading: PropTypes.bool,
+    paginationModel: PropTypes.object,
     onPaginationModelChange: PropTypes.func,
     onSearchModelChange: PropTypes.func,
     onSortModelChange: PropTypes.func,
-    paginationModel: PropTypes.object
 };
 
 export default ViewWeighingCheckinPage;

@@ -1,6 +1,6 @@
 import React from "react";
 import { useTableQuery } from "../../context/table-query-provider.jsx";
-import useBilling from "../../api/billing/useBilling.jsx";
+import useBilling from "../../api/billing/useBilling.js";
 import DataTableSkeleton from "../../controls/Tables/Skeleton/DataTable.jsx";
 import Typography from "../../components/Typography/Typography.jsx";
 import ViewBillingHistoryPage from "./pages/ViewBillingHistoryPage.jsx";

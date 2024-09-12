@@ -1,6 +1,6 @@
 import { apiClient } from "../api-client.js";
 import useCustomMutation from "../shared/useCustomMutation.js";
-import clientQueryKeys from "./useQueryKeys.js";
+import queryKeys from "./useQueryKeys.js";
 
 const deleteFn = async ({ id }) => {
     await new Promise(resolve => setTimeout(resolve, 2000));
@@ -8,7 +8,7 @@ const deleteFn = async ({ id }) => {
 };
 
 const useDeleteClient = () => {
-    return useCustomMutation(deleteFn, clientQueryKeys.PAGINATED, {
+    return useCustomMutation(deleteFn, queryKeys.PAGINATED, {
         success: {
             title: "Success!",
             content: "Record has been deleted!",
