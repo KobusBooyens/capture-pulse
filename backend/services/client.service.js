@@ -1,7 +1,6 @@
 const db = require("../models");
 const { formatClientResponse } = require("../controllers/utils");
 const { startSession } = require("mongoose");
-const validateAndRespond = require("../utils/zodValidation");
 
 exports.getAll = async (payload) => {
     const pageSize = payload.pageSize ? Number(payload.pageSize) : 10;
@@ -22,8 +21,6 @@ exports.getAll = async (payload) => {
 
         if (payload.sortColumn === "client") {
             sortFilter = { firstName: sortDirection, lastName: sortDirection };
-        } else if (payload.sortColumn === "package") {
-            sortFilter = { "clientPackage.package.name": sortDirection };
         } else if (payload.sortColumn === "joined") {
             sortFilter = { joined: sortDirection };
         }

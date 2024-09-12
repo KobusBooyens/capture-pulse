@@ -44,6 +44,7 @@ export default styled(Typography)(({ theme, ownerState }) => {
         verticalAlign,
         textDecoration: "none",
         color: colorValue,
+        textWrap: "balance",
         fontWeight: fontWeights[fontWeight] && fontWeights[fontWeight],
         ...textGradient && gradientStyles(),
     };

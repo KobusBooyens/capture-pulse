@@ -20,7 +20,7 @@ export default function useClientData(data) {
     const Actions = ({ data }) => {
         const navigate = useNavigate();
         return (
-            <Box display="flex" alignItems="center" gap={1}>
+            <Box>
                 <Tooltip title="Edit" placement="top">
                     <IconButton onClick={() => navigate(`./edit/${data._id}`)}>
                         <Icon fontSize="small" color="info">edit</Icon>
@@ -36,7 +36,6 @@ export default function useClientData(data) {
                         <Icon fontSize="small" color="error">delete</Icon>
                     </IconButton>
                 </Tooltip>
-
             </Box>
         );
     };
@@ -51,21 +50,21 @@ export default function useClientData(data) {
         {
             headerName: "Client",
             field: "client",
+            align: "left",
             flex: 1,
             renderCell: (params) =>
-                <Box sx={{ ml: 2, maxHeight: "100%" }} >
-                    <ClientDetails
-                        name={params.row.firstName}
-                        surname={params.row.lastName}
-                        gender={params.row.gender}
-                        contactNumber={params.row.contactNumber}
-                    />
-                </Box>,
+                <ClientDetails
+                    name={params.row.firstName}
+                    surname={params.row.lastName}
+                    gender={params.row.gender}
+                    contactNumber={params.row.contactNumber}
+                />,
             sortable: true
         },
         {
             headerName: "Package",
             field: "package",
+            align: "left",
             flex: 1,
             renderCell: (params) =>
                 <PackageDetails
@@ -73,22 +72,24 @@ export default function useClientData(data) {
                     goal={params.row.goal}
                     partnersDetail={params.row.packagePartners}
                 />,
-            sortable: true
+            sortable: false
         },
         {
             headerName: "Joined",
             field: "joined",
+            align: "left",
+            flex: 0.5,
             renderCell: (params) =>
                 <Typography variant="normal" color="text">
                     {formatDate(params.row.joined)}
                 </Typography>,
-            flex: 0.5,
+
             sortable: true
         },
         {
             headerName: "Action",
             field: "action",
-            align: "center",
+            align: "left",
             flex: 0.5,
             renderCell: (params) =>
                 <Actions data={params.row} />,

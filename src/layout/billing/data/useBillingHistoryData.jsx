@@ -19,7 +19,7 @@ const useBillingHistoryData = (data) => {
 
     const Actions = ({ data }) => {
         return (
-            <Box display="flex" alignItems="center" gap={1}>
+            <Box>
                 <Tooltip title="Edit" placement="top">
                     <IconButton onClick={() => handleEditCheckin(data)}>
                         <Icon fontSize="small" color="info">
@@ -48,16 +48,19 @@ const useBillingHistoryData = (data) => {
         {
             headerName: "Date",
             field: "date",
+            align: "left",
+            flex: 0.5,
             renderCell: (params) =>
                 <Typography variant="normal" color="text">
                     {formatDate(params.row.date)}
                 </Typography>,
-            flex: 0.5,
+
             sortable: true
         },
         {
             headerName: "Amount",
             field: "amount",
+            align: "left",
             flex: 0.5,
             renderCell: (params) =>
                 <Typography variant="normal" color="text">
@@ -67,14 +70,15 @@ const useBillingHistoryData = (data) => {
         {
             headerName: "Reference",
             field: "reference",
-            flex: 1.5,
+            align: "left",
+            flex: 1,
             sortable: false,
 
         },
         {
             headerName: "Action",
             field: "action",
-            align: "center",
+            align: "left",
             flex: 0.5,
             renderCell: (params) =>
                 <Actions data={params.row} />,

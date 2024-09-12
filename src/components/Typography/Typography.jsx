@@ -1,7 +1,7 @@
 import { forwardRef } from "react";
 import PropTypes from "prop-types";
 import { useUISettingsController } from "../../context/ui-settings-provider.jsx";
-import MDTypographyRoot from "./TypographyRoot.js";
+import TypographyRoot from "./TypographyRoot.js";
 
 const Typography = forwardRef(
     (
@@ -12,7 +12,7 @@ const Typography = forwardRef(
         const { darkMode } = controller;
 
         return (
-            <MDTypographyRoot
+            <TypographyRoot
                 {...rest}
                 ref={ref}
                 ownerState={{
@@ -26,7 +26,7 @@ const Typography = forwardRef(
                 }}
             >
                 {children}
-            </MDTypographyRoot>
+            </TypographyRoot>
         );
     }
 );

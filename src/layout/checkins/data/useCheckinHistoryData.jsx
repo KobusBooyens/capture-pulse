@@ -20,7 +20,7 @@ export const useCheckinHistoryData = (type, data) => {
 
     const Actions = ({ data }) => {
         return (
-            <Box display="flex" alignItems="center" gap={1}>
+            <Box>
                 <Tooltip title="Edit" placement="top">
                     <IconButton onClick={() => handleEditCheckin(data)}>
                         <Icon fontSize="small" color="info">
@@ -49,16 +49,18 @@ export const useCheckinHistoryData = (type, data) => {
         {
             headerName: "Date",
             field: "date",
+            align: "left",
+            flex: 0.5,
             renderCell: (params) =>
                 <Typography variant="normal" color="text">
                     {formatDate(params.row.date)}
                 </Typography>,
-            flex: 0.5,
             sortable: true
         },
         {
             headerName: type === "general" ? "Mood" : "Weight (kg)",
             field: type === "general" ? "mood" : "weight",
+            align:"left",
             flex: 0.5,
             renderCell: (params) =>
                 type === "general" ? moodOptions.moodChips[params.row.mood] : params.row.weight
@@ -66,14 +68,15 @@ export const useCheckinHistoryData = (type, data) => {
         {
             headerName: "Feedback",
             field: "feedback",
-            flex: 1.5,
+            align:"left",
+            flex: 1,
             sortable: false,
 
         },
         {
             headerName: "Action",
             field: "action",
-            align: "center",
+            align: "left",
             flex: 0.5,
             renderCell: (params) =>
                 <Actions data={params.row} />,

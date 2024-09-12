@@ -6,12 +6,12 @@ import Icon from "@mui/material/Icon";
 import Tooltip from "@mui/material/Tooltip";
 
 const PackageDetails = ({ name, goal, partnersDetail }) =>
-    <Box lineHeight={1} textAlign="left">
-        <Typography display="block" variant="caption" color="text" fontWeight="medium">
+    <Box display={"flex"} flexDirection={"column"} justifyContent={"center"} height={"100%"}>
+        <Typography variant="caption" color="text" fontWeight="medium">
             {name}
             {partnersDetail &&
               <Tooltip title={
-                  <Box display="flex" flexDirection="column" color={"white"}>
+                  <Box color={"white"}>
                       {partnersDetail.map(p => 
                           <Typography key={p._id} display="block" color={"inherit"} variant={"body"}>
                               {p.name}
