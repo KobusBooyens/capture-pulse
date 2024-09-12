@@ -20,7 +20,7 @@ const ViewGeneralCheckinPage = ({
     onSearchModelChange,
     onSortModelChange
 }) => {
-    const { columns, rows, isAdding, setIsAdding } = useGeneralCheckinData(data.records);
+    const { columns, rows, isAdding, setIsAdding } = useGeneralCheckinData(data?.records);
     const createCheckin = useCreateCheckin();
     const methods = useForm();
 
@@ -77,7 +77,7 @@ const ViewGeneralCheckinPage = ({
                         <Box p={3}>
                             <DataTableGrid
                                 table={{ columns, rows }}
-                                totalRecords={data.recordCount}
+                                totalRecords={data?.recordCount}
                                 isDataLoading={isLoading}
                                 paginationModel={paginationModel}
                                 onPaginationModelChange={onPaginationModelChange}

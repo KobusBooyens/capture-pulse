@@ -28,9 +28,9 @@ const ClientsMain = () => {
 
     return (
         <>
-            {isLoading && <DataTableSkeleton/>}
+            {/*{isLoading && <DataTableSkeleton/>}*/}
             {error && <Typography>An error has occurred {error}</Typography>}
-            {data && !error && !isLoading && <ViewClientsPage
+            {!error && <ViewClientsPage
                 data={data}
                 isLoading={isLoading}
                 paginationModel={{ page, pageSize }}

@@ -27,9 +27,8 @@ const BillingMain = () => {
 
     return (
         <>
-            {isLoading && <DataTableSkeleton/>}
             {error && <Typography>An error has occurred {error}</Typography>}
-            {data && !error && !isLoading &&
+            {!error &&
                   <ViewBillingPage
                       data={data}
                       isLoading={isLoading}

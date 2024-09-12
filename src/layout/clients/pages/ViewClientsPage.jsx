@@ -23,7 +23,7 @@ const ViewClientsPage = ({
     const navigate = useNavigate();
     const deleteClient = useDeleteClient();
 
-    const { columns, rows, isDeleting, setIsDeleting } = useClientTableData(data.records);
+    const { columns, rows, isDeleting, setIsDeleting } = useClientTableData(data?.records);
 
     const handleCloseDeleteDialog = () => {
         setIsDeleting({ deleting: false, data: {} });
@@ -65,7 +65,7 @@ const ViewClientsPage = ({
                         <Box p={3}>
                             <DataTableGrid
                                 table={{ columns, rows }}
-                                totalRecords={data.recordCount}
+                                totalRecords={data?.recordCount}
                                 isDataLoading={isLoading}
                                 paginationModel={paginationModel}
                                 onPaginationModelChange={onPaginationModelChange}

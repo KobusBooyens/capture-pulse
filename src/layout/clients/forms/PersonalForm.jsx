@@ -1,5 +1,4 @@
 import React from "react";
-import { useParams } from "react-router-dom";
 import FormInputText from "../../../components/Input/FormInputText/FormInputText.jsx";
 import { Grid } from "@mui/material";
 import FormInputDate from "../../../components/Input/FormInputDate/FormInputDate.jsx";
@@ -8,8 +7,6 @@ import genderOptions from "../../../data/genderOptions.js";
 import PropTypes from "prop-types";
 
 const PersonalForm = ({ addPartner= false }) => {
-    const { id } = useParams();
-
     return (
         <Grid container spacing={3}>
             <Grid item xs={12} md={6}>

@@ -3,11 +3,9 @@ import { Grid } from "@mui/material";
 import FormInputText from "../../../components/Input/FormInputText/FormInputText.jsx";
 import FormInputDropdown from "../../../components/Input/FormInputDropdown/FormInputDropdown.jsx";
 import goalsOptions from "../../../data/goalsOptions.js";
-import { useParams } from "react-router-dom";
 import PropTypes from "prop-types";
 
 const AboutYouForm = ({ addPartner }) => {
-    const { id } = useParams();
     return (
         <Grid container spacing={3}>
             <Grid item xs={12} md={6}>
@@ -33,7 +31,7 @@ const AboutYouForm = ({ addPartner }) => {
                     name={addPartner ? "partnerLength" : "length"}
                     label={"Length"}
                     type={"number"}
-                    placeholder={"Enter Length (m) e.g. 1.8"}
+                    placeholder={"Enter Length (cm) e.g. 180"}
                     fullWidth
                     required
                     rules={{

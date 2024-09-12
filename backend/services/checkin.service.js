@@ -82,8 +82,18 @@ exports.get = async (clientId, payload) => {
         db.GeneralCheckins.countDocuments(queryFilter)
     ]);
 
+    if (recordCount > 0) {
+        return {
+            records: data && data?.length ? formatResponse(data) : [],
+            recordCount: recordCount
+        };
+    } 
+    const client = await db.Client.findOne({ _id: clientId })
+        .select("firstName lastName contactNumber")
+        .lean();
+
     return {
-        records: data && data?.length ? formatResponse(data) : [],
+        records: { client },
         recordCount: recordCount
     };
 };

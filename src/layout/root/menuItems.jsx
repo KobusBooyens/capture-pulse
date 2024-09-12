@@ -7,8 +7,6 @@ import Icon from "@mui/material/Icon";
 import NotificationsMain from "../notifications/NotificationsMain.jsx";
 import Settings from "../settings/settings.jsx";
 import Users from "../users/users.jsx";
-import ViewWeighingCheckinPage from "../checkins/pages/ViewWeighingCheckinPage.jsx";
-import ViewGeneralCheckinPage from "../checkins/pages/ViewGeneralCheckinPage.jsx";
 import GeneralCheckinsMain from "../checkins/GeneralCheckinsMain.jsx";
 import WeighingCheckinsMain from "../checkins/WeighingCheckinsMain.jsx";
 

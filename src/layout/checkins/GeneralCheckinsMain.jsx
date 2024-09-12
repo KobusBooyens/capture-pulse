@@ -27,9 +27,9 @@ const GeneralCheckinsMain = () => {
     );
     return (
         <>
-            {isLoading && <DataTableSkeleton/>}
+            {/*{isLoading && <DataTableSkeleton/>}*/}
             {error && <Typography>An error has occurred {error}</Typography>}
-            {data && !error && !isLoading &&
+            {!error &&
               <ViewGeneralCheckinPage
                   data={data}
                   isLoading={isLoading}

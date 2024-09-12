@@ -28,16 +28,17 @@ const WeighingCheckinsMain = () => {
 
     return (
         <>
-            {isLoading && <DataTableSkeleton/>}
+            {/*{isLoading && <DataTableSkeleton/>}*/}
             {error && <Typography>An error has occurred {error}</Typography>}
-            {data && !error && !isLoading && <ViewWeighingCheckinPage
-                data={data}
-                isLoading={isLoading}
-                paginationModel={{ page, pageSize }}
-                onPaginationModelChange={(model) => updatePagination(model.page, model.pageSize)}
-                onSearchModelChange={updateSearchText}
-                onSortModelChange={updateSort}
-            />}
+            {!error &&
+              <ViewWeighingCheckinPage
+                  data={data}
+                  isLoading={isLoading}
+                  paginationModel={{ page, pageSize }}
+                  onPaginationModelChange={(model) => updatePagination(model.page, model.pageSize)}
+                  onSearchModelChange={updateSearchText}
+                  onSortModelChange={updateSort}
+              />}
         </>
     );
 };

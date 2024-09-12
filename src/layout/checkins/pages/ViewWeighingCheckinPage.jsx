@@ -21,7 +21,7 @@ const ViewWeighingCheckinPage = ({
     onSearchModelChange,
     onSortModelChange,
 }) => {
-    const { columns, rows, isAdding, setIsAdding } = useWeighingCheckinData(data.records);
+    const { columns, rows, isAdding, setIsAdding } = useWeighingCheckinData(data?.records);
     const createCheckin = useCreateCheckin();
     const methods = useForm({
         defaultValues: {
@@ -83,7 +83,7 @@ const ViewWeighingCheckinPage = ({
                         <Box p={3}>
                             <DataTableGrid
                                 table={{ columns: memoizedColumns, rows: memoizedRows }}
-                                totalRecords={data.recordCount}
+                                totalRecords={data?.recordCount}
                                 isDataLoading={isLoading}
                                 paginationModel={paginationModel}
                                 onPaginationModelChange={onPaginationModelChange}

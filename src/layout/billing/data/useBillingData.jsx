@@ -114,7 +114,7 @@ export const useBillingData = (data) => {
         }
     ];
 
-    const rows = data.map((row) => ({
+    const rows = data?.map((row) => ({
         id: row._id,
         _id: row._id,
         firstName: row.firstName,

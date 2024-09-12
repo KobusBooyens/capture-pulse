@@ -10,14 +10,10 @@ import NotificationsMain from "../layout/notifications/NotificationsMain.jsx";
 import BillingMain from "../layout/billing/BillingMain.jsx";
 import Settings from "../layout/settings/settings.jsx";
 import Users from "../layout/users/users.jsx";
-import ViewGeneralCheckinPage from "../layout/checkins/pages/ViewGeneralCheckinPage.jsx";
-import ViewWeighingCheckinPage from "../layout/checkins/pages/ViewWeighingCheckinPage.jsx";
 import GeneralCheckinsMain from "../layout/checkins/GeneralCheckinsMain.jsx";
 import WeighingCheckinsMain from "../layout/checkins/WeighingCheckinsMain.jsx";
-import ViewCheckinHistoryPage from "../layout/checkins/pages/ViewCheckinHistoryPage.jsx";
 import TableQueryProvider from "./table-query-provider.jsx";
 import CheckinHistoryMain from "../layout/checkins/CheckinHistoryMain.jsx";
-import ViewBillingHistoryPage from "../layout/billing/pages/ViewBillingHistoryPage.jsx";
 import BillingHistoryMain from "../layout/billing/BillingHistoryMain.jsx";
 
 const router = createBrowserRouter(

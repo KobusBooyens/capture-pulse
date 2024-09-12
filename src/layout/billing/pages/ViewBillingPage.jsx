@@ -38,7 +38,7 @@ const ViewBillingPage = ({
     onSortModelChange,
 }) => {
 
-    const { columns, rows, isAdding, setIsAdding } = useBillingData(data.records);
+    const { columns, rows, isAdding, setIsAdding } = useBillingData(data?.records);
     const createPayment = useCreateBilling();
     const methods = useForm();
 
@@ -92,7 +92,7 @@ const ViewBillingPage = ({
                             <DataTableGrid
                                 table={{ columns, rows }}
                                 TableHeaderComponent={TableHeader}
-                                totalRecords={data.recordCount}
+                                totalRecords={data?.recordCount}
                                 isDataLoading={isLoading}
                                 paginationModel={paginationModel}
                                 searchModel={{ enabled: true, placeholder: "Search client", label:"Search" }}

@@ -57,9 +57,12 @@ const DataTableGrid = ({
                 onPaginationModelChange={onPaginationModelChange}
                 onSortModelChange={onSortModelChange}
                 paginationMode={"server"}
+                sortingMode={"server"}
+                hideFooterSelectedRowCount
+                disableRowSelectionOnClick
                 disableColumnFilter
                 disableColumnMenu
-                disableRowSelectionOnClick
+
             />
         </TableContainer>
     );

@@ -26,6 +26,7 @@ const ViewCheckinHistoryPage = ({
 }) => {
     const editCheckin = useEditCheckin();
     const deleteCheckin = useDeleteCheckin();
+
     const { columns, rows, isActioned, setIsActioned } = useCheckinHistoryData(type, data?.records);
     const methods = useForm();
 
@@ -47,7 +48,6 @@ const ViewCheckinHistoryPage = ({
         deleteCheckin.isPending, deleteCheckin.isSuccess]);
 
     const onFormSubmit = (data) => {
-        console.log("onFormSubmit", data);
         const dataToSave = {
             ...data,
             client: data.client._id
@@ -87,7 +87,7 @@ const ViewCheckinHistoryPage = ({
                         <Box p={3}>
                             <DataTableGrid
                                 table={{ columns, rows }}
-                                totalRecords={data.recordCount}
+                                totalRecords={data?.recordCount}
                                 isDataLoading={isLoading}
                                 paginationModel={paginationModel}
                                 onPaginationModelChange={onPaginationModelChange}
