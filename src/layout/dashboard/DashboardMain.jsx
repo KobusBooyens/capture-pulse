@@ -21,7 +21,7 @@ const DashboardMain = () => {
                             <ComplexStatisticsCard
                                 color="primary"
                                 icon="person_add"
-                                title="New ClientsMain"
+                                title="Total New Clients"
                                 count="+12"
                             >
                                 <Typography component="p" variant="button" color="text" display="flex">
@@ -32,7 +32,7 @@ const DashboardMain = () => {
                                         color={"success"}>
                                         {""}
                                     </Typography>
-                                &nbsp;{"Just updated"}
+                                &nbsp;{"September 2024"}
                                 </Typography>
                             </ComplexStatisticsCard>
                         </Box>
@@ -42,7 +42,7 @@ const DashboardMain = () => {
                             <ComplexStatisticsCard
                                 color="dark"
                                 icon="people_alt"
-                                title="Total ClientsMain"
+                                title="Clients"
                                 count={281}
                             >
                                 <Typography component="p" variant="button" color="text" display="flex" gap={1}>
@@ -114,9 +114,9 @@ const DashboardMain = () => {
                             <Box mb={3}>
                                 <ReportsBarChart
                                     color="info"
-                                    title="ClientsMain"
+                                    title="New Clients"
                                     description="Weekly insights"
-                                    date="latest user joined 2 days ago"
+                                    date="latest client joined 2 days ago"
                                     chart={reportsBarChartData}
                                 />
                             </Box>
@@ -125,7 +125,7 @@ const DashboardMain = () => {
                             <Box mb={3}>
                                 <ReportsLineChart
                                     color="success"
-                                    title="ClientsMain"
+                                    title="New Clients"
                                     description="Monthly insights"
                                     date="updated 4 min ago"
                                     chart={joined}

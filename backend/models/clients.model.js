@@ -63,7 +63,7 @@ const schema = new mongoose.Schema(
     }
 );
 
-schema.index({ email: 1 });
+schema.index({ email: 1 }, { unique: true });
 
 schema.plugin(mongoose_delete, { deletedAt: true, deletedBy: true, overrideMethods: "all" });
 const Clients = mongoose.model("Clients", schema);

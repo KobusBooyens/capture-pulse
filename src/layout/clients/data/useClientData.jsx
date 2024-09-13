@@ -12,10 +12,15 @@ import Typography from "../../../components/Typography/Typography.jsx";
 
 export default function useClientData(data) {
     const [isDeleting, setIsDeleting] = useState({ deleting: false, data: {} });
+    const [viewNotes, setViewNotes] = useState({ show: false, data: [], clientId: null });
 
     const handleDeleteClient = useCallback((data) => {
         setIsDeleting({ deleting: true, data });
     },[]);
+
+    const handleViewNotes = useCallback((data) => {
+        setViewNotes({ show: true, data: data.notes, clientId: data._id });
+    });
 
     const Actions = ({ data }) => {
         const navigate = useNavigate();
@@ -27,7 +32,7 @@ export default function useClientData(data) {
                     </IconButton>
                 </Tooltip>
                 <Tooltip title="Notes" placement="top">
-                    <IconButton onClick={() => console.log("view notes")}>
+                    <IconButton onClick={() => handleViewNotes(data)}>
                         <Icon fontSize="small" color="action">notes</Icon>
                     </IconButton>
                 </Tooltip>
@@ -107,12 +112,15 @@ export default function useClientData(data) {
         goal: row.goal,
         packagePartners: row.packagePartners,
         joined: row.joiningDate,
+        notes: row.clientNotes,
         _id: row._id,
     }));
 
     return {
         columns,
         rows,
+        viewNotes,
+        setViewNotes,
         isDeleting,
         setIsDeleting
     };

@@ -1,4 +1,5 @@
 const db = require("../models");
+const ClientService = require("../services/client.service");
 
 exports.formatClientBillingResponse = (data) => {
     const client = data[0]?.client;
@@ -18,14 +19,15 @@ exports.formatClientBillingResponse = (data) => {
 exports.formatClientResponse = async (data) => {
     const clientPackageList = await getClientPackageList();
     return data.map(d => {
+        const packageObj = d?.package && d?.package.length > 0 ? d?.package[0] : {};
+        const clientPackageObj = d?.clientPackage && d?.clientPackage.length > 0 ? d?.clientPackage[0] : {};
         const resp = {
             ...d,
             clientId: d?._id,
-            package: d?.clientPackage?.package._id,
-            packageName: d?.clientPackage?.package.name,
-            amount: d?.clientPackage?.amount,
-            packagePartners:
-        clientPackageList[d?.clientPackage?._id] ?? undefined
+            package: packageObj?._id,
+            packageName: packageObj?.name,
+            amount: clientPackageObj?.amount,
+            packagePartners: clientPackageList[clientPackageObj?._id] ?? undefined
         };
 
         delete resp.clientPackage;

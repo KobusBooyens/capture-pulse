@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import DeleteDialog from "../../../controls/Dialogs/DeleteDialog.jsx";
 import useDeleteClient from "../../../api/clients/useDeleteClient.js";
 import DataTableGrid from "../../../controls/Tables/DataTableGrid/DataTableGrid.jsx";
+import NotesDialog from "../../../controls/Dialogs/NotesDialog.jsx";
 
 const ViewClientsPage = ({
     data,
@@ -23,10 +24,14 @@ const ViewClientsPage = ({
     const navigate = useNavigate();
     const deleteClient = useDeleteClient();
 
-    const { columns, rows, isDeleting, setIsDeleting } = useClientTableData(data?.records);
+    const { columns, rows, isDeleting, setIsDeleting, viewNotes, setViewNotes } = useClientTableData(data?.records);
 
     const handleCloseDeleteDialog = () => {
         setIsDeleting({ deleting: false, data: {} });
+    };
+
+    const handleCloseViewNotes = () => {
+        setViewNotes({ show: false, data: [], clientId: null });
     };
 
     useEffect(() => {
@@ -82,6 +87,12 @@ const ViewClientsPage = ({
                 onClose={handleCloseDeleteDialog}
                 onConfirm={() => deleteClient.mutate({ id: isDeleting.data._id })}
                 isLoading={deleteClient.isPending}
+            />
+            <NotesDialog
+                openDialog={viewNotes.show}
+                onClose={handleCloseViewNotes}
+                data={viewNotes.data}
+                clientId={viewNotes.clientId}
             />
         </Box>
     );

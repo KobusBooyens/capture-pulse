@@ -26,19 +26,43 @@ exports.getAll = async (payload) => {
         }
     }
 
-    const [ data, recordCount ] = await Promise.all([
-        db.Client.find(queryFilter)
-            .populate({
-                path: "clientPackage",
-                populate: "package"
-            })
-            .sort(sortFilter)
-            .limit(pageSize)
-            .skip(pageSize * (page - 1))
-            .lean(),
+    const aggregationPipeline = [
+        { $match: queryFilter },
+        { $sort: sortFilter },
+        { $skip: pageSize * (page - 1) },
+        { $limit: pageSize },
+        {
+            $lookup: {
+                from: "clientNotes",
+                localField: "_id",
+                foreignField: "client",
+                as: "clientNotes"
+            }
+        },
+        {
+            $lookup: {
+                from: "clientPackage",
+                localField: "clientPackage",
+                foreignField: "_id",
+                as: "clientPackage"
+            }
+        },
+        {
+            $lookup: {
+                from: "packages",
+                localField: "clientPackage.package",
+                foreignField: "_id",
+                as: "package"
+            }
+        },
+    ];
+
+    const [data, recordCount] = await Promise.all([
+        db.Client.aggregate(aggregationPipeline),
         db.Client.countDocuments(queryFilter)
     ]);
 
+    console.log(data[0]);
     return {
         records: data ? await formatClientResponse(data) : [],
         recordCount: recordCount
@@ -100,6 +124,17 @@ exports.create = async(payload) => {
     }
 };
 
+exports.getClientNotesByClientId = async(clientId) => {
+    return db.ClientNotes.find({ _id: clientId })
+        .select("note createdAt")
+        .lean();
+};
+
+exports.createClientNote = async (payload) => {
+    const clientNote = new db.ClientNotes({ ...payload });
+    return clientNote.save();
+};
+
 exports.edit = async(id, payload) => {
     const session = await startSession();
     session.startTransaction();
@@ -136,4 +171,8 @@ exports.edit = async(id, payload) => {
 
 exports.deleteItem = async(id) => {
     await db.Client.delete({ _id: id });
+};
+
+exports.deleteClientNote = async(id) => {
+    await db.ClientNotes.delete({ _id: id });
 };

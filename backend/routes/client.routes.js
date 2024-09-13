@@ -1,4 +1,4 @@
-const clientsController = require("../controllers/clients.controller");
+const controller = require("../controllers/clients.controller");
 
 module.exports = function (app) {
     app.use(function (req, res, next) {
@@ -7,9 +7,12 @@ module.exports = function (app) {
         next();
     });
 
-    app.get("/api/clients", clientsController.getAll);
-    app.get("/api/clients/:id", clientsController.get);
-    app.post("/api/clients", clientsController.create);
-    app.patch("/api/clients/:id", clientsController.edit);
-    app.delete("/api/clients/:id", clientsController.deleteItem);
+    app.get("/api/clients", controller.getAll);
+    app.get("/api/clients/:id", controller.get);
+    app.post("/api/clients", controller.create);
+    app.patch("/api/clients/:id", controller.edit);
+    app.delete("/api/clients/:id", controller.deleteItem);
+
+    app.post("/api/client/notes", controller.createClientNote);
+    app.delete("/api/client/notes/:id", controller.deleteClientNote);
 };

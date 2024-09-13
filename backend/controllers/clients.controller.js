@@ -108,4 +108,36 @@ const deleteItem = async (req, res) => {
     }
 };
 
-module.exports = { getAll, get, create, edit, deleteItem };
+const clientNoteSchema = z.object({
+    client: z.string({ required_error: "client is required" }),
+    note: z.string({ required_error: "note is required" }),
+});
+
+const createClientNote = async (req, res) => {
+    try {
+        const { payload, error } = validateAndRespond(clientNoteSchema, req.body);
+        if (error) {
+            return res.status(400).json({ message: "Validation failed.", errors: error });
+        }
+        const response = await ClientService.createClientNote(payload);
+        return res.status(201).send(response);
+    } catch (err) {
+        console.error(err);
+        return res.status(500).send({ message: "Internal Server Error", error: err });
+    }
+};
+
+const deleteClientNote = async (req, res) => {
+    try {
+        await ClientService.deleteClientNote(req.params.id);
+        res.status(200).send("Client Note deleted");
+    } catch (err) {
+        console.error(err);
+        res.status(500).send({ message: "Internal Server Error", error: err });
+    }
+};
+
+module.exports = {
+    getAll, get, create, edit, deleteItem,
+    createClientNote,deleteClientNote
+};
