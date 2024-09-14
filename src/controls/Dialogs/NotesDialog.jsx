@@ -54,19 +54,20 @@ const NotesDialog = ({ openDialog, onClose, data, clientId }) => {
         };
 
         createClientNote.mutate(dataToSubmit, {
-            onSuccess: () => {
+            onSuccess: (addedRecord) => {
                 data.push({
+                    _id: addedRecord._id,
                     note: dataToSubmit.note,
-                    createdAt: dayjs()
+                    createdAt: addedRecord.createdAt
                 });
                 setNewNote("");
-            }
+            },
+
         });
 
     };
 
     const handleDismissNote = (record) => {
-        console.log("handleDismissNote");
         deleteClientNote.mutate({ id: record._id }, {
             onSuccess: () => {
                 data = data?.filter(note => note._id !== record._id);

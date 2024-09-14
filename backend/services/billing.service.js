@@ -1,6 +1,7 @@
 const db = require("../models");
 const { formatClientResponse, formatClientBillingResponse } = require("../controllers/utils");
 const { ObjectId } = require("mongodb");
+const { clientNotesLookup, clientPackageLookup, packageLookup } = require("./pipelineHelpers/_lookupExtensions");
 
 exports.getAll = async (payload) => {
     const pageSize = payload.pageSize ? Number(payload.pageSize) : 10;
@@ -27,16 +28,17 @@ exports.getAll = async (payload) => {
         }
     }
 
-    const [ data, recordCount ] = await Promise.all([
-        db.Client.find(queryFilter)
-            .populate({
-                path: "clientPackage",
-                populate: "package"
-            })
-            .sort(sortFilter)
-            .limit(pageSize)
-            .skip(pageSize * (page - 1))
-            .lean(),
+    const aggregationPipeline = [
+        { $match: queryFilter },
+        { $sort: sortFilter },
+        { $skip: pageSize * (page - 1) },
+        { $limit: pageSize },
+        { ...clientPackageLookup },
+        { ...packageLookup },
+    ];
+
+    const [data, recordCount] = await Promise.all([
+        db.Client.aggregate(aggregationPipeline),
         db.Client.countDocuments(queryFilter)
     ]);
 

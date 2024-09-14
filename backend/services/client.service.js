@@ -1,6 +1,8 @@
 const db = require("../models");
 const { formatClientResponse } = require("../controllers/utils");
 const { startSession } = require("mongoose");
+const { clientNotesLookup, clientPackageLookup, packageLookup } = require("./pipelineHelpers/_lookupExtensions");
+const { ObjectId } = require("mongodb");
 
 exports.getAll = async (payload) => {
     const pageSize = payload.pageSize ? Number(payload.pageSize) : 10;
@@ -26,47 +28,14 @@ exports.getAll = async (payload) => {
         }
     }
 
-    const excludeDeletedRecordQuery = {
-        deleted: { $ne: true }
-    };
-
     const aggregationPipeline = [
         { $match: queryFilter },
         { $sort: sortFilter },
         { $skip: pageSize * (page - 1) },
         { $limit: pageSize },
-        {
-            $lookup: {
-                from: "clientNotes",
-                let: { clientId: "$_id" }, // Pass the client ID to the lookup pipeline
-                pipeline: [
-                    {
-                        $match: {
-                            $expr: { $eq: ["$client", "$$clientId"] }, // Match client ID
-                            deleted: { $ne: true } // Exclude deleted records
-                        }
-                    },
-                    { $project: { note: 1, createdAt: 1 } } // Only include the required fields
-                ],
-                as: "clientNotes"
-            }
-        },
-        {
-            $lookup: {
-                from: "clientPackage",
-                localField: "clientPackage",
-                foreignField: "_id",
-                as: "clientPackage"
-            }
-        },
-        {
-            $lookup: {
-                from: "packages",
-                localField: "clientPackage.package",
-                foreignField: "_id",
-                as: "package"
-            }
-        },
+        { ...clientNotesLookup },
+        { ...clientPackageLookup },
+        { ...packageLookup },
     ];
 
     const [data, recordCount] = await Promise.all([
@@ -74,7 +43,6 @@ exports.getAll = async (payload) => {
         db.Client.countDocuments(queryFilter)
     ]);
 
-    console.log(data[0]);
     return {
         records: data ? await formatClientResponse(data) : [],
         recordCount: recordCount
@@ -82,14 +50,16 @@ exports.getAll = async (payload) => {
 };
 
 exports.get = async (id) => {
-    const data = await db.Client.findById(id)
-        .populate({
-            path: "clientPackage",
-            populate: "package"
-        })
-        .lean();
 
-    return await formatClientResponse([data]);
+    const aggregationPipeline = [
+        { $match: { _id: new ObjectId(id) } },
+        { ...clientPackageLookup },
+        { ...packageLookup },
+    ];
+
+    const data = await db.Client.aggregate(aggregationPipeline);
+    console.log(data);
+    return await formatClientResponse(data);
 };
 
 exports.create = async(payload) => {
