@@ -3,25 +3,28 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 
 import Fade from "@mui/material/Fade";
-import MDAlertRoot from "./AlertRoot.js";
+import AlertRoot from "./AlertRoot.js";
 import Box from "../Box/Box.jsx";
 import MDAlertCloseIcon from "./AlertCloseIcon.js";
 
-function Alert({ color, dismissible, children, ...rest }) {
+function Alert({ color, dismissible, onDismiss, children, ...rest }) {
     const [alertStatus, setAlertStatus] = useState("mount");
 
-    const handleAlertStatus = () => setAlertStatus("fadeOut");
+    const handleAlertStatus = () => {
+        onDismiss();
+        setAlertStatus("fadeOut");
+    };
 
     const alertTemplate = (mount = true) => 
         <Fade in={mount} timeout={300}>
-            <MDAlertRoot ownerState={{ color }} {...rest}>
+            <AlertRoot ownerState={{ color }} {...rest}>
                 <Box display="flex" alignItems="center" color="white">
                     {children}
                 </Box>
-                {dismissible ? 
+                {dismissible ?
                     <MDAlertCloseIcon onClick={mount ? handleAlertStatus : null}>&times;</MDAlertCloseIcon>
                     : null}
-            </MDAlertRoot>
+            </AlertRoot>
         </Fade>
   ;
 
@@ -56,6 +59,7 @@ Alert.propTypes = {
         "dark",
     ]),
     dismissible: PropTypes.bool,
+    onDismiss: PropTypes.func,
     children: PropTypes.node.isRequired,
 };
 

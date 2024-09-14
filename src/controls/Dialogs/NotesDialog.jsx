@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import dayjs from "dayjs";
 import {
     Dialog,
@@ -15,27 +15,23 @@ import Alert from "../../components/Alert/Alert.jsx";
 import Divider from "@mui/material/Divider";
 import PropTypes from "prop-types";
 import useCreateClientNote from "../../api/clientNotes/useCreateClientNote.js";
+import useDeleteClientNote from "../../api/clientNotes/useDeleteClientNote.js";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props}/>;
 });
 
-const NoteCard = ({ note, dateTime, onDismiss }) => 
-    <Alert color="dark" dismissible onClose={onDismiss}>
-        <Box sx={{ display: "flex", flexDirection: "column", textAlign: "left" }}>
+const NoteCard = ({ note, dateTime, onDismiss }) =>
+    <Alert color="dark" dismissible onDismiss={onDismiss}>
+        <Box sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
             <Typography variant="body2" color="white">
                 {note}
             </Typography>
-
-            <Box sx={{ display: "flex", justifyContent: "center", my: 1 }}>
-                <Divider sx={{ opacity: 1, width: "100%" }} />
-            </Box>
-
-            <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-                <Typography variant="caption" color="white">
-                    {`Created ${dayjs(dateTime).fromNow(dayjs(), true)} ago`}
-                </Typography>
-            </Box>
+            <Divider sx={{ display:"flex", opacity: 1, width: "50%" }} />
+            <Typography variant="caption" color="white">
+                {`Created ${dayjs(dateTime).fromNow(dayjs(), true)} ago`}
+            </Typography>
+       
         </Box>
     </Alert>
 ;
@@ -47,6 +43,8 @@ NoteCard.propTypes = {
 
 const NotesDialog = ({ openDialog, onClose, data, clientId }) => {
     const createClientNote = useCreateClientNote();
+    const deleteClientNote = useDeleteClientNote();
+
     const [newNote, setNewNote] = useState("");
 
     const handleAddNote = () => {
@@ -55,20 +53,26 @@ const NotesDialog = ({ openDialog, onClose, data, clientId }) => {
             note: newNote.trim()
         };
 
-        createClientNote.mutate(dataToSubmit);
-        if (!createClientNote.isPending && createClientNote.isSuccess){
-            data.push({
-                note: dataToSubmit.note,
-                createdAt: dayjs()
-            });
-        }
+        createClientNote.mutate(dataToSubmit, {
+            onSuccess: () => {
+                data.push({
+                    note: dataToSubmit.note,
+                    createdAt: dayjs()
+                });
+                setNewNote("");
+            }
+        });
 
-        setNewNote("");
     };
 
-    const handleDismissNote = useCallback((data) => {
-        console.log("handleDismissNote", data);
-    });
+    const handleDismissNote = (record) => {
+        console.log("handleDismissNote");
+        deleteClientNote.mutate({ id: record._id }, {
+            onSuccess: () => {
+                data = data?.filter(note => note._id !== record._id);
+            }
+        });
+    };
 
     const dialogContentToDisplay = () => {
         if (!data || data?.length === 0) {
@@ -102,7 +106,7 @@ const NotesDialog = ({ openDialog, onClose, data, clientId }) => {
                     <TextField
                         label={data?.length >= 4 ? "A maximum of 4 notes can be added" : "Add Note"}
                         placeholder={"Add a note"}
-                        // disabled={data?.length >= 4}
+                        disabled={data?.length >= 4}
                         multiline
                         required
                         rows={2}
@@ -113,7 +117,7 @@ const NotesDialog = ({ openDialog, onClose, data, clientId }) => {
                     <Button
                         onClick={handleAddNote}
                         color="primary"
-                        // disabled={data?.length >= 4}
+                        disabled={data?.length >= 4}
                         variant="contained"
                         sx={{ marginTop: 2 }}>
                         Add Note

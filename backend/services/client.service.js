@@ -26,6 +26,10 @@ exports.getAll = async (payload) => {
         }
     }
 
+    const excludeDeletedRecordQuery = {
+        deleted: { $ne: true }
+    };
+
     const aggregationPipeline = [
         { $match: queryFilter },
         { $sort: sortFilter },
@@ -34,8 +38,16 @@ exports.getAll = async (payload) => {
         {
             $lookup: {
                 from: "clientNotes",
-                localField: "_id",
-                foreignField: "client",
+                let: { clientId: "$_id" }, // Pass the client ID to the lookup pipeline
+                pipeline: [
+                    {
+                        $match: {
+                            $expr: { $eq: ["$client", "$$clientId"] }, // Match client ID
+                            deleted: { $ne: true } // Exclude deleted records
+                        }
+                    },
+                    { $project: { note: 1, createdAt: 1 } } // Only include the required fields
+                ],
                 as: "clientNotes"
             }
         },
@@ -169,10 +181,10 @@ exports.edit = async(id, payload) => {
     }
 };
 
-exports.deleteItem = async(id) => {
-    await db.Client.delete({ _id: id });
+exports.deleteItem = async (id) => {
+    return await db.Client.delete({ _id: id });
 };
 
-exports.deleteClientNote = async(id) => {
-    await db.ClientNotes.delete({ _id: id });
+exports.deleteClientNote = async (id) => {
+    return await db.ClientNotes.delete({ _id: id });
 };

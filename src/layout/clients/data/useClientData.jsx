@@ -1,6 +1,5 @@
 import Box from "../../../components/Box/Box.jsx";
 import Icon from "@mui/material/Icon";
-import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import dayjs from "dayjs";
 import PropTypes from "prop-types";
@@ -9,6 +8,8 @@ import { useCallback, useState } from "react";
 import ClientDetails from "../../shared/ClientDetails.jsx";
 import PackageDetails from "../../shared/PackageDetails.jsx";
 import Typography from "../../../components/Typography/Typography.jsx";
+import Badge from "../../../components/Badge/Badge.jsx";
+import IconButton from "@mui/material/IconButton";
 
 export default function useClientData(data) {
     const [isDeleting, setIsDeleting] = useState({ deleting: false, data: {} });
@@ -33,7 +34,10 @@ export default function useClientData(data) {
                 </Tooltip>
                 <Tooltip title="Notes" placement="top">
                     <IconButton onClick={() => handleViewNotes(data)}>
-                        <Icon fontSize="small" color="action">notes</Icon>
+                        <Badge badgeContent={data.notes.length} circular size={"xs"} color={"light"}>
+                            <Icon fontSize="small" color={"action"}>notes</Icon>
+                        </Badge>
+
                     </IconButton>
                 </Tooltip>
                 <Tooltip title="Remove" placement="top">

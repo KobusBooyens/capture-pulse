@@ -130,7 +130,7 @@ const createClientNote = async (req, res) => {
 const deleteClientNote = async (req, res) => {
     try {
         await ClientService.deleteClientNote(req.params.id);
-        res.status(200).send("Client Note deleted");
+        return res.status(200).send("Client Note deleted");
     } catch (err) {
         console.error(err);
         res.status(500).send({ message: "Internal Server Error", error: err });
