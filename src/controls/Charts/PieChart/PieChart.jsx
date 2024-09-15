@@ -16,11 +16,11 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 function PieChart({ icon, title, description, height, chart }) {
     const { data, options } = config(chart.labels || [], chart.datasets || {}, chart.options);
 
-    const renderChart = 
+    const renderChart =
     <Box py={2} pr={2} pl={icon.component ? 1 : 2}>
-        {title || description ? 
+        {title || description ?
             <Box display="flex" px={description ? 1 : 0} pt={description ? 1 : 0}>
-                {icon.component && 
+                {icon.component &&
             <Box
                 width="4rem"
                 height="4rem"
@@ -49,7 +49,7 @@ function PieChart({ icon, title, description, height, chart }) {
             </Box>
             : null}
         {useMemo(
-            () => 
+            () =>
                 <Box height={height}>
                     <Pie data={data} options={options} redraw />
                 </Box>

@@ -15,10 +15,14 @@ import WeighingCheckinsMain from "../layout/checkins/WeighingCheckinsMain.jsx";
 import TableQueryProvider from "./table-query-provider.jsx";
 import CheckinHistoryMain from "../layout/checkins/CheckinHistoryMain.jsx";
 import BillingHistoryMain from "../layout/billing/BillingHistoryMain.jsx";
+import { SignUpMain } from "../layout/authentication/sign-up/SignUpMain.jsx";
+import { SignInMain } from "../layout/authentication/sign-in/SignInMain.jsx";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<Layout/>}>
+            <Route path={"authentication/sign-up"} element={<SignUpMain/>}/>
+            <Route path={"authentication/sign-in"} element={<SignInMain/>}/>
             {/*dashboard*/}
             <Route path="dashboard" element={<DashboardMain />}/>
 

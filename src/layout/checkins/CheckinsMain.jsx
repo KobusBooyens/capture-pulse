@@ -31,7 +31,7 @@ const CheckinsMain = () => {
                     <Grid item xs={12} md={6} lg={3} mb={3}>
                         <PercentageStatisticsCard
                             color="primary"
-                            icon="today"
+                            icon="how_to_reg"
                             title="Total Checkins this week"
                             percentage={Math.round(12 / 100 * 100)}
                             titleContent="12/100"
@@ -103,6 +103,14 @@ const CheckinsMain = () => {
                             icon={{ color: "primary", component: <Icon>mood</Icon> }}
                         />
                     </Grid>
+                    <Grid item xs={12} md={6} lg={4} mb={3}>
+                        <PieChart
+                            title={"Mood"}
+                            description={"Average mood this month"}
+                            chart={dailyCheckinMoodPieChartData}
+                            icon={{ color: "primary", component: <Icon>mood</Icon> }}
+                        />
+                    </Grid>
                 </Grid>
             </Box>
 
@@ -119,7 +127,7 @@ const CheckinsMain = () => {
                     <Grid item xs={12} md={6} lg={3}>
                         <PercentageStatisticsCard
                             color="info"
-                            icon="person_add"
+                            icon="scale"
                             title="Total Weighings this week"
                             percentage={Math.round(50 / 100 * 100)}
                             titleContent="50/100"
@@ -138,7 +146,7 @@ const CheckinsMain = () => {
                     <Grid item xs={12} md={6} lg={3}>
                         <PercentageStatisticsCard
                             color="info"
-                            icon="person_add"
+                            icon="date_range"
                             title="Total Weighings this month"
                             percentage={Math.round(60 / 400 * 100)}
                             titleContent="60/400"

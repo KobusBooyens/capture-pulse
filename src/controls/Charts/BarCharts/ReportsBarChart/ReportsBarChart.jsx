@@ -38,7 +38,7 @@ function ReportsBarChart({ color, title, description, chart, children }) {
                             py={2}
                             pr={0.5}
                             mt={-5}
-                            // height="12.5rem"
+                            height="12.5rem"
                         >
                             <Bar data={data} options={options} redraw />
                         </Box>
