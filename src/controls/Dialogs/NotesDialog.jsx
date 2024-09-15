@@ -16,6 +16,7 @@ import Divider from "@mui/material/Divider";
 import PropTypes from "prop-types";
 import useCreateClientNote from "../../api/clientNotes/useCreateClientNote.js";
 import useDeleteClientNote from "../../api/clientNotes/useDeleteClientNote.js";
+import { useForm } from "react-hook-form";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props}/>;
@@ -45,48 +46,58 @@ const NotesDialog = ({ openDialog, onClose, data, clientId }) => {
     const createClientNote = useCreateClientNote();
     const deleteClientNote = useDeleteClientNote();
 
-    const [newNote, setNewNote] = useState("");
+    const { register, handleSubmit, formState: { errors }, reset } = useForm();
+    const [notesData, setNotesData] = useState(data);
 
-    const handleAddNote = () => {
+    const handleAddNote = (formData) => {
         const dataToSubmit = {
             client: clientId,
-            note: newNote.trim()
+            note: formData.note.trim()
         };
 
         createClientNote.mutate(dataToSubmit, {
             onSuccess: (addedRecord) => {
-                data.push({
-                    _id: addedRecord._id,
-                    note: dataToSubmit.note,
-                    createdAt: addedRecord.createdAt
-                });
-                setNewNote("");
+                setNotesData((prevNotes) => [
+                    ...prevNotes,
+                    {
+                        _id: addedRecord._id,
+                        note: dataToSubmit.note,
+                        createdAt: addedRecord.createdAt,
+                    },
+                ]);
+                reset();
             },
 
         });
-
     };
 
-    const handleDismissNote = (record) => {
+    const handleOnClose = () => {
+        reset();
+        onClose();
+    };
+
+    const handleDeleteNote = (record) => {
         deleteClientNote.mutate({ id: record._id }, {
             onSuccess: () => {
-                data = data?.filter(note => note._id !== record._id);
+                setNotesData((prevNotes) =>
+                    prevNotes.filter((note) => note._id !== record._id)
+                );
             }
         });
     };
 
     const dialogContentToDisplay = () => {
-        if (!data || data?.length === 0) {
+        if (!notesData || notesData?.length === 0) {
             return <Typography variant={"body"}>No notes found</Typography>;
         }
 
         return (
-            data?.map((d) =>
+            notesData?.map((d) =>
                 <Grid item sx={12} md={12} lg={12} key={d}>
                     <NoteCard
                         note={d.note}
                         dateTime={d.createdAt}
-                        onDismiss={() => handleDismissNote(d)}
+                        onDismiss={() => handleDeleteNote(d)}
                     />
                 </Grid>
             )
@@ -104,33 +115,44 @@ const NotesDialog = ({ openDialog, onClose, data, clientId }) => {
             <DialogTitle>Add or View Notes</DialogTitle>
             <DialogContent>
                 <Box margin={2}>
-                    <TextField
-                        label={data?.length >= 4 ? "A maximum of 4 notes can be added" : "Add Note"}
-                        placeholder={"Add a note"}
-                        disabled={data?.length >= 4}
-                        multiline
-                        required
-                        rows={2}
-                        value={newNote}
-                        onChange={(e) => setNewNote(e.target.value)}
-                        fullWidth
-                    />
-                    <Button
-                        onClick={handleAddNote}
-                        color="primary"
-                        disabled={data?.length >= 4}
-                        variant="contained"
-                        sx={{ marginTop: 2 }}>
-                        Add Note
-                    </Button>
+                    <form onSubmit={handleSubmit(handleAddNote)} noValidate>
+                        <TextField
+                            label={"Add Note"}
+                            placeholder={"Add a note"}
+                            disabled={notesData?.length >= 4}
+                            multiline
+                            required
+                            rows={2}
+                            fullWidth
+                            {...register("note", {
+                                required: "This is a required field",
+                                maxLength: {
+                                    value: 100,
+                                    message: "Cannot exceed 100 characters"
+                                }
+                            })}
+                            error={!!errors.note}
+                            helperText={notesData?.length >= 4 ? "A maximum of 4 notes can be added" :
+                                errors.note ? errors.note.message :
+                                    "Maximum of 100 characters"}
+                        />
+                        <Button
+                            type={"submit"}
+                            color="primary"
+                            disabled={notesData?.length >= 4}
+                            variant="contained"
+                            sx={{ marginTop: 2 }}>
+                            Add Note
+                        </Button>
+                    </form>
                 </Box>
-                
+
                 <Grid container spacing={2} sx={{ marginTop: 2 }} display={"flex"} justifyContent={"center"}>
                     {dialogContentToDisplay()}
                 </Grid>
             </DialogContent>
             <DialogActions>
-                <Button onClick={onClose} color="secondary">Back</Button>
+                <Button onClick={handleOnClose} color="secondary">Back</Button>
             </DialogActions>
         </Dialog>
     );
