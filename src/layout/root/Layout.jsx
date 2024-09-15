@@ -21,6 +21,7 @@ const Layout = () => {
         sidenavColor,
         transparentSidenav,
         whiteSidenav,
+        layout,
         darkMode,
     } = controller;
     const [onMouseEnter, setOnMouseEnter] = useState(false);
@@ -46,27 +47,39 @@ const Layout = () => {
 
     const useDarkBrand = transparentSidenav && !darkMode || whiteSidenav;
     const brand = useDarkBrand ? brandDark : brandWhite;
+    console.log("Layout", {
+        layout, pathname
+    });
+
     return (
         <>
             <ThemeProvider theme={darkMode ? themeDark : theme}>
                 <SnackbarProvider>
                     <CssBaseline/>
-                    <Sidenav
-                        color={sidenavColor}
-                        brand={brand}
-                        brandName={"Capture Pulse"}
-                        routes={menuItems}
-                        onMouseEnter={handleOnMouseEnter}
-                        onMouseLeave={handleOnMouseLeave}
-                    />
-                    <DashboardLayout>
-                        <DashboardNavbar/>
-                        <Outlet/>
-                        <Footer/>
-                    </DashboardLayout>
+                    {layout === "dashboard" ?
+                        <>
+                            <Sidenav
+                                color={sidenavColor}
+                                brand={brand}
+                                brandName={"Capture Pulse"}
+                                routes={menuItems}
+                                onMouseEnter={handleOnMouseEnter}
+                                onMouseLeave={handleOnMouseLeave}
+                            />
+
+                            <DashboardLayout>
+                                <DashboardNavbar/>
+                                <Outlet/>
+                                <Footer/>
+                            </DashboardLayout>
+                        </> :
+                        <>
+                            <Outlet/>
+                            <Footer/>
+                        </>
+                    }
                 </SnackbarProvider>
             </ThemeProvider>
-
         </>
     );
 };

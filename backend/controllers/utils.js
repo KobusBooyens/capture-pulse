@@ -1,5 +1,4 @@
 const db = require("../models");
-const ClientService = require("../services/client.service");
 
 exports.formatClientBillingResponse = (data) => {
     const client = data[0]?.client;

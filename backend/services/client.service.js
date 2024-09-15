@@ -50,7 +50,6 @@ exports.getAll = async (payload) => {
 };
 
 exports.get = async (id) => {
-
     const aggregationPipeline = [
         { $match: { _id: new ObjectId(id) } },
         { ...clientPackageLookup },
@@ -58,7 +57,6 @@ exports.get = async (id) => {
     ];
 
     const data = await db.Client.aggregate(aggregationPipeline);
-    console.log(data);
     return await formatClientResponse(data);
 };
 

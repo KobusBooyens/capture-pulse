@@ -3,6 +3,8 @@ mongoose.Promise = global.Promise;
 const db = {};
 db.mongoose = mongoose;
 
+db.Subscriptions = require("./subscriptions.model");
+db.Users = require("./users.model");
 db.Client = require("./clients.model");
 db.ClientNotes = require("./clientNotes.model");
 db.Notifications = require("./notifications.model");
