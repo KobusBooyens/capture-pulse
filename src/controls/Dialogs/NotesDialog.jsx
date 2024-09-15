@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import {
     Dialog,
@@ -47,7 +47,11 @@ const NotesDialog = ({ openDialog, onClose, data, clientId }) => {
     const deleteClientNote = useDeleteClientNote();
 
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
-    const [notesData, setNotesData] = useState(data);
+    const [notesData, setNotesData] = useState([]);
+
+    useEffect(() => {
+        setNotesData(data);
+    },[data]);
 
     const handleAddNote = (formData) => {
         const dataToSubmit = {
@@ -93,7 +97,7 @@ const NotesDialog = ({ openDialog, onClose, data, clientId }) => {
 
         return (
             notesData?.map((d) =>
-                <Grid item sx={12} md={12} lg={12} key={d}>
+                <Grid item sx={6} md={8} lg={12} key={d}>
                     <NoteCard
                         note={d.note}
                         dateTime={d.createdAt}
