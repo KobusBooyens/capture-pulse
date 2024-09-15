@@ -2,9 +2,10 @@ import colors from "../../../assets/theme/base/colors";
 
 const { gradients, dark } = colors;
 
-function configs(labels, datasets) {
+function configs(labels, datasets, options) {
     const backgroundColors = [];
-
+    console.log("labels", labels);
+    console.log("backgroundColors", datasets.backgroundColors);
     if (datasets.backgroundColors) {
         datasets.backgroundColors.forEach((color) =>
             gradients[color]
@@ -37,13 +38,15 @@ function configs(labels, datasets) {
             maintainAspectRatio: false,
             plugins: {
                 legend: {
-                    display: false,
-                },
+                    position: "top",
+                    display: true,
+                }
             },
             interaction: {
                 intersect: false,
                 mode: "index",
             },
+            hoverOffset: 4
         },
     };
 }

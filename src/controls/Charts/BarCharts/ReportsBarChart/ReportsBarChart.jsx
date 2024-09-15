@@ -22,7 +22,7 @@ import Typography from "../../../../components/Typography/Typography.jsx";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-function ReportsBarChart({ color, title, description, date, chart }) {
+function ReportsBarChart({ color, title, description, chart, children }) {
     const { data, options } = config(chart.labels || [], chart.datasets || {});
 
     return (
@@ -38,7 +38,7 @@ function ReportsBarChart({ color, title, description, date, chart }) {
                             py={2}
                             pr={0.5}
                             mt={-5}
-                            height="12.5rem"
+                            // height="12.5rem"
                         >
                             <Bar data={data} options={options} redraw />
                         </Box>
@@ -54,12 +54,7 @@ function ReportsBarChart({ color, title, description, date, chart }) {
                     </Typography>
                     <Divider />
                     <Box display="flex" alignItems="center">
-                        <Typography variant="button" color="text" lineHeight={1} sx={{ mt: 0.15, mr: 0.5 }}>
-                            <Icon>schedule</Icon>
-                        </Typography>
-                        <Typography variant="button" color="text" fontWeight="light">
-                            {date}
-                        </Typography>
+                        {children}
                     </Box>
                 </Box>
             </Box>
@@ -76,7 +71,7 @@ ReportsBarChart.propTypes = {
     color: PropTypes.oneOf(["primary", "secondary", "info", "success", "warning", "error", "dark"]),
     title: PropTypes.string.isRequired,
     description: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-    date: PropTypes.string.isRequired,
+    children: PropTypes.node,
     chart: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.array, PropTypes.object])).isRequired,
 };
 

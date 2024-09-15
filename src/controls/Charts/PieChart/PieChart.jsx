@@ -14,7 +14,7 @@ import Typography from "../../../components/Typography/Typography.jsx";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 function PieChart({ icon, title, description, height, chart }) {
-    const { data, options } = config(chart.labels || [], chart.datasets || {});
+    const { data, options } = config(chart.labels || [], chart.datasets || {}, chart.options);
 
     const renderChart = 
     <Box py={2} pr={2} pl={icon.component ? 1 : 2}>
@@ -62,7 +62,6 @@ function PieChart({ icon, title, description, height, chart }) {
     return title || description ? <Card>{renderChart}</Card> : renderChart;
 }
 
-// Setting default values for the props of PieChart
 PieChart.defaultProps = {
     icon: { color: "info", component: "" },
     title: "",
@@ -70,7 +69,6 @@ PieChart.defaultProps = {
     height: "19.125rem",
 };
 
-// Typechecking props for the PieChart
 PieChart.propTypes = {
     icon: PropTypes.shape({
         color: PropTypes.oneOf([
