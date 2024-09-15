@@ -6,10 +6,27 @@ import Icon from "@mui/material/Icon";
 import Box from "../../../components/Box/Box.jsx";
 import Typography from "../../../components/Typography/Typography.jsx";
 
-function ComplexStatisticsCard({ color = "info", title, titleContent, children, icon }) {
+function PercentageStatisticsCard({ color= "info", title, titleContent, children, icon, percentage }) {
     return (
-        <Card>
+        <Card >
+
+            <Typography
+                variant="h1"
+                fontWeight="bold"
+                sx={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    opacity: 0.1,
+                    fontSize: "4rem",
+                    zIndex: 1,
+                }}
+            >
+                {percentage}%
+            </Typography>
             <Box display="flex" justifyContent="space-between" pt={1} px={2}>
+
                 <Box
                     variant="gradient"
                     bgColor={color}
@@ -28,6 +45,7 @@ function ComplexStatisticsCard({ color = "info", title, titleContent, children, 
                     </Icon>
                 </Box>
                 <Box textAlign="right" lineHeight={1.25}>
+
                     <Typography variant="button" fontWeight="light" color="text">
                         {title}
                     </Typography>
@@ -42,7 +60,7 @@ function ComplexStatisticsCard({ color = "info", title, titleContent, children, 
     );
 }
 
-ComplexStatisticsCard.propTypes = {
+PercentageStatisticsCard.propTypes = {
     color: PropTypes.oneOf([
         "primary",
         "secondary",
@@ -54,9 +72,10 @@ ComplexStatisticsCard.propTypes = {
         "dark",
     ]),
     title: PropTypes.string.isRequired,
+    percentage: PropTypes.number,
     titleContent: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     icon: PropTypes.node.isRequired,
     children: PropTypes.node.isRequired
 };
 
-export default ComplexStatisticsCard;
+export default PercentageStatisticsCard;

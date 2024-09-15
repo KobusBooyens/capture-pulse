@@ -22,7 +22,7 @@
 //             return res.status(400).json({ message: "Validation failed.", errors: error });
 //         }
 //
-//         const data = await db.Checkins.find({ client: req.params.id, type: payload.type })
+//         const data = await db.CheckinsMain.find({ client: req.params.id, type: payload.type })
 //             .populate("client")
 //             .lean();
 //         res.status(200).json(data);
@@ -34,7 +34,7 @@
 //
 // const get = async (req, res) => {
 //     try {
-//         const data = await db.Checkins.findById(req.params.id)
+//         const data = await db.CheckinsMain.findById(req.params.id)
 //             .populate("client")
 //             .lean();
 //         if (!data) {
@@ -55,12 +55,12 @@
 //         }
 //         if (Array.isArray(payload)) {
 //             const data = await Promise.all(req.body.map(async (item) => {
-//                 const newItem = new db.Checkins(item);
+//                 const newItem = new db.CheckinsMain(item);
 //                 return await newItem.save();
 //             }));
 //             res.status(201).json(data);
 //         } else {
-//             const data = new db.Checkins(payload);
+//             const data = new db.CheckinsMain(payload);
 //             await data.save();
 //             res.status(201).json(data);
 //         }
@@ -72,7 +72,7 @@
 //
 // const edit = async (req, res) => {
 //     try {
-//         const data = await db.Checkins.findByIdAndUpdate(req.params.id, req.body, { new: true });
+//         const data = await db.CheckinsMain.findByIdAndUpdate(req.params.id, req.body, { new: true });
 //         if (!data) {
 //             return res.status(404).send("Client not found");
 //         }
@@ -85,7 +85,7 @@
 //
 // const deleteItem = async (req, res) => {
 //     try {
-//         const data = await db.Checkins.delete({ _id: req.params.id });
+//         const data = await db.CheckinsMain.delete({ _id: req.params.id });
 //         if (!data) {
 //             return res.status(404).send("Client not found");
 //         }

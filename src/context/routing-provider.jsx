@@ -5,7 +5,7 @@ import DashboardMain from "../layout/dashboard/DashboardMain.jsx";
 import ClientsMain from "../layout/clients/ClientsMain.jsx";
 import AddClientPage from "../layout/clients/pages/AddClientPage.jsx";
 import EditClientPage from "../layout/clients/pages/EditClientPage.jsx";
-import Checkins from "../layout/checkins/Checkins.jsx";
+import CheckinsMain from "../layout/checkins/CheckinsMain.jsx";
 import NotificationsMain from "../layout/notifications/NotificationsMain.jsx";
 import BillingMain from "../layout/billing/BillingMain.jsx";
 import Settings from "../layout/settings/settings.jsx";
@@ -32,7 +32,7 @@ const router = createBrowserRouter(
             <Route path="clients/add" element={<AddClientPage />}/>
 
             {/*checkins*/}
-            <Route path="checkins" element={<Checkins />}/>
+            <Route path="checkins" element={<CheckinsMain />}/>
             <Route path="checkins/general" element={
                 <TableQueryProvider>
                     <GeneralCheckinsMain/>

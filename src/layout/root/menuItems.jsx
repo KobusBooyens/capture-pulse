@@ -1,6 +1,6 @@
 import DashboardMain from "../dashboard/DashboardMain.jsx";
 import ViewClients from "../clients/ClientsMain.jsx";
-import Checkins from "../checkins/Checkins.jsx";
+import CheckinsMain from "../checkins/CheckinsMain.jsx";
 import BillingMain from "../billing/BillingMain.jsx";
 
 import Icon from "@mui/material/Icon";
@@ -33,7 +33,7 @@ const menuItems = [
         key: "checkins",
         icon: <Icon fontSize={"small"}>settings_accessibility</Icon>,
         route: "/checkins",
-        component: <Checkins />,
+        component: <CheckinsMain />,
         subMenuItems: [
             {
                 type: "item",

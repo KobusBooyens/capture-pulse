@@ -8,6 +8,7 @@ import ReportsLineChart from "../../controls/Charts/LineCharts/ReportsLineChart/
 import reportsBarChartData from "./data/reportsBarChartData";
 import reportsLineChartData from "./data/reportsLineChartData";
 import Typography from "../../components/Typography/Typography.jsx";
+import dayjs from "dayjs";
 
 const DashboardMain = () => {
     const { joined, payments } = reportsLineChartData;
@@ -17,33 +18,12 @@ const DashboardMain = () => {
             <Box py={3}>
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={6} lg={3}>
-                        <Box mb={1.5} >
-                            <ComplexStatisticsCard
-                                color="primary"
-                                icon="person_add"
-                                title="Total New Clients"
-                                count="+12"
-                            >
-                                <Typography component="p" variant="button" color="text" display="flex">
-                                    <Typography
-                                        component="span"
-                                        variant="button"
-                                        fontWeight="bold"
-                                        color={"success"}>
-                                        {""}
-                                    </Typography>
-                                &nbsp;{"September 2024"}
-                                </Typography>
-                            </ComplexStatisticsCard>
-                        </Box>
-                    </Grid>
-                    <Grid item xs={12} md={6} lg={3}>
                         <Box mb={1.5}>
                             <ComplexStatisticsCard
                                 color="dark"
                                 icon="people_alt"
-                                title="Clients"
-                                count={281}
+                                title="Total Clients"
+                                titleContent={281}
                             >
                                 <Typography component="p" variant="button" color="text" display="flex" gap={1}>
                                     <Typography
@@ -67,11 +47,32 @@ const DashboardMain = () => {
                         </Box>
                     </Grid>
                     <Grid item xs={12} md={6} lg={3}>
+                        <Box mb={1.5} >
+                            <ComplexStatisticsCard
+                                color="primary"
+                                icon="person_add"
+                                title="Total New Clients"
+                                titleContent="+12"
+                            >
+                                <Typography component="p" variant="button" color="text" display="flex">
+                                    <Typography
+                                        component="span"
+                                        variant="button"
+                                        fontWeight="bold"
+                                        color={"primary"}>
+                                        {`${dayjs().format("MMMM")}`}
+                                    </Typography>
+                                </Typography>
+                            </ComplexStatisticsCard>
+                        </Box>
+                    </Grid>
+
+                    <Grid item xs={12} md={6} lg={3}>
                         <Box mb={1.5}>
                             <ComplexStatisticsCard
                                 icon="settings_accessibility"
                                 title="Check-ins"
-                                count="150"
+                                titleContent="150"
                             >
                                 <Typography component="p" variant="button" color="text" display="flex" gap={1}>
                                     <Typography
@@ -92,7 +93,7 @@ const DashboardMain = () => {
                                 color="success"
                                 icon="receipt_long"
                                 title="BillingMain"
-                                count="4500"
+                                titleContent="4500"
                             >
                                 <Typography component="p" variant="button" color="text" display="flex" gap={1}>
                                     <Typography
