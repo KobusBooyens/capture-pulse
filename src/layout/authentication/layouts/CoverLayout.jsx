@@ -10,28 +10,27 @@ const CoverLayout = ({ coverHeight, image, children }) => {
     return (
         <PageLayout>
             <Box
-                width="calc(100% - 2rem)"
-                minHeight={coverHeight}
+                // width="calc(100% - 2rem)"
+                // minHeight={coverHeight}
                 borderRadius="xl"
-                mx={2}
+                mx={5}
                 my={2}
-                pt={6}
+                pt={10}
                 pb={28}
-                sx={{
-                    backgroundImage: ({ functions: { linearGradient, rgba }, palette: { gradients } }) =>
-                        image &&
-                    `${linearGradient(
+                sx={{ backgroundImage: ({
+                    functions: { linearGradient, rgba },
+                    palette: { gradients } }) =>
+                    image && `${linearGradient(
                         rgba(gradients.dark.main, 0.4),
-                        rgba(gradients.dark.state, 0.4)
-                    )}, url(${image})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                    backgroundRepeat: "no-repeat",
+                        rgba(gradients.dark.state, 0.4))}, url(${image})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
                 }}
             />
-            <Box mt={{ xs: -20, lg: -18 }} px={1} width="calc(100% - 2rem)" mx="auto">
+            <Box mx={"auto"} mt={-12} py={3} px={2}>
                 <Grid container spacing={1} justifyContent="center">
-                    <Grid item xs={11} sm={9} md={5} lg={4} xl={3}>
+                    <Grid item xs={11} sm={4} md={8} lg={6} xl={4}>
                         {children}
                     </Grid>
                 </Grid>

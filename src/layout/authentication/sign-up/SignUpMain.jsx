@@ -34,14 +34,14 @@ export const SignUpMain = () => {
     return (
         <CoverLayout image={bgImage}>
             <Box mt={-10}
-                sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    minHeight: "100vh",
-                }}
+                // sx={{
+                //     display: "flex",
+                //     justifyContent: "center",
+                //     alignItems: "center",
+                //     minHeight: "100vh",
+                // }}
             >
-                <Card sx={{ width: "100%", maxWidth: 500, padding: 5 }}>
+                <Card sx={{ padding: 5 }}>
                     <Box
                         variant="gradient"
                         bgColor="primary"
