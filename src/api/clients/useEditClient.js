@@ -1,5 +1,5 @@
 import { apiClient } from "../api-client.js";
-import useCustomMutation from "../shared/useCustomMutation.js";
+import useCustomMutation from "../_shared/useCustomMutation.js";
 import queryKeys from "./useQueryKeys.js";
 
 const editFn = async ({ id, updatedData }) => {

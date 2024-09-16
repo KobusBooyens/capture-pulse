@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const mongoose_delete = require("mongoose-delete");
-const { boolean } = require("zod");
 
 const schema = new mongoose.Schema(
     {
@@ -10,19 +9,22 @@ const schema = new mongoose.Schema(
         },
         numberOfUsers: {
             type: Number,
-            required: true
+            default: 0
         },
         active: {
             type: Boolean,
             default: false
         },
+        activatedDateTime: {
+            type: Date
+        }
     }, {
         collection: "subscriptions",
         timestamps: true
     }
 );
 
-// schema.index({ _id: 1 });
+schema.index({ name: 1 }, { unique: true });
 
 schema.plugin(mongoose_delete, { deletedAt: true, deletedBy: true, overrideMethods: "all" });
 const Subscriptions = mongoose.model("Subscriptions", schema);

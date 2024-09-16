@@ -10,21 +10,29 @@ import Divider from "@mui/material/Divider";
 import { Link } from "react-router-dom";
 import CoverLayout from "../layouts/CoverLayout.jsx";
 import bgImage from "../../../assets/bg-sign-up-cover-fitness.jpg";
+import useSubscription from "../../../api/subscriptions/useSubscription.js";
 
 export const SignUpMain = () => {
-    const [isVerified, setIsVerified] = useState(false); // State to track if subscription code is verified
+    const [isVerified, setIsVerified] = useState(false);
+    const [subscriptionButtonText, setSubscriptionButtonText] = useState("Verify Subscription");
     const registerFormMethods = useForm();
     const verifySubFormMethods = useForm();
+    const verifySubscription = useSubscription();
 
     const onSubVerificationSubmit = (data) => {
         console.log("onSubVerificationSubmit", data);
         const { subscriptionCode } = data;
-        if (subscriptionCode === "VALID_CODE") {
-            setIsVerified(true);
-        } else {
-            setIsVerified(false);
-            verifySubFormMethods.setError("subscriptionCode", { message: "Invalid code" });
-        }
+        verifySubscription.mutate(subscriptionCode, {
+            onSuccess: (success) => {
+                setSubscriptionButtonText(success.name);
+                setIsVerified(true);
+            },
+            onError: (error) => {
+                setIsVerified(false);
+                setSubscriptionButtonText("Verify Subscription");
+                verifySubFormMethods.setError("subscriptionCode", { message: error.response.data });
+            }
+        });
     };
 
     const onRegisterSubmit = (data) => {
@@ -70,7 +78,7 @@ export const SignUpMain = () => {
                                     color="primary"
                                     disabled={!!isVerified}
                                     type="submit">
-                                    {!isVerified ? "Verify Subscription" : "Welcome Fitness Co."}
+                                    {subscriptionButtonText}
                                 </Button>
                             </Box>
                         </form>

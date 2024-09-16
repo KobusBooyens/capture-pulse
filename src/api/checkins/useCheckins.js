@@ -1,4 +1,4 @@
-import useCustomFetch from "../shared/useCustomFetch.js";
+import useCustomFetch from "../_shared/useCustomFetch.js";
 import { buildUrlParams } from "../api-client.js";
 import queryKeys from "./useQueryKeys.js";
 

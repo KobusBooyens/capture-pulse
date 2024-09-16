@@ -13,11 +13,16 @@ const useCustomMutation = (mutationFn, queryKey, alertMessage = {}) => {
             return { previousData, data };
         },
         onError: (err, data, context) => {
-            showSnackBar(error.title, error.content, error.severity, new Date());
+            if (error) {
+                showSnackBar(error.title, error.content, error.severity, new Date());
+            }
+
             queryClient.setQueryData(queryKey, context.previousData);
         },
         onSuccess: () => {
-            showSnackBar(success.title, success.content, success.severity, new Date());
+            if (success){
+                showSnackBar(success.title, success.content, success.severity, new Date());
+            }
         },
         onSettled: () => {
             queryClient.invalidateQueries(queryKey);

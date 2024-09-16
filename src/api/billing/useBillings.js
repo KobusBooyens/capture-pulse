@@ -1,5 +1,5 @@
 import queryKeys from "./useQueryKeys.js";
-import useCustomFetch from "../shared/useCustomFetch.js";
+import useCustomFetch from "../_shared/useCustomFetch.js";
 import { buildUrlParams } from "../api-client.js";
 
 const useBillings = (page, pageSize, searchText, sortColumn, sortDirection) => {

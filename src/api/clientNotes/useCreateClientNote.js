@@ -1,5 +1,5 @@
 import { apiClient } from "../api-client.js";
-import useCustomMutation from "../shared/useCustomMutation";
+import useCustomMutation from "../_shared/useCustomMutation";
 
 const createClientNoteFn = async (data) => {
     const response = await apiClient.post("/client/notes", data);

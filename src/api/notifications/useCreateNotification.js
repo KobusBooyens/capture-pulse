@@ -1,6 +1,6 @@
-import {apiClient} from "../api-client.js";
+import { apiClient } from "../api-client.js";
 import useQueryKeys from "./useQueryKeys.js";
-import useCustomMutation from "../shared/useCustomMutation.js";
+import useCustomMutation from "../_shared/useCustomMutation.js";
 
 const createFn = async (data) => {
     await new Promise(resolve => setTimeout(resolve, 2000));

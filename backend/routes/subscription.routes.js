@@ -6,6 +6,7 @@ module.exports = function (app) {
         next();
     });
 
+    app.get("/api/subscriptions", controller.getAllSubscriptions);
     app.get("/api/subscription/:id", controller.verifySubscription);
-    app.post("/api/subscription/:id", controller.createSubscription);
+    app.post("/api/subscription", controller.createSubscription);
 };

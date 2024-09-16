@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import queryKeys from "./useQueryKeys.js";
-import useCustomFetch from "../shared/useCustomFetch.js";
+import useCustomFetch from "../_shared/useCustomFetch.js";
 import { buildUrlParams } from "../api-client.js";
 
 const useBilling = (page, pageSize, searchText, sortColumn, sortDirection) => {

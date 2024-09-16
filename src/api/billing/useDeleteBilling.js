@@ -1,6 +1,6 @@
 import { apiClient } from "../api-client.js";
 import queryKeys from "./useQueryKeys.js";
-import useCustomMutation from "../shared/useCustomMutation.js";
+import useCustomMutation from "../_shared/useCustomMutation.js";
 
 const deleteFn = async ({ id }) => {
     await new Promise(resolve => setTimeout(resolve, 2000));
