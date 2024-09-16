@@ -64,7 +64,6 @@ exports.create = async(payload) => {
     const session = await startSession();
     session.startTransaction();
     try {
-
         const clientPackage = new db.ClientPackage({
             package: payload.package,
             amount: payload.amount

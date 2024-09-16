@@ -1,4 +1,13 @@
 const db = require("../models");
+const bcrypt = require("bcrypt");
+
+exports.hashPassword = async (value) => {
+    return await bcrypt.hash(value, 8);
+};
+
+exports.verifyPassword = async (password, hashedPassword) => {
+    return await bcrypt.compare(password, hashedPassword);
+};
 
 exports.formatClientBillingResponse = (data) => {
     const client = data[0]?.client;

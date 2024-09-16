@@ -10,17 +10,20 @@ import Divider from "@mui/material/Divider";
 import { Link } from "react-router-dom";
 import CoverLayout from "../layouts/CoverLayout.jsx";
 import bgImage from "../../../assets/bg-sign-up-cover-fitness.jpg";
-import useSubscription from "../../../api/subscriptions/useSubscription.js";
+import useVerifySubscription from "../../../api/subscriptions/useVerifySubscription.js";
+import useCreateUser from "../../../api/users/useCreateUser.js";
 
 export const SignUpMain = () => {
     const [isVerified, setIsVerified] = useState(false);
     const [subscriptionButtonText, setSubscriptionButtonText] = useState("Verify Subscription");
+    const [signUpError, setSignUpError] = useState({ action: null, message: null });
+
     const registerFormMethods = useForm();
     const verifySubFormMethods = useForm();
-    const verifySubscription = useSubscription();
+    const verifySubscription = useVerifySubscription();
+    const createUser = useCreateUser(false, false);
 
     const onSubVerificationSubmit = (data) => {
-        console.log("onSubVerificationSubmit", data);
         const { subscriptionCode } = data;
         verifySubscription.mutate(subscriptionCode, {
             onSuccess: (success) => {
@@ -31,12 +34,50 @@ export const SignUpMain = () => {
                 setIsVerified(false);
                 setSubscriptionButtonText("Verify Subscription");
                 verifySubFormMethods.setError("subscriptionCode", { message: error.response.data });
+
             }
         });
     };
 
     const onRegisterSubmit = (data) => {
-        console.log("Registration Data:", data);
+
+        if (registerFormMethods.getValues("password") !== registerFormMethods.getValues("confirmPassword")) {
+            registerFormMethods.setError("confirmPassword", {
+                message: "Password do not match. Please note that the password is case sensitive."
+            });
+            return;
+        }
+
+        const dataToSubmit = {
+            ...data,
+            subscriptionCode: verifySubFormMethods.getValues("subscriptionCode"),
+            isSubscriptionOwner: true,
+            activateSubscription: true
+
+        };
+
+        createUser.mutate(dataToSubmit, {
+            onSuccess: () => {
+                console.log("Signing in and redirecting to page");  
+            },
+            onError: (error) => {
+                if (error.response.data.field) {
+                    registerFormMethods.setError(error.response.data.field, {
+                        message: error.response.data.message
+                    });
+                } else if (error.response.data.action === "signUpError") {
+                    setSignUpError({
+                        action: error.response.data.action,
+                        message: error.response.data.message
+                    });
+                } else {
+                    setSignUpError({
+                        action: null,
+                        message: error.response.data?.message ?? error.response.data
+                    });
+                }
+            }
+        });
     };
 
     return (
@@ -76,7 +117,7 @@ export const SignUpMain = () => {
                                 <Button
                                     variant="gradient"
                                     color="primary"
-                                    disabled={!!isVerified}
+                                    disabled={createUser.isPending || !!isVerified}
                                     type="submit">
                                     {subscriptionButtonText}
                                 </Button>
@@ -88,17 +129,23 @@ export const SignUpMain = () => {
 
                     <FormProvider {...registerFormMethods}>
                         <form onSubmit={registerFormMethods.handleSubmit(onRegisterSubmit)} noValidate>
-                            <RegisterForm disabled={!isVerified}/>
+                            <RegisterForm disabled={!isVerified || signUpError.action}/>
                             <Box textAlign="center" mt={2}>
                                 <Button
                                     variant="gradient"
-                                    color="primary"
+                                    color={signUpError.action ? "error" : "primary"}
                                     type="submit"
                                     fullWidth
-                                    disabled={!isVerified}
+                                    disabled={signUpError.action || createUser.isPending || !isVerified}
                                 >
-                                  Register
+                                    {createUser.isPending ? "Registering user..." : "Register"}
                                 </Button>
+
+                                {signUpError.message && <Typography variant="button" color="error" m={1}>
+                                    {signUpError.message}
+                                </Typography>
+                                }
+
                             </Box>
                         </form>
                     </FormProvider>
@@ -116,10 +163,8 @@ export const SignUpMain = () => {
                             textGradient
                         >
                           Sign In
-
                         </Typography>
                     </Box>
-
                 </Card>
             </Box>
         </CoverLayout>

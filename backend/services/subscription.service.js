@@ -54,3 +54,34 @@ exports.verifySubscription = async (subscriptionId) => {
         data: subscription
     };
 };
+
+exports.addUserToSubscription = async (subscriptionId, activateSubscription = false, session = null) => {
+    const subscription = await db.Subscriptions.findOne({ _id: subscriptionId }).lean();
+    if (!subscription) {
+        return {
+            status: 404,
+            data: "Subscription not found"
+        };
+    }
+
+    const updateQuery = {
+        numberOfUsers: parseInt(subscription.numberOfUsers) + 1
+    };
+
+    if (activateSubscription) {
+        updateQuery.activate = true;
+    }
+
+    console.log("updateQuery", updateQuery);
+
+    const response = await db.Subscriptions.findOneAndUpdate(
+        { _id: subscriptionId },
+        { $set: updateQuery },
+        { session });
+
+    return {
+        status: 200,
+        data: response
+    };
+};
+

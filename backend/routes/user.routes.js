@@ -7,7 +7,7 @@ module.exports = function (app) {
     });
 
     app.get("/api/user/:id", controller.getUserById);
-    app.get("/api/user", controller.getUser);
+    app.get("/api/users", controller.getAllUsers);
     app.post("/api/user", controller.createUser);
     app.path("/api/user", controller.updateUser);
     app.delete("/api/user", controller.deleteUser);

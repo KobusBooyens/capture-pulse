@@ -8,6 +8,10 @@ const schema = new mongoose.Schema(
             ref: "Subscriptions",
             required: true
         },
+        isSubscriptionOwner: {
+            type: Boolean,
+            default: false,
+        },
         firstName: {
             type: String,
             required: true
@@ -41,6 +45,7 @@ const schema = new mongoose.Schema(
 );
 
 schema.index({ subscription: 1 });
+schema.index({ subscription: 1, isSubscriptionOwner: 1 }, { unique: true });
 
 schema.plugin(mongoose_delete, { deletedAt: true, deletedBy: true, overrideMethods: "all" });
 const Users = mongoose.model("Users", schema);

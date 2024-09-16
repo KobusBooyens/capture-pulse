@@ -1,33 +1,36 @@
-const deleteUser = async(req, res) => {
-    try {
-        res.status(200).send("deleteUser");
-    } catch (err) {
-        console.error(err);
-        res.status(500).send({ message: "Internal Server Error", error: err });
-    }
-};
+const UserService = require("../services/user.service");
+const { z } = require("zod");
+const validateAndRespond = require("../utils/zodValidation");
 
-const updateUser = async(req, res) => {
-    try {
-        res.status(200).send("updateUser");
-    } catch (err) {
-        console.error(err);
-        res.status(500).send({ message: "Internal Server Error", error: err });
-    }
-};
+const schema = z.object({
+    firstName: z.string({ required_error: "firstName is required" }),
+    lastName: z.string({ required_error: "lastName is required" }),
+    contactNumber: z.string({ required_error: "contactNumber is required" }),
+    email: z.string({ required_error: "email is required" }),
+    password: z.string({ required_error: "password is required" }),
+    subscriptionCode: z.string({ required_error: "subscriptionCode is required" }),
+    isSubscriptionOwner: z.boolean().optional(),
+    activateSubscription: z.boolean().optional()
+
+});
 
 const createUser = async(req, res) => {
     try {
-        res.status(200).send("createUser");
+        const { payload, error } = validateAndRespond(schema, req.body);
+        if (error) {
+            return res.status(400).json({ message: "Validation failed.", errors: error });
+        }
+        const response = await UserService.createUser(payload);
+        res.status(response.status).send(response.data);
     } catch (err) {
         console.error(err);
         res.status(500).send({ message: "Internal Server Error", error: err });
     }
 };
 
-const getUser = async(req, res) => {
+const getAllUsers = async(req, res) => {
     try {
-        res.status(200).send("getUser");
+        res.status(200).send("getAllUsers");
     } catch (err) {
         console.error(err);
         res.status(500).send({ message: "Internal Server Error", error: err });
@@ -43,4 +46,22 @@ const getUserById = async(req, res) => {
     }
 };
 
-module.exports = { getUserById, getUser, createUser, updateUser, deleteUser };
+const updateUser = async(req, res) => {
+    try {
+        res.status(200).send("updateUser");
+    } catch (err) {
+        console.error(err);
+        res.status(500).send({ message: "Internal Server Error", error: err });
+    }
+};
+
+const deleteUser = async(req, res) => {
+    try {
+        res.status(200).send("deleteUser");
+    } catch (err) {
+        console.error(err);
+        res.status(500).send({ message: "Internal Server Error", error: err });
+    }
+};
+
+module.exports = { getUserById, getAllUsers, createUser, updateUser, deleteUser };
