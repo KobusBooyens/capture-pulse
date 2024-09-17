@@ -9,7 +9,7 @@ function PageLayout({ background, children }) {
     const { pathname } = useLocation();
 
     useEffect(() => {
-        setLayout(dispatch, pathname.includes("/authentication/") ? "page" : "dashboard");
+        setLayout(dispatch, pathname.includes("/authentication") ? "page" : "dashboard");
     }, [pathname]);
 
     return (

@@ -1,11 +1,11 @@
 import React from "react";
 import { Grid, InputAdornment } from "@mui/material";
-import FormInputText from "../../../../components/Input/FormInputText/FormInputText.jsx";
+import FormInputText from "../../../components/Input/FormInputText/FormInputText.jsx";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import PropTypes from "prop-types";
 
-const RegisterForm = ({ disabled }) => {
+const SignUpForm = ({ disabled }) => {
 
     const [showPassword, setShowPassword] = React.useState({
         password: false,
@@ -115,6 +115,7 @@ const RegisterForm = ({ disabled }) => {
                     endAdornment={
                         <InputAdornment position="end">
                             <IconButton
+                                tabIndex={-1}
                                 disabled={disabled}
                                 aria-label="toggle password visibility"
                                 onClick={() => handleClickShowPassword("confirmPassword")}
@@ -131,8 +132,8 @@ const RegisterForm = ({ disabled }) => {
     );
 };
 
-RegisterForm.propTypes = {
+SignUpForm.propTypes = {
     disabled: PropTypes.bool
 };
 
-export default RegisterForm;
+export default SignUpForm;

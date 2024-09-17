@@ -2,6 +2,7 @@
 const routes = (app) => {
     require("./subscription.routes")(app);
     require("./user.routes")(app);
+    require("./auth.routes")(app);
     require("./billing.routes")(app);
     require("./client.routes")(app);
     require("./notification.routes")(app);

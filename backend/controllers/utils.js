@@ -6,7 +6,7 @@ exports.hashPassword = async (value) => {
 };
 
 exports.verifyPassword = async (password, hashedPassword) => {
-    return await bcrypt.compare(password, hashedPassword);
+    return await bcrypt.compareSync(password, hashedPassword);
 };
 
 exports.formatClientBillingResponse = (data) => {

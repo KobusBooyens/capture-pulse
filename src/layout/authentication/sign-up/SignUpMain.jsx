@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import Typography from "../../../components/Typography/Typography.jsx";
 import Box from "../../../components/Box/Box.jsx";
 import Card from "@mui/material/Card";
-import RegisterForm from "./forms/RegisterForm.jsx";
+import SignUpForm from "../forms/SignUpForm.jsx";
 import { FormProvider, useForm } from "react-hook-form";
-import SubscriptionForm from "./forms/SubscriptionForm.jsx";
+import SubscriptionForm from "../forms/SubscriptionForm.jsx";
 import Button from "../../../components/Button/Button.jsx";
 import Divider from "@mui/material/Divider";
 import { Link } from "react-router-dom";
-import CoverLayout from "../layouts/CoverLayout.jsx";
-import bgImage from "../../../assets/bg-sign-up-cover-fitness.jpg";
+import SignUpLayout from "../layouts/SignUpLayout.jsx";
+import bgImage from "../../../assets/images/bg_cover_sign_up.jpg";
 import useVerifySubscription from "../../../api/subscriptions/useVerifySubscription.js";
 import useCreateUser from "../../../api/users/useCreateUser.js";
 
@@ -81,7 +81,7 @@ export const SignUpMain = () => {
     };
 
     return (
-        <CoverLayout image={bgImage}>
+        <SignUpLayout image={bgImage}>
             <Box mt={-10}
                 // sx={{
                 //     display: "flex",
@@ -129,7 +129,7 @@ export const SignUpMain = () => {
 
                     <FormProvider {...registerFormMethods}>
                         <form onSubmit={registerFormMethods.handleSubmit(onRegisterSubmit)} noValidate>
-                            <RegisterForm disabled={!isVerified || signUpError.action}/>
+                            <SignUpForm disabled={!isVerified || signUpError.action}/>
                             <Box textAlign="center" mt={2}>
                                 <Button
                                     variant="gradient"
@@ -167,7 +167,7 @@ export const SignUpMain = () => {
                     </Box>
                 </Card>
             </Box>
-        </CoverLayout>
+        </SignUpLayout>
 
     );
 };

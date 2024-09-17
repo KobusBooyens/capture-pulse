@@ -69,7 +69,7 @@ exports.addUserToSubscription = async (subscriptionId, activateSubscription = fa
     };
 
     if (activateSubscription) {
-        updateQuery.activate = true;
+        updateQuery.active = true;
     }
 
     console.log("updateQuery", updateQuery);

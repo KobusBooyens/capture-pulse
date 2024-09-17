@@ -3,19 +3,18 @@ import React from "react";
 import Box from "../../../components/Box/Box.jsx";
 import PropTypes from "prop-types";
 import { Grid } from "@mui/material";
-import Footer from "../../../controls/Footer/Footer.jsx";
 import PageLayout from "../../../controls/LayoutContainers/PageLayout.jsx";
 
-const CoverLayout = ({ coverHeight, image, children }) => {
+const SignUpLayout = ({ coverHeight, image, children }) => {
     return (
         <PageLayout>
             <Box
-                // width="calc(100% - 2rem)"
+                width="calc(100% - 2rem)"
                 // minHeight={coverHeight}
                 borderRadius="xl"
-                mx={5}
+                mx={2}
                 my={2}
-                pt={10}
+                pt={6}
                 pb={28}
                 sx={{ backgroundImage: ({
                     functions: { linearGradient, rgba },
@@ -28,9 +27,9 @@ const CoverLayout = ({ coverHeight, image, children }) => {
                 backgroundRepeat: "no-repeat",
                 }}
             />
-            <Box mx={"auto"} mt={-12} py={3} px={2}>
+            <Box px={1} width="100%" height="100vh" mx="auto">
                 <Grid container spacing={1} justifyContent="center">
-                    <Grid item xs={11} sm={4} md={8} lg={6} xl={4}>
+                    <Grid item xs={8} sm={8} md={8} lg={6} xl={4}>
                         {children}
                     </Grid>
                 </Grid>
@@ -39,10 +38,10 @@ const CoverLayout = ({ coverHeight, image, children }) => {
     );
 };
 
-CoverLayout.propTypes = {
+SignUpLayout.propTypes = {
     coverHeight: PropTypes.string,
     image: PropTypes.string.isRequired,
     children: PropTypes.node.isRequired,
 };
 
-export default CoverLayout;
+export default SignUpLayout;

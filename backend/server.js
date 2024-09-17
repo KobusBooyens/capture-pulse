@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+require("dotenv").config();
 const { connectToDatabase } = require("./utils/database");
 
 const port = 5001;

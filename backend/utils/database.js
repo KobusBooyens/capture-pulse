@@ -1,10 +1,9 @@
 const mongoose = require("mongoose");
-
-const uri = "mongodb+srv://capturePulseAdmin:eLCyKc10XmyYc7bw@capturepulsecluster0.ksjyoua.mongodb.net/?retryWrites=true&w=majority&appName=CapturePulseCluster0"; // replace with your actual connection string
+const dbConfig = require("../config/db.config");
 
 async function connectToDatabase() {
     try {
-        await mongoose.connect(uri, {
+        await mongoose.connect(dbConfig.DATABASE_URL, {
             useNewUrlParser: true
         });
         console.log("Successfully connected to MongoDB!");

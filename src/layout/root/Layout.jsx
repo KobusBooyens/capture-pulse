@@ -75,7 +75,7 @@ const Layout = () => {
                         </> :
                         <>
                             <Outlet/>
-                            <Footer/>
+                            {/*<Footer/>*/}
                         </>
                     }
                 </SnackbarProvider>
