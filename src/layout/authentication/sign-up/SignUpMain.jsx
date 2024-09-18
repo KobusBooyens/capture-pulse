@@ -81,7 +81,7 @@ export const SignUpMain = () => {
     };
 
     return (
-        <SignUpLayout image={bgImage}>
+        <SignUpLayout>
             <Box mt={-10}
                 // sx={{
                 //     display: "flex",

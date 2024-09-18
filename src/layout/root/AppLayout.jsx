@@ -14,7 +14,7 @@ import DashboardLayout from "../../controls/LayoutContainers/DashboardLayout.jsx
 import Footer from "../../controls/Footer/Footer.jsx";
 import { SnackbarProvider } from "../../context/snackbar-provider.jsx";
 
-const Layout = () => {
+const AppLayout = () => {
     const [controller, dispatch] = useUISettingsController();
     const {
         miniSidenav,
@@ -47,16 +47,13 @@ const Layout = () => {
 
     const useDarkBrand = transparentSidenav && !darkMode || whiteSidenav;
     const brand = useDarkBrand ? brandDark : brandWhite;
-    console.log("Layout", {
-        layout, pathname
-    });
 
     return (
         <>
             <ThemeProvider theme={darkMode ? themeDark : theme}>
                 <SnackbarProvider>
                     <CssBaseline/>
-                    {layout === "dashboard" ?
+                    {layout === "dashboard" &&
                         <>
                             <Sidenav
                                 color={sidenavColor}
@@ -72,10 +69,6 @@ const Layout = () => {
                                 <Outlet/>
                                 <Footer/>
                             </DashboardLayout>
-                        </> :
-                        <>
-                            <Outlet/>
-                            {/*<Footer/>*/}
                         </>
                     }
                 </SnackbarProvider>
@@ -83,4 +76,4 @@ const Layout = () => {
         </>
     );
 };
-export default Layout;
+export default AppLayout;

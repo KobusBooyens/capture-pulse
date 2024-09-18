@@ -4,10 +4,12 @@ import Box from "../../../components/Box/Box.jsx";
 import PropTypes from "prop-types";
 import { Grid } from "@mui/material";
 import PageLayout from "../../../controls/LayoutContainers/PageLayout.jsx";
+import bgImage from "../../../assets/images/bg_cover_sign_up.jpg";
 
-const SignUpLayout = ({ coverHeight, image, children }) => {
+const SignUpLayout = ({ children }) => {
+    const image = bgImage;
     return (
-        <PageLayout>
+        <>
             <Box
                 width="calc(100% - 2rem)"
                 // minHeight={coverHeight}
@@ -34,13 +36,12 @@ const SignUpLayout = ({ coverHeight, image, children }) => {
                     </Grid>
                 </Grid>
             </Box>
-        </PageLayout>
+        </>
     );
 };
 
 SignUpLayout.propTypes = {
-    coverHeight: PropTypes.string,
-    image: PropTypes.string.isRequired,
+
     children: PropTypes.node.isRequired,
 };
 

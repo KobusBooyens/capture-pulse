@@ -1,11 +1,20 @@
 import React from "react";
-
+import bgImage from "../../../assets/images/signin/bg_sign_in.jpg";
+import bgImage1 from "../../../assets/images/signin/bg_sign_in_1.jpg";
+import bgImage2 from "../../../assets/images/signin/bg_sign_in_2.jpg";
+import bgImage3 from "../../../assets/images/signin/bg_sign_in_3.jpg";
+import bgImage4 from "../../../assets/images/signin/bg_sign_in_4.jpg";
+import bgImage5 from "../../../assets/images/signin/bg_sign_in_5.jpg";
+import bgImage6 from "../../../assets/images/signin/bg_sign_in_6.jpg";
 import Box from "../../../components/Box/Box.jsx";
 import PropTypes from "prop-types";
 import { Grid } from "@mui/material";
 import PageLayout from "../../../controls/LayoutContainers/PageLayout.jsx";
 
-const SignInLayout = ({ image, children }) => {
+const bgImages = [bgImage, bgImage1, bgImage2, bgImage3, bgImage4, bgImage5, bgImage6];
+const randomBgImage = bgImages[Math.floor(Math.random() * bgImages.length)];
+
+const SignInLayout = ({ children }) => {
     return (
         <PageLayout>
             <Box
@@ -14,11 +23,11 @@ const SignInLayout = ({ image, children }) => {
                 minHeight="100vh"
                 sx={{
                     backgroundImage: ({ functions: { linearGradient, rgba }, palette: { gradients } }) =>
-                        image &&
+                        randomBgImage &&
                   `${linearGradient(
                       rgba(gradients.dark.main, 0.6),
                       rgba(gradients.dark.state, 0.6)
-                  )}, url(${image})`,
+                  )}, url(${randomBgImage})`,
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                     backgroundRepeat: "no-repeat",
@@ -37,8 +46,6 @@ const SignInLayout = ({ image, children }) => {
 };
 
 SignInLayout.propTypes = {
-    coverHeight: PropTypes.string,
-    image: PropTypes.string.isRequired,
     children: PropTypes.node.isRequired,
 };
 

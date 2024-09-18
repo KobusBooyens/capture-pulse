@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Typography from "../../../components/Typography/Typography.jsx";
 import Box from "../../../components/Box/Box.jsx";
 import Card from "@mui/material/Card";
-import bgImage from "../../../assets/images/bg_sign_in.jpg";
+
 import SignInLayout from "../layouts/SignInLayout.jsx";
 import { FormProvider, useForm } from "react-hook-form";
 import Button from "../../../components/Button/Button.jsx";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, } from "react-router-dom";
 import SignInForm from "../forms/SignInForm.jsx";
 import useAuthSignIn from "../../../api/auth/useAuthSignIn.js";
 
@@ -29,7 +29,7 @@ export const SignInMain = () => {
     };
 
     return (
-        <SignInLayout image={bgImage}>
+        <SignInLayout>
             <Box mt={-10}>
                 <Card sx={{ padding: 5 }}>
                     <Box
