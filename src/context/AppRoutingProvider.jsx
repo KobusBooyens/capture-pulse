@@ -42,9 +42,10 @@ const coverRoutes =
       <Route path="authentication/sign-up" element={<SignUpMain />} />
   </Route>;
 
-const appRoutes = 
-  <Route path="/" element={<AppLayout />}>
-      <Route element={<ProtectedRoute/>}>
+const appRoutes =
+  <Route element={<ProtectedRoute/>}>
+      <Route path="/" element={<AppLayout />}>
+
           {/* Dashboard */}
           <Route path="dashboard" element={<DashboardMain />} />
 

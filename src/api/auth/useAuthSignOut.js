@@ -17,11 +17,7 @@ const useAuthSignOut = () => {
             severity: "error"
         },
     }, {
-        onSuccess: ( data) => {
-            if (data.authToken && data.user) {
-                handleSignOut();
-            }
-        }
+        onSuccess: () => handleSignOut()
     } );
 };
 

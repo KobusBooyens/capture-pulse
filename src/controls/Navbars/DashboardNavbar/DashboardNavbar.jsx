@@ -48,7 +48,10 @@ function DashboardNavbar({ absolute, light, isMini }) {
     const handleOpenPersonalizeMenu = (event) => setOpenPersonalizeMenu(event.currentTarget);
     const handleClosePersonalizeMenu = () => setOpenPersonalizeMenu(false);
     const handleSignOut = () => authSignOut.mutate(currentUser._id, {
-        onSuccess: () => navigation("authentication/sign-in")
+        onSuccess: () => {
+
+            navigation("authentication/sign-in");
+        }
     });
 
     useEffect(() => {
