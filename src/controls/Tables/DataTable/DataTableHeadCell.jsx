@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import Icon from "@mui/material/Icon";
 import Box from "../../../components/Box/Box.jsx";
-import { useUISettingsController } from "../../../context/ui-settings-provider.jsx";
+import { useUISettingsController } from "../../../context/UISettingsProvider.jsx";
 
 function DataTableHeadCell({ width, children, sorted, align, ...rest }) {
     const [controller] = useUISettingsController();

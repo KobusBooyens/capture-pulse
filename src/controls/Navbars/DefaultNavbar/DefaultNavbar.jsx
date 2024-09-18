@@ -7,7 +7,7 @@ import Icon from "@mui/material/Icon";
 
 import breakpoints from "../../../assets/theme/base/breakpoints";
 
-import { useUISettingsController } from "../../../context/ui-settings-provider.jsx";
+import { useUISettingsController } from "../../../context/UISettingsProvider.jsx";
 import Box from "../../../components/Box/Box.jsx";
 import Typography from "../../../components/Typography/Typography.jsx";
 import DefaultNavbarLink from "./DefaultNavbarLink.jsx";

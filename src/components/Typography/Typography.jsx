@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 import PropTypes from "prop-types";
-import { useUISettingsController } from "../../context/ui-settings-provider.jsx";
+import { useUISettingsController } from "../../context/UISettingsProvider.jsx";
 import TypographyRoot from "./TypographyRoot.js";
 
 const Typography = forwardRef(

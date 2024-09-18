@@ -12,7 +12,7 @@ import {
     collapseText,
 } from "./styles/sidenavCollapse";
 
-import { useUISettingsController } from "../../context/ui-settings-provider.jsx";
+import { useUISettingsController } from "../../context/UISettingsProvider.jsx";
 import Box from "../../components/Box/Box.jsx";
 
 function SidenavCollapse({ icon, name, active, subMenuItems, mainMenuKey, setActiveMenu, activeMenuKey, ...rest }) {

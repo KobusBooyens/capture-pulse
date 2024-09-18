@@ -21,4 +21,15 @@ const signIn = async(req, res) => {
     }
 };
 
-module.exports = { signIn };
+const signOut = async (req, res) => {
+    try {
+        console.log(req.params);
+        const response = await AuthService.signOut(req.params.id);
+        res.status(response.status).send(response.data);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send({ message: "Internal Server Error", error: err });
+    }
+};
+
+module.exports = { signIn, signOut };

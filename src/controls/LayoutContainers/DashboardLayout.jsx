@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 
-import { useUISettingsController, setLayout } from "../../context/ui-settings-provider.jsx";
+import { useUISettingsController, setLayout } from "../../context/UISettingsProvider.jsx";
 import Box from "../../components/Box/Box.jsx";
 
 function DashboardLayout({ children }) {
@@ -11,7 +11,7 @@ function DashboardLayout({ children }) {
     const { pathname } = useLocation();
 
     useEffect(() => {
-        setLayout(dispatch, pathname.includes("/authentication/") ? "page" : "dashboard");
+        setLayout(dispatch, "dashboard");
     }, [pathname]);
 
     return (

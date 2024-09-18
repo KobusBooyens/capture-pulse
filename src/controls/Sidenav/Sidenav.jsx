@@ -11,7 +11,7 @@ import { useUISettingsController,
     setMiniSidenav,
     setTransparentSidenav,
     setWhiteSidenav,
-} from "../../context/ui-settings-provider.jsx";
+} from "../../context/UISettingsProvider.jsx";
 import SidenavCollapse from "./SidenavCollapse.jsx";
 import SidenavRoot from "./SidenavRoot.jsx";
 import Box from "../../components/Box/Box.jsx";

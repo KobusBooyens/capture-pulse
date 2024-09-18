@@ -5,7 +5,7 @@ import Icon from "@mui/material/Icon";
 import Divider from "@mui/material/Divider";
 import Fade from "@mui/material/Fade";
 
-import { useUISettingsController } from "../../context/ui-settings-provider.jsx";
+import { useUISettingsController } from "../../context/UISettingsProvider.jsx";
 import Box from "../Box/Box.jsx";
 import SnackbarIconRoot from "./SnackbarIconRoot.js";
 import Typography from "../Typography/Typography.jsx";

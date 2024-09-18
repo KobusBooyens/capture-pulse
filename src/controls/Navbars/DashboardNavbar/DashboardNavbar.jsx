@@ -22,29 +22,34 @@ import {
     setDarkMode,
     setSidenavColor,
     setTransparentNavbar
-} from "../../../context/ui-settings-provider.jsx";
+} from "../../../context/UISettingsProvider.jsx";
 
 import NotificationItem from "../../Items/NotificationItem/NotificationItem.jsx";
 
 import Box from "../../../components/Box/Box.jsx";
 import Breadcrumbs from "../../Breadcrumbs/Breadcrumbs.jsx";
+import useAuthSignOut from "../../../api/auth/useAuthSignOut.js";
+import { useAuth } from "../../../context/AuthProvider.jsx";
 
 function DashboardNavbar({ absolute, light, isMini }) {
     const [controller, dispatch] = useUISettingsController();
     const { miniSidenav, transparentNavbar, darkMode, sidenavColor, fixedNavbar } = controller;
     const [openMenu, setOpenMenu] = useState(false);
     const [openPersonalizeMenu, setOpenPersonalizeMenu] = useState(false);
+    const authSignOut = useAuthSignOut();
     const route = useLocation().pathname.split("/").slice(1);
 
     const sidenavColors = ["primary", "dark", "info", "success", "warning", "error"];
-
+    const { currentUser } = useAuth();
     const navigation = useNavigate();
     const handleMiniSidenav = () => setMiniSidenav(dispatch, !miniSidenav);
     const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
     const handleCloseMenu = () => setOpenMenu(false);
     const handleOpenPersonalizeMenu = (event) => setOpenPersonalizeMenu(event.currentTarget);
     const handleClosePersonalizeMenu = () => setOpenPersonalizeMenu(false);
-    const handleSignOut = () => navigation("/authentication/sign-in");
+    const handleSignOut = () => authSignOut.mutate(currentUser._id, {
+        onSuccess: () => navigation("authentication/sign-in")
+    });
 
     useEffect(() => {
     // A function that sets the transparent state of the navbar.
@@ -71,7 +76,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
             onClose={handleCloseMenu}
             sx={{ mt: 2 }}
         >
-            <NotificationItem icon={<Icon>logout</Icon>} title="Sign-out" onClick={handleSignOut} />
+            <NotificationItem icon={<Icon>logout</Icon>}
+                title={authSignOut.isPending ? "Signing-out" : "Sign-out"}
+                onClick={handleSignOut} />
             <NotificationItem
                 icon={<Icon>{darkMode ? "light_mode" : "dark_mode"}</Icon>}
                 title={darkMode ? "Switch to light mode" : "Switch to dark mode"}

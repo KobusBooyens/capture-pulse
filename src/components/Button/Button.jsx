@@ -2,7 +2,7 @@ import { forwardRef } from "react";
 
 import PropTypes from "prop-types";
 
-import { useUISettingsController } from "../../context/ui-settings-provider.jsx";
+import { useUISettingsController } from "../../context/UISettingsProvider.jsx";
 import ButtonRoot from "./ButtonRoot.js";
 
 const Button = forwardRef(

@@ -6,7 +6,7 @@ import Card from "@mui/material/Card";
 import SignInLayout from "../layouts/SignInLayout.jsx";
 import { FormProvider, useForm } from "react-hook-form";
 import Button from "../../../components/Button/Button.jsx";
-import { Link, useNavigate, } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import SignInForm from "../forms/SignInForm.jsx";
 import useAuthSignIn from "../../../api/auth/useAuthSignIn.js";
 
@@ -14,19 +14,23 @@ export const SignInMain = () => {
     const registerFormMethods = useForm();
     const authSignIn = useAuthSignIn();
     const [error, setError] = useState("");
-    const navigate = useNavigate();
+    const [isSignedIn, setIsSignedIn] = useState(false);
 
     const onSignInSubmit = (data) => {
         authSignIn.mutate({ data }, {
             onSuccess: () => {
                 setError("");
-                navigate("/dashboard");
+                setIsSignedIn(true);
             },
             onError: (error) => {
                 setError(error.response.data.message);
             }
         });
     };
+
+    if (isSignedIn) {
+        return <Navigate to="/dashboard" />;
+    }
 
     return (
         <SignInLayout>

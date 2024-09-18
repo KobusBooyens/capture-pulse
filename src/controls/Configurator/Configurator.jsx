@@ -12,7 +12,7 @@ import {
     setFixedNavbar,
     setSidenavColor,
     setDarkMode,
-} from "../../context/ui-settings-provider.jsx";
+} from "../../context/UISettingsProvider.jsx";
 import ConfiguratorRoot from "./ConfiguratorRoot.js";
 import Box from "../../components/Box/Box.jsx";
 import Typography from "../../components/Typography/Typography.jsx";

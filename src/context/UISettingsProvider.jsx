@@ -40,7 +40,7 @@ function reducer(state, action) {
     }
 }
 
-function UiSettingsProvider({ children }) {
+function UISettingsProvider({ children }) {
     const initialState = {
         miniSidenav: false,
         transparentSidenav: false,
@@ -65,14 +65,14 @@ function useUISettingsController() {
 
     if (!context) {
         throw new Error(
-            "useUISettingsController should be used inside the UiSettingsProvider."
+            "useUISettingsController should be used inside the UISettingsProvider."
         );
     }
 
     return context;
 }
 
-UiSettingsProvider.propTypes = {
+UISettingsProvider.propTypes = {
     children: PropTypes.node.isRequired,
 };
 
@@ -87,7 +87,7 @@ const setLayout = (dispatch, value) => dispatch({ type: "LAYOUT", value });
 const setDarkMode = (dispatch, value) => dispatch({ type: "DARKMODE", value });
 
 export {
-    UiSettingsProvider,
+    UISettingsProvider,
     useUISettingsController,
     setMiniSidenav,
     setTransparentSidenav,

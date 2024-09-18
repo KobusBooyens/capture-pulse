@@ -2,7 +2,7 @@ import React from "react";
 import DataTableSkeleton from "../../controls/Tables/Skeleton/DataTable.jsx";
 import Typography from "../../components/Typography/Typography.jsx";
 import ViewWeighingCheckinPage from "./pages/ViewWeighingCheckinPage.jsx";
-import { useTableQuery } from "../../context/table-query-provider.jsx";
+import { useTableQuery } from "../../context/TableQueryProvider.jsx";
 import useCheckins from "../../api/checkins/useCheckins.js";
 
 const WeighingCheckinsMain = () => {

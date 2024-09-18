@@ -1,16 +1,16 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
-import { useUISettingsController, setLayout } from "../../context/ui-settings-provider.jsx";
+import { useUISettingsController, setLayout } from "../../context/UISettingsProvider.jsx";
 import Box from "../../components/Box/Box.jsx";
 
-function PageLayout({ background, children }) {
+function PageLayout({ background = "default", children }) {
     const [controller, dispatch] = useUISettingsController();
     const { pathname } = useLocation();
 
-    useEffect(() => {
-        setLayout(dispatch, "page");
-    }, [pathname]);
+    // useEffect(() => {
+    //     setLayout(dispatch, "page");
+    // }, [pathname]);
 
     return (
         <Box
@@ -24,10 +24,6 @@ function PageLayout({ background, children }) {
         </Box>
     );
 }
-
-PageLayout.defaultProps = {
-    background: "default",
-};
 
 PageLayout.propTypes = {
     background: PropTypes.oneOf(["white", "light", "default"]),

@@ -1,5 +1,5 @@
 import React from "react";
-import { useTableQuery } from "../../context/table-query-provider.jsx";
+import { useTableQuery } from "../../context/TableQueryProvider.jsx";
 import DataTableSkeleton from "../../controls/Tables/Skeleton/DataTable.jsx";
 import Typography from "../../components/Typography/Typography.jsx";
 import ViewCheckinHistoryPage from "./pages/ViewCheckinHistoryPage.jsx";

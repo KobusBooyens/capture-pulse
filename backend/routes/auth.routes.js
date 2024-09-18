@@ -8,4 +8,5 @@ module.exports = function (app) {
     // app.get("/api/auth/verify-subscription", controller.verifySubscription);
     // app.get("/api/auth/sign-up", controller.signUp);
     app.post("/api/auth/sign-in", controller.signIn);
+    app.get("/api/auth/sign-out/:id", controller.signOut);
 };

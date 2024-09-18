@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { setMiniSidenav, useUISettingsController } from "../../context/ui-settings-provider.jsx";
+import { setMiniSidenav, useUISettingsController } from "../../context/UISettingsProvider.jsx";
 import { Outlet, useLocation } from "react-router-dom";
 import brandDark from "../../assets/images/logo-dark.png";
 import brandWhite from "../../assets/images/logo.png";
@@ -12,7 +12,7 @@ import menuItems from "./menuItems.jsx";
 import DashboardNavbar from "../../controls/Navbars/DashboardNavbar/DashboardNavbar.jsx";
 import DashboardLayout from "../../controls/LayoutContainers/DashboardLayout.jsx";
 import Footer from "../../controls/Footer/Footer.jsx";
-import { SnackbarProvider } from "../../context/snackbar-provider.jsx";
+import { SnackbarProvider } from "../../context/SnackbarProvider.jsx";
 
 const AppLayout = () => {
     const [controller, dispatch] = useUISettingsController();
