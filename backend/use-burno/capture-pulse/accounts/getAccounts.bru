@@ -5,7 +5,15 @@ meta {
 }
 
 get {
-  url: {{url}}/accounts
+  url: {{url}}/accounts?page=1&pageSize=10
   body: none
   auth: none
+}
+
+params:query {
+  page: 1
+  pageSize: 10
+  ~searchText: 
+  ~sortColumn: 
+  ~sortDirection: 
 }

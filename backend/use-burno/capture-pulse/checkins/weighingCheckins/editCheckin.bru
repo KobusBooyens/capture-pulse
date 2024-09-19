@@ -1,0 +1,20 @@
+meta {
+  name: editCheckin
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{url}}/checkins/weighing/669e998c0c4937d781bcf95b
+  body: json
+  auth: none
+}
+
+body:json {
+    {
+      "client": "6677e54730f1c840fb2ee02e",
+      "date": "2024-08-26",
+      "weight": 92,
+      "feedback": "This is a test checkin V3"
+    }
+}

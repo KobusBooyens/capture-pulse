@@ -1,0 +1,20 @@
+meta {
+  name: editCheckin
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{url}}/checkins/general/669e98bf0c4937d781bcf953
+  body: json
+  auth: none
+}
+
+body:json {
+    {
+      "client": "6677e54730f1c840fb2ee02e",
+      "date": "2024-08-26",
+      "mood": 3,
+      "feedback": "This is a test checkin V1"
+    }
+}

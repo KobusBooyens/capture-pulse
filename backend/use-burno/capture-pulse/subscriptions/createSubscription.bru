@@ -1,0 +1,17 @@
+meta {
+  name: createSubscription
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{url}}/subscription
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "The Fitness Co."
+  }
+}

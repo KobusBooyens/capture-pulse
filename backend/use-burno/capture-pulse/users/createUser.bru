@@ -1,0 +1,23 @@
+meta {
+  name: createUser
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{url}}/user
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "firstName": "John",
+    "lastName": "Soap",
+    "contactNumber": "27761590579",
+    "email": "johnSoap@test.com",
+    "password": "P@ssw0rd",
+    "confirmPassword": "P@ssw0rd",
+    "subscriptionCode": "66e8551fb857f2c6eee2b68b"
+  }
+}

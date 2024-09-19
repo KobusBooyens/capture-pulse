@@ -1,0 +1,27 @@
+meta {
+  name: updateUser
+  type: http
+  seq: 5
+}
+
+patch {
+  url: {{url}}/user/:id
+  body: json
+  auth: none
+}
+
+params:path {
+  id: 66ec72e6283985da2624d77a
+}
+
+body:json {
+  {
+    "firstName": "Tommy1",
+    "lastName": "Fleetwood",
+    "contactNumber": "132456789",
+    "email": "tommyFleetwood@test.com",
+    "password": "1234",
+    "role": "Admin",
+    "subscriptionCode": "66e8551fb857f2c6eee2b68b"
+  }
+}
