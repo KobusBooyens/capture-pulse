@@ -14,6 +14,14 @@ const schema = z.object({
 
 });
 
+const basicSchema = z.object({
+    page: z.string({ required_error: "page is required" }),
+    pageSize: z.string({ required_error: "pageSize is required" }),
+    searchText: z.string().optional(),
+    sortColumn: z.string().optional(),
+    sortDirection: z.string().optional(),
+});
+
 const createUser = async(req, res) => {
     try {
         const { payload, error } = validateAndRespond(schema, req.body);
@@ -28,9 +36,15 @@ const createUser = async(req, res) => {
     }
 };
 
-const getAllUsers = async(req, res) => {
+const getAllUsers = async (req, res) => {
     try {
-        res.status(200).send("getAllUsers");
+        const { payload, error } = validateAndRespond(basicSchema, req.query);
+        if (error) {
+            return res.status(400).json({ message: "Validation failed.", errors: error });
+        }
+
+        const response = await UserService.getAllUsers(req.subscriptionId, payload);
+        res.status(response.status).send(response.data);
     } catch (err) {
         console.error(err);
         res.status(500).send({ message: "Internal Server Error", error: err });

@@ -9,11 +9,10 @@ import Button from "../../../components/Button/Button.jsx";
 import Divider from "@mui/material/Divider";
 import { Link } from "react-router-dom";
 import SignUpLayout from "../layouts/SignUpLayout.jsx";
-import bgImage from "../../../assets/images/bg_cover_sign_up.jpg";
 import useVerifySubscription from "../../../api/subscriptions/useVerifySubscription.js";
 import useCreateUser from "../../../api/users/useCreateUser.js";
 
-export const SignUpMain = () => {
+const SignUpMain = () => {
     const [isVerified, setIsVerified] = useState(false);
     const [subscriptionButtonText, setSubscriptionButtonText] = useState("Verify Subscription");
     const [signUpError, setSignUpError] = useState({ action: null, message: null });
@@ -171,3 +170,5 @@ export const SignUpMain = () => {
 
     );
 };
+
+export default SignUpMain;

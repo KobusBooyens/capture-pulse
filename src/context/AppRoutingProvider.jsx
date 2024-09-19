@@ -22,10 +22,11 @@ import WeighingCheckinsMain from "../layout/checkins/WeighingCheckinsMain.jsx";
 import TableQueryProvider from "./TableQueryProvider.jsx";
 import CheckinHistoryMain from "../layout/checkins/CheckinHistoryMain.jsx";
 import BillingHistoryMain from "../layout/billing/BillingHistoryMain.jsx";
-import { SignUpMain } from "../layout/authentication/sign-up/SignUpMain.jsx";
-import { SignInMain } from "../layout/authentication/sign-in/SignInMain.jsx";
+import SignUpMain from "../layout/authentication/sign-up/SignUpMain.jsx";
+import SignInMain from "../layout/authentication/sign-in/SignInMain.jsx";
 import CoverLayout from "../layout/root/CoverLayout.jsx";
 import { useAuth } from "./AuthProvider.jsx";
+import Fallback from "../layout/root/fallback/Fallback.jsx";
 
 const ProtectedRoute = () => {
     const { authToken } = useAuth();
@@ -35,8 +36,8 @@ const ProtectedRoute = () => {
 const authenticationRoutes =
   <Route path="/" element={<CoverLayout />}>
       <Route path="authentication/sign-in" element={<SignInMain />} />
-  </Route>
-;
+  </Route>;
+
 const coverRoutes =
   <Route path="/" element={<CoverLayout />}>
       <Route path="authentication/sign-up" element={<SignUpMain />} />
@@ -102,6 +103,8 @@ const appRoutes =
           {/* Settings */}
           <Route path="settings" element={<Settings />} />
       </Route>
+
+      {/*<Route path="/" element={<ProtectedRoute/>} />*/}
   </Route>
 ;
 
@@ -116,7 +119,7 @@ const router = createBrowserRouter(
 );
 
 const AppRoutingProvider = () => {
-    return <RouterProvider router={router}/>;
+    return <RouterProvider router={router} fallbackElement={<Fallback />}/>;
 };
 
 export default AppRoutingProvider;

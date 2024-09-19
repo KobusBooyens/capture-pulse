@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import bgImage from "../../../assets/images/signin/bg_sign_in.jpg";
 import bgImage1 from "../../../assets/images/signin/bg_sign_in_1.jpg";
 import bgImage2 from "../../../assets/images/signin/bg_sign_in_2.jpg";
@@ -15,6 +15,7 @@ const bgImages = [bgImage, bgImage1, bgImage2, bgImage3, bgImage4, bgImage5, bgI
 const randomBgImage = bgImages[Math.floor(Math.random() * bgImages.length)];
 
 const SignInLayout = ({ children }) => {
+
     return (
         <PageLayout>
             <Box

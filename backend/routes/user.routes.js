@@ -1,4 +1,5 @@
 const controller = require("../controllers/user.controller");
+const { verifyToken } = require("../middleware/authJwt");
 
 module.exports = function (app) {
     app.use(function(req, res, next) {
@@ -7,7 +8,7 @@ module.exports = function (app) {
     });
 
     app.get("/api/user/:id", controller.getUserById);
-    app.get("/api/users", controller.getAllUsers);
+    app.get("/api/users", verifyToken, controller.getAllUsers);
     app.post("/api/user", controller.createUser);
     app.path("/api/user", controller.updateUser);
     app.delete("/api/user", controller.deleteUser);

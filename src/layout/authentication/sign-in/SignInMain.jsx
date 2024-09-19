@@ -6,11 +6,11 @@ import Card from "@mui/material/Card";
 import SignInLayout from "../layouts/SignInLayout.jsx";
 import { FormProvider, useForm } from "react-hook-form";
 import Button from "../../../components/Button/Button.jsx";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import SignInForm from "../forms/SignInForm.jsx";
 import useAuthSignIn from "../../../api/auth/useAuthSignIn.js";
 
-export const SignInMain = () => {
+const SignInMain = () => {
     const registerFormMethods = useForm();
     const authSignIn = useAuthSignIn();
     const [error, setError] = useState("");
@@ -99,3 +99,5 @@ export const SignInMain = () => {
         </SignInLayout>
     );
 };
+
+export default SignInMain;

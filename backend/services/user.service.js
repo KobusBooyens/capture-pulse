@@ -65,3 +65,47 @@ exports.createUser = async (payload) => {
         await session.endSession();
     }
 };
+
+exports.getAllUsers = async (subscriptionId, payload) => {
+    const pageSize = payload.pageSize ? Number(payload.pageSize) : 10;
+    const page = payload.page ? Number(payload.page) : 1;
+
+    let queryFilter = { subscription: subscriptionId };
+
+    if (payload.searchText) {
+        queryFilter["$or"] = [
+            { firstName: { $regex: ".*" + payload.searchText + ".*", $options: "i", }, },
+            { lastName: { $regex: ".*" + payload.searchText + ".*", $options: "i", }, }
+        ];
+    }
+
+    let sortFilter = { lastLoggedIn: 1, firstName: 1, lastName: 1 };
+    if (payload.sortColumn && payload.sortDirection) {
+        const sortDirection = payload.sortDirection === "asc" ? 1 : -1;
+
+        if (payload.sortColumn === "firstName") {
+            sortFilter = { lastName: sortDirection, firstName: sortDirection };
+        } else if (payload.sortColumn === "lastName") {
+            sortFilter = { lastName: sortDirection };
+        } else if (payload.sortColumn === "lastLoggedIn") {
+            sortFilter = { lastLoggedIn: sortDirection };
+        }
+    }
+
+    const [data, recordCount] = await Promise.all([
+        db.Users.find(queryFilter)
+            .sort(sortFilter)
+            .skip(pageSize * (page - 1))
+            .limit(pageSize)
+            .select("-password"),
+        db.Users.countDocuments(queryFilter)
+    ]);
+
+    return {
+        status: 200,
+        data:       {
+            records: data ?? [],
+            recordCount: recordCount
+        }
+    };
+};
