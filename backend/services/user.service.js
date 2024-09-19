@@ -20,19 +20,21 @@ exports.createUser = async (payload) => {
             };
         }
 
-        const subOwnerCount = await db.Users.countDocuments({
-            subscription: new ObjectId(payload.subscriptionCode),
-            isSubscriptionOwner: true
-        });
-        console.log("subOwnerCount", subOwnerCount);
-        if (subOwnerCount > 0) {
-            return {
-                status: 400,
-                data: {
-                    message: "A subscription account owner already exists. Please consider signing-in.",
-                    action: "signUpError"
-                }
-            };
+        if (payload.isSubscriptionOwner) {
+            const subOwnerCount = await db.Users.countDocuments({
+                subscription: new ObjectId(payload.subscriptionCode),
+                isSubscriptionOwner: true
+            });
+
+            if (subOwnerCount > 0) {
+                return {
+                    status: 400,
+                    data: {
+                        message: "A subscription account owner already exists. Please consider signing-in.",
+                        action: "signUpError"
+                    }
+                };
+            }
         }
 
         const response = await SubscriptionService.addUserToSubscription(
@@ -108,4 +110,14 @@ exports.getAllUsers = async (subscriptionId, payload) => {
             recordCount: recordCount
         }
     };
+};
+
+exports.deleteUser = async (id) => {
+    return await db.Users.delete({ _id: id });
+};
+
+exports.editUser = async (id, payload) => {
+    return db.Users.updateOne({ _id: id },
+        { ...payload });
+
 };

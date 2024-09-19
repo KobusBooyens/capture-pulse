@@ -8,6 +8,13 @@ const createUserFn = async (data) => {
     return response.data;
 };
 
+const updateFn = async ({ id, updatedData }) => {
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    console.log(updatedData);
+    const response = await apiClient.patch(`user/${id}`, updatedData);
+    return response.data;
+};
+
 const useCreateUser = (showAlert, enablePagination) => {
     return useCustomMutation(createUserFn, enablePagination ?
         queryKeys.PAGINATED : queryKeys.DETAIL,
@@ -25,4 +32,19 @@ const useCreateUser = (showAlert, enablePagination) => {
     });
 };
 
-export default useCreateUser;
+const useUpdateUser = () => {
+    return useCustomMutation(updateFn, queryKeys.PAGINATED, {
+        success: {
+            title: "Success!",
+            content: "Nice! User was successfully updated!",
+            severity: "success"
+        },
+        error: {
+            title: "Failed!",
+            content: "Oh no! An error occurred while updating the user. Please try again!",
+            severity: "error"
+        },
+    });
+};
+
+export { useCreateUser, useUpdateUser };

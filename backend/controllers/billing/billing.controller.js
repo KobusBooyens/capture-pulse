@@ -73,12 +73,12 @@ const edit = async (req, res) => {
             return res.status(400).json({ message: "Validation failed.", errors: error });
         }
         const response = await BillingService.edit(req.params.id, payload);
-        const data = await db.Billing.updateOne({ _id: req.params.id },
-            { ...payload });
-        if (!data) {
-            return res.status(404).send("weighing checkin not found");
-        }
-        res.json(response);
+        // const data = await db.Billing.updateOne({ _id: req.params.id },
+        //     { ...payload });
+        // if (!data) {
+        //     return res.status(404).send("weighing checkin not found");
+        // }
+        res.status(200).send(response);
     } catch (err) {
         console.error(err);
         res.status(500).send({ message: "Internal Server Error", error: err });

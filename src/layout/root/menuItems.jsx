@@ -6,7 +6,7 @@ import BillingMain from "../billing/BillingMain.jsx";
 import Icon from "@mui/material/Icon";
 import NotificationsMain from "../notifications/NotificationsMain.jsx";
 import Settings from "../settings/settings.jsx";
-import Users from "../users/users.jsx";
+import UsersMain from "../users/UsersMain.jsx";
 import GeneralCheckinsMain from "../checkins/GeneralCheckinsMain.jsx";
 import WeighingCheckinsMain from "../checkins/WeighingCheckinsMain.jsx";
 
@@ -75,7 +75,7 @@ const menuItems = [
         key: "users",
         icon: <Icon fontSize={"small"}>person</Icon>,
         route: "/users",
-        component: <Users />
+        component: <UsersMain />
     },
     {
         type: "collapse",

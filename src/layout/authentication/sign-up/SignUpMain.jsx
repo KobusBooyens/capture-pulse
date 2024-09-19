@@ -10,7 +10,7 @@ import Divider from "@mui/material/Divider";
 import { Link } from "react-router-dom";
 import SignUpLayout from "../layouts/SignUpLayout.jsx";
 import useVerifySubscription from "../../../api/subscriptions/useVerifySubscription.js";
-import useCreateUser from "../../../api/users/useCreateUser.js";
+import { useCreateUser } from "../../../api/users/useCreateUser.js";
 
 const SignUpMain = () => {
     const [isVerified, setIsVerified] = useState(false);
@@ -39,7 +39,6 @@ const SignUpMain = () => {
     };
 
     const onRegisterSubmit = (data) => {
-
         if (registerFormMethods.getValues("password") !== registerFormMethods.getValues("confirmPassword")) {
             registerFormMethods.setError("confirmPassword", {
                 message: "Password do not match. Please note that the password is case sensitive."

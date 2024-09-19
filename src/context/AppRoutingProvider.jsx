@@ -16,7 +16,7 @@ import CheckinsMain from "../layout/checkins/CheckinsMain.jsx";
 import NotificationsMain from "../layout/notifications/NotificationsMain.jsx";
 import BillingMain from "../layout/billing/BillingMain.jsx";
 import Settings from "../layout/settings/settings.jsx";
-import Users from "../layout/users/users.jsx";
+import UsersMain from "../layout/users/UsersMain.jsx";
 import GeneralCheckinsMain from "../layout/checkins/GeneralCheckinsMain.jsx";
 import WeighingCheckinsMain from "../layout/checkins/WeighingCheckinsMain.jsx";
 import TableQueryProvider from "./TableQueryProvider.jsx";
@@ -97,8 +97,12 @@ const appRoutes =
           {/* Notifications */}
           <Route path="notifications" element={<NotificationsMain />} />
 
-          {/* Users */}
-          <Route path="users" element={<Users />} />
+          {/* UsersMain */}
+          <Route path="users" element={
+              <TableQueryProvider>
+                  <UsersMain />
+              </TableQueryProvider>
+          } />
 
           {/* Settings */}
           <Route path="settings" element={<Settings />} />

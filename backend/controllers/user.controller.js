@@ -1,13 +1,14 @@
 const UserService = require("../services/user.service");
 const { z } = require("zod");
 const validateAndRespond = require("../utils/zodValidation");
+const ClientService = require("../services/client.service");
 
 const schema = z.object({
     firstName: z.string({ required_error: "firstName is required" }),
     lastName: z.string({ required_error: "lastName is required" }),
     contactNumber: z.string({ required_error: "contactNumber is required" }),
     email: z.string({ required_error: "email is required" }),
-    password: z.string({ required_error: "password is required" }),
+    password: z.string().optional(),
     subscriptionCode: z.string({ required_error: "subscriptionCode is required" }),
     isSubscriptionOwner: z.boolean().optional(),
     activateSubscription: z.boolean().optional()
@@ -62,7 +63,13 @@ const getUserById = async(req, res) => {
 
 const updateUser = async(req, res) => {
     try {
-        res.status(200).send("updateUser");
+        const { payload, error } = validateAndRespond(schema, req.body);
+        if (error) {
+            return res.status(400).json({ message: "Validation failed.", errors: error });
+        }
+
+        const response = await UserService.editUser(req.params.id, payload);
+        res.status(200).send(response);
     } catch (err) {
         console.error(err);
         res.status(500).send({ message: "Internal Server Error", error: err });
@@ -71,7 +78,8 @@ const updateUser = async(req, res) => {
 
 const deleteUser = async(req, res) => {
     try {
-        res.status(200).send("deleteUser");
+        await UserService.deleteUser(req.params.id);
+        res.status(200).send("User deleted");
     } catch (err) {
         console.error(err);
         res.status(500).send({ message: "Internal Server Error", error: err });

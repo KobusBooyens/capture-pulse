@@ -82,7 +82,6 @@ const create = async (req, res) => {
 };
 
 const edit = async (req, res) => {
-
     try {
         const { payload, error } = validateAndRespond(schema, req.body);
         if (error) {
@@ -92,7 +91,6 @@ const edit = async (req, res) => {
         const response = await ClientService.edit(req.params.id, payload);
         res.status(200).send(response);
     } catch (err) {
-
         console.error(err);
         res.status(500).send({ message: "Internal Server Error", error: err });
     }
