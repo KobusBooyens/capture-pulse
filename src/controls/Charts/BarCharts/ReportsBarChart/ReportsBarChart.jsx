@@ -26,7 +26,7 @@ function ReportsBarChart({ color, title, description, chart, children }) {
     const { data, options } = config(chart.labels || [], chart.datasets || {});
 
     return (
-        <Card sx={{ height: "100%" }}>
+        <Card>
             <Box padding="1rem">
                 {useMemo(
                     () => 

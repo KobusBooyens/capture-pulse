@@ -1,4 +1,4 @@
-import moodOptions from "../../../data/moodOptions.jsx";
+import moodOptions from "../../../../data/moodOptions.jsx";
 
 export default {
     labels: ["Demotivated", "Okay", "Good", "Very Good"],

@@ -146,7 +146,9 @@ const ViewUsersPage = ({
                     <form onSubmit={methods.handleSubmit(onFormSubmit)} noValidate>
                         <UserForm
                             onCancel={handleCloseAddEditUserDialog}
-                            isLoading={showAddEditUserDialog.isLoading} />
+                            isLoading={showAddEditUserDialog.isLoading}
+                            adding={addingUser}
+                        />
                     </form>
                 </FormProvider>
             </AddEditUserDialog>

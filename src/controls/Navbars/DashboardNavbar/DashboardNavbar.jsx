@@ -30,6 +30,7 @@ import Box from "../../../components/Box/Box.jsx";
 import Breadcrumbs from "../../Breadcrumbs/Breadcrumbs.jsx";
 import useAuthSignOut from "../../../api/auth/useAuthSignOut.js";
 import { useAuth } from "../../../context/AuthProvider.jsx";
+import Typography from "../../../components/Typography/Typography.jsx";
 
 function DashboardNavbar({ absolute, light, isMini }) {
     const [controller, dispatch] = useUISettingsController();
@@ -174,9 +175,11 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 <Box color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
                     <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
                 </Box>
+
                 {isMini ? null : 
                     <Box sx={(theme) => navbarRow(theme, { isMini })}>
-                        <Box color={light ? "white" : "inherit"}>
+                        <Box display="flex" gap={1} color={light ? "white" : "inherit"}>
+                            <Typography variant={"body2"}>{currentUser.firstName} {currentUser.lastName}</Typography>
                             <IconButton
                                 size="small"
                                 disableRipple
@@ -189,6 +192,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                             >
                                 <Icon sx={iconsStyle}>account_circle</Icon>
                             </IconButton>
+
                             {/*<Link to="/authentication/sign-in/basic">*/}
                             {/*    <IconButton sx={navbarIconButton} size="small" disableRipple>*/}
                             {/*        <Icon sx={iconsStyle}>account_circle</Icon>*/}

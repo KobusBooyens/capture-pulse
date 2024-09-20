@@ -5,7 +5,7 @@ import BillingMain from "../billing/BillingMain.jsx";
 
 import Icon from "@mui/material/Icon";
 import NotificationsMain from "../notifications/NotificationsMain.jsx";
-import Settings from "../settings/settings.jsx";
+import SettingsMain from "../settings/SettingsMain.jsx";
 import UsersMain from "../users/UsersMain.jsx";
 import GeneralCheckinsMain from "../checkins/GeneralCheckinsMain.jsx";
 import WeighingCheckinsMain from "../checkins/WeighingCheckinsMain.jsx";
@@ -83,7 +83,7 @@ const menuItems = [
         key: "settings",
         icon: <Icon fontSize={"small"}>settings</Icon>,
         route: "/settings",
-        component: <Settings />
+        component: <SettingsMain />
     }
 ];
 

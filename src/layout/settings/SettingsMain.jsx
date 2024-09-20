@@ -1,9 +1,9 @@
 import React from "react";
 import ComingSoon from "../../controls/Cards/ComingSoon/ComingSoon.jsx";
 
-const Settings = () => {
+const SettingsMain = () => {
     return (
         <ComingSoon/>
     );
 };
-export default Settings;
+export default SettingsMain;

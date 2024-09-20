@@ -15,7 +15,7 @@ import EditClientPage from "../layout/clients/pages/EditClientPage.jsx";
 import CheckinsMain from "../layout/checkins/CheckinsMain.jsx";
 import NotificationsMain from "../layout/notifications/NotificationsMain.jsx";
 import BillingMain from "../layout/billing/BillingMain.jsx";
-import Settings from "../layout/settings/settings.jsx";
+import SettingsMain from "../layout/settings/SettingsMain.jsx";
 import UsersMain from "../layout/users/UsersMain.jsx";
 import GeneralCheckinsMain from "../layout/checkins/GeneralCheckinsMain.jsx";
 import WeighingCheckinsMain from "../layout/checkins/WeighingCheckinsMain.jsx";
@@ -104,8 +104,8 @@ const appRoutes =
               </TableQueryProvider>
           } />
 
-          {/* Settings */}
-          <Route path="settings" element={<Settings />} />
+          {/* SettingsMain */}
+          <Route path="settings" element={<SettingsMain />} />
       </Route>
 
       {/*<Route path="/" element={<ProtectedRoute/>} />*/}
