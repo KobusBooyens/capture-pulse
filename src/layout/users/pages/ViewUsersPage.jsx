@@ -38,8 +38,6 @@ const ViewUsersPage = ({
     });
 
     useEffect(() => {
-
-        console.log(handleAction.data);
         methods.reset({
             ...handleAction.data,
             subscriptionCode: currentUser.subscription._id });

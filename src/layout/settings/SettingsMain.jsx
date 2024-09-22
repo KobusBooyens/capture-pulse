@@ -1,9 +1,10 @@
 import React from "react";
-import ComingSoon from "../../controls/Cards/ComingSoon/ComingSoon.jsx";
+import ViewSettingsPage from "./pages/ViewSettingsPage.jsx";
 
 const SettingsMain = () => {
+
     return (
-        <ComingSoon/>
+        <ViewSettingsPage/>
     );
 };
 export default SettingsMain;

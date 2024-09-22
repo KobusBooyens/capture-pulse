@@ -89,7 +89,6 @@ const UserForm = ({ onCancel, isLoading, adding }) => {
                     }
                 />
             </Grid>}
-
             <Grid item xs={12} md={12} lg={12}>
                 <FormInputDropdown
                     key={"role"}
