@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Grid, ListItemAvatar, TextField } from "@mui/material";
+import { Grid, ListItemAvatar, ListItemSecondaryAction, TextField } from "@mui/material";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Icon from "@mui/material/Icon";
@@ -19,17 +19,19 @@ const goalList = [
 
 const Goals = () => {
     const methods = useForm();
-
     const [goals, setGoals] = useState(goalList);
 
     const onFormSubmit = (data) => {
-        console.log(data);
+        setGoals((prevState) => [...prevState, { label: data.goal, value: data.goal }]);
+        methods.reset({});
+    };
 
-        // setGoals((prevState) => {[...prevState], { value: data, label: data };});
+    const onDelete = (data) => {
+        setGoals((prevState) => prevState.filter(r => r.label !== data.label));
     };
 
     return (
-        <Box display={"flex"} justifyContent={"center"} p={5}>
+        <Box display={"flex"} justifyContent={"center"} px={10} py={5}>
             <Grid container justifyContent={"center"} spacing={2}>
                 <Grid item xs={12} md={6}>
                     <List>
@@ -40,12 +42,11 @@ const Goals = () => {
                                 secondaryAction={
                                     <>
                                         <Tooltip placement={"top"} title={"Delete"} arrow={false}>
-                                            <IconButton edge="end" aria-label="delete">
+                                            <IconButton edge="end" aria-label="delete" onClick={() => onDelete(item)}>
                                                 <Icon color={"error"}>delete</Icon>
                                             </IconButton>
                                         </Tooltip>
                                     </>
-
                                 }
                             >
                                 <ListItemAvatar>
@@ -57,20 +58,15 @@ const Goals = () => {
                                     secondary={item.label}
                                 />
                             </ListItem>)}
+                        <FormProvider {...methods} >
+                            <form onSubmit={methods.handleSubmit(onFormSubmit)} noValidate>
+                                <GoalForm/>
+                            </form>
+
+                        </FormProvider>
                     </List>
-                    {/*<Box sx={{ p:5 }}>*/}
-                    <FormProvider {...methods}>
-
-                        <form onSubmit={methods.handleSubmit(onFormSubmit)} noValidate>
-                            <GoalForm />
-                        </form>
-                    </FormProvider>
-                    {/*</Box>*/}
-
                 </Grid>
-
             </Grid>
-
         </Box>
     );
 };

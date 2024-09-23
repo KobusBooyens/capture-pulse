@@ -15,15 +15,14 @@ const Subscription = () => {
     };
 
     return (
-
         <FormProvider {...methods}>
-            <Box display={"flex"} justifyContent={"center"} flexDirection={"column"} p={5}>
+            <Box display={"flex"} justifyContent={"center"} flexDirection={"column"} px={10} py={5}>
                 <form onSubmit={methods.handleSubmit(onFormSubmit)} noValidate>
                     <SubscriptionForm onCancel={onCancel} />
                 </form>
             </Box>
         </FormProvider>
-
     );
 };
+
 export default Subscription;
