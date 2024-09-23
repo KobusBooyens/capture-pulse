@@ -1,0 +1,18 @@
+meta {
+  name: updateSubscription
+  type: http
+  seq: 5
+}
+
+patch {
+  url: {{url}}/subscription
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name" : "The Fitness Co. updated",
+    "currency": "ZAR"
+  }
+}

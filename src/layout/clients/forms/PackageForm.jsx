@@ -3,7 +3,7 @@ import { Accordion, AccordionDetails, AccordionSummary, Grid } from "@mui/materi
 import FormInputDropdown from "../../../components/Input/FormInputDropdown/FormInputDropdown.jsx";
 import FormInputText from "../../../components/Input/FormInputText/FormInputText.jsx";
 import FormInputDate from "../../../components/Input/FormInputDate/FormInputDate.jsx";
-import usePackages from "../../../api/packages/usePackages.jsx";
+import { usePackages } from "../../../api/packages/usePackageFetch.js";
 import { useFormContext } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import PersonalForm from "./PersonalForm.jsx";

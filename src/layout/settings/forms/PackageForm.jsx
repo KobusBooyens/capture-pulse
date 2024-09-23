@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, ListItemAvatar } from "@mui/material";
+import { CircularProgress, Grid, ListItemAvatar } from "@mui/material";
 import FormInputText from "../../../components/Input/FormInputText/FormInputText.jsx";
 import ListItem from "@mui/material/ListItem";
 import Tooltip from "@mui/material/Tooltip";
@@ -8,18 +8,21 @@ import Icon from "@mui/material/Icon";
 import Avatar from "@mui/material/Avatar";
 import ListItemText from "@mui/material/ListItemText";
 
-const PackageForm = () => {
+const PackageForm = ({ isAdding }) => {
     return (
         <ListItem
             key={"add"}
             sx={{ p: 1 }}
             secondaryAction={
                 <>
-                    <Tooltip placement={"top"} title={"Add"} arrow={false}>
-                        <IconButton edge="end" aria-label="add" type={"submit"}>
-                            <Icon color={"success"}>add</Icon>
-                        </IconButton>
-                    </Tooltip>
+                    {isAdding ?
+                        <CircularProgress color={"success"} size={30}/> :
+                        <Tooltip placement={"top"} title={"Add"} arrow={false}>
+                            <IconButton edge="end" aria-label="add" type={"submit"}>
+                                <Icon color={"success"}>add</Icon>
+                            </IconButton>
+                        </Tooltip>
+                    }
                 </>
             }
         >
@@ -37,6 +40,7 @@ const PackageForm = () => {
                             name={"name"}
                             label="Package Name"
                             placeholder="Enter Package Name"
+                            disabled={isAdding}
                             required
                             rules={{ required: "Package Name is required" }}
                         />
@@ -49,12 +53,12 @@ const PackageForm = () => {
                             label="Amount"
                             type={"number"}
                             placeholder="Enter Amount"
+                            disabled={isAdding}
                             required
                             rules={{ required: "Amount is required" }}
                         />
                     </Grid>
                 </Grid>
-
             </ListItemText>
         </ListItem>
 

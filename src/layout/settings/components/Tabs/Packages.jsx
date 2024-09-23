@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Grid, ListItemAvatar } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { CircularProgress, Grid, ListItemAvatar, Skeleton } from "@mui/material";
 import Box from "../../../../components/Box/Box.jsx";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -9,29 +9,96 @@ import Icon from "@mui/material/Icon";
 import Avatar from "@mui/material/Avatar";
 import ListItemText from "@mui/material/ListItemText";
 import { FormProvider, useForm } from "react-hook-form";
-import GoalForm from "../../forms/GoalForm.jsx";
 import PackageForm from "../../forms/PackageForm.jsx";
-
-const subscriptionList = [
-    { name: "1 Month", amount: "900" },
-    { name: "3 Months", amount: "800" },
-    { name: "6 Months", amount: "1200" },
-    { name: "Couples", amount: "1500" },
-];
+import { usePackages } from "../../../../api/packages/usePackageFetch.js";
+import { useCreatePackage, useDeletePackage } from "../../../../api/packages/usePackageMutation.js";
 
 const Packages = () => {
-
-    const [subscriptions, setSubscription ] = useState(subscriptionList);
+    const packages = usePackages();
+    const createPackage = useCreatePackage();
+    const deletePackage = useDeletePackage();
+    const [deletingId, setDeletingId] = useState(null);
 
     const methods = useForm();
 
+    useEffect(() => {
+        methods.reset({ ...packages.data });
+    },[packages.data]);
+
     const onFormSubmit = (data) => {
-        setSubscription((prevState) => [...prevState, { name: data.name, amount: data.amount }]);
-        methods.reset({});
+        createPackage.mutate({ name: data.name, amount: parseInt(data.amount) });
     };
 
     const onDelete = (data) => {
-        setSubscription((prevState) => prevState.filter(r => r.name !== data.name));
+        setDeletingId(data._id);
+        deletePackage.mutate({ id: data._id }, {
+            onSettled: () => {
+                setDeletingId(null);
+            }
+        });
+    };
+
+    const SkeletonView = () => {
+        return (
+            Array.from(new Array(5)).map((_, index) => 
+                <ListItem key={index} sx={{ p: 1 }}>
+                    <ListItemAvatar>
+                        <Skeleton variant="circular" width={40} height={40} />
+                    </ListItemAvatar>
+                    <Grid container spacing={3}>
+                        <Grid item xs={6} md={6} lg={6}>
+                            <Skeleton variant="text" width="80%" />
+                        </Grid>
+                        <Grid item xs={6} md={6} lg={6}>
+                            <Skeleton variant="text" width="60%" />
+                        </Grid>
+                    </Grid>
+                    <Skeleton variant="rectangular" width={30} height={30} />
+                </ListItem>
+            )
+        );
+    };
+
+    const DataView = ({ data }) => {
+        return (
+            <>
+                {data.map((item) =>
+                    <ListItem
+                        key={item.name}
+                        sx={{ p: 1 }}
+                        secondaryAction={
+                            <>
+                                {deletingId === item._id ?
+                                    <CircularProgress color={"error"} size={30} />
+                                    :
+                                    <Tooltip placement={"top"} title={"Delete"} arrow={false}>
+                                        <IconButton edge="end"
+                                            aria-label="delete"
+                                            onClick={() => onDelete(item)}>
+                                            <Icon color={"error"}>delete</Icon>
+                                        </IconButton>
+                                    </Tooltip>
+                                }
+                            </>
+                        }
+                    >
+                        <ListItemAvatar>
+                            <Avatar>
+                                <Icon>inventory_2</Icon>
+                            </Avatar>
+                        </ListItemAvatar>
+                        <Grid container spacing={3}>
+                            <Grid item xs={6} md={6} lg={6}>
+                                <ListItemText secondary={item.name} />
+                            </Grid>
+                            <Grid item xs={6} md={6} lg={6}>
+                                <ListItemText secondary={item.amount} />
+                            </Grid>
+                        </Grid>
+                    </ListItem>)}
+            </>
+
+        );
     };
 
     return (
@@ -39,39 +106,16 @@ const Packages = () => {
             <Grid container justifyContent={"center"} spacing={2}>
                 <Grid item xs={12} md={6}>
                     <List>
-                        {subscriptions.map((item) =>
-                            <ListItem
-                                key={item.name}
-                                sx={{ p: 1 }}
-                                secondaryAction={
-                                    <>
-                                        <Tooltip placement={"top"} title={"Delete"} arrow={false}>
-                                            <IconButton edge="end" aria-label="delete" onClick={() => onDelete(item)}>
-                                                <Icon color={"error"}>delete</Icon>
-                                            </IconButton>
-                                        </Tooltip>
-                                    </>
-                                }
-                            >
-                                <ListItemAvatar>
-                                    <Avatar>
-                                        <Icon>inventory_2</Icon>
-                                    </Avatar>
-                                </ListItemAvatar>
-                                <Grid container spacing={3}>
-                                    <Grid item xs={6} md={6} lg={6}>
-                                        <ListItemText secondary={item.name} />
-                                    </Grid>
-                                    <Grid item xs={6} md={6} lg={6}>
-                                        <ListItemText secondary={item.amount} />
-                                    </Grid>
-                                </Grid>
-
-                            </ListItem>)}
+                        {packages.isLoading ?
+                            <SkeletonView/> :
+                            <DataView data={packages.data}/>
+                        }
 
                         <FormProvider {...methods} >
                             <form onSubmit={methods.handleSubmit(onFormSubmit)} noValidate>
-                                <PackageForm/>
+                                <PackageForm
+                                    isAdding={createPackage.isPending}
+                                />
                             </form>
 
                         </FormProvider>

@@ -1,4 +1,5 @@
-const packageController = require("../controllers/packages.controller");
+const controller = require("../controllers/packages.controller");
+const { verifyToken } = require("../middleware/authJwt");
 
 module.exports = function (app) {
     app.use(function (req, res, next) {
@@ -6,9 +7,9 @@ module.exports = function (app) {
         next();
     });
 
-    app.get("/api/packages", packageController.getAll);
-    app.get("/api/packages/:id", packageController.get);
-    app.post("/api/packages", packageController.create);
-    app.patch("/api/packages/:id", packageController.edit);
-    app.delete("/api/packages/:id", packageController.deleteItem);
+    app.get("/api/packages", verifyToken, controller.getAllPackages);
+    app.get("/api/package/:id", verifyToken, controller.getPackage);
+    app.post("/api/package", verifyToken, controller.createPackage);
+    app.patch("/api/package/:id", verifyToken, controller.updatePackage);
+    app.delete("/api/package/:id", verifyToken, controller.deletePackage);
 };

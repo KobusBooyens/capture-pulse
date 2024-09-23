@@ -10,6 +10,11 @@ const schema = new mongoose.Schema(
         amount: {
             type: String,
             required: true
+        },
+        subscription: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Subscriptions",
+            required: true
         }
     }, {
         collection: "packages",
