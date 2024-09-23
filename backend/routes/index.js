@@ -1,6 +1,7 @@
 
 const routes = (app) => {
     require("./subscription.routes")(app);
+    require("./goals.routes")(app);
     require("./user.routes")(app);
     require("./auth.routes")(app);
     require("./billing.routes")(app);

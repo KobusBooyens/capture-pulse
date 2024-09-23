@@ -6,10 +6,17 @@ meta {
 
 patch {
   url: {{url}}/package/:id
-  body: none
+  body: json
   auth: none
 }
 
 params:path {
-  id: 
+  id: 66f1c24f8d142d369106e736
+}
+
+body:json {
+  {
+    "name": "Month to Month Updated",
+    "amount": 950
+  }
 }

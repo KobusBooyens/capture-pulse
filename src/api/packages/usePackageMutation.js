@@ -1,7 +1,6 @@
 import { apiClient } from "../api-client.js";
 import useCustomMutation from "../_shared/useCustomMutation.js";
 import queryKeys from "./useQueryKeys.js";
-import checkinQueryKeys from "./useQueryKeys.js";
 
 /**Functions**/
 const createCheckinFn = async (data) => {
@@ -38,7 +37,7 @@ const useCreatePackage = () => {
 };
 
 const useDeletePackage = () => {
-    return useCustomMutation(deleteFn, checkinQueryKeys.all, {
+    return useCustomMutation(deleteFn, queryKeys.all, {
         success: {
             title: "Success!",
             content: "Record has been deleted!",
@@ -53,7 +52,7 @@ const useDeletePackage = () => {
 };
 
 const useUpdatePackage = () => {
-    return useCustomMutation(updateFn, checkinQueryKeys.all, {
+    return useCustomMutation(updateFn, queryKeys.all, {
         success: {
             title: "Success!",
             content: "Nice! Package was successfully updated!",
