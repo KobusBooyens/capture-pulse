@@ -3,12 +3,37 @@ const validateAndRespond = require("../utils/zodValidation");
 const SubscriptionService = require("../services/subscription.service");
 
 const schema = z.object({
-    name: z.string({ required_error: "name is required" })
+    name: z.string({ required_error: "name is required" }),
+    currency: z.string().optional(),
 });
 
 const getAllSubscriptions = async (req, res) => {
     try {
         const response = await SubscriptionService.getAllSubscription();
+        res.status(200).send(response);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send({ message: "Internal Server Error", error: err });
+    }
+};
+
+const getSubscription = async (req, res) => {
+    try {
+        const response = await SubscriptionService.getSubscription(req.subscriptionId);
+        res.status(200).send(response);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send({ message: "Internal Server Error", error: err });
+    }
+};
+
+const updateSubscription = async (req, res) => {
+    try {
+        const { payload, error } = validateAndRespond(schema, req.body);
+        if (error) {
+            return res.status(400).json({ message: "Validation failed.", errors: error });
+        }
+        const response = await SubscriptionService.updateSubscription(req.subscriptionId, payload);
         res.status(200).send(response);
     } catch (err) {
         console.error(err);
@@ -40,4 +65,10 @@ const verifySubscription = async (req, res) => {
     }
 };
 
-module.exports = { createSubscription, verifySubscription, getAllSubscriptions };
+module.exports = {
+    createSubscription,
+    verifySubscription,
+    getAllSubscriptions,
+    getSubscription,
+    updateSubscription
+};

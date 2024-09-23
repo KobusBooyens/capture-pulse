@@ -9,7 +9,7 @@ import Button from "../../../components/Button/Button.jsx";
 import Divider from "@mui/material/Divider";
 import { Link } from "react-router-dom";
 import SignUpLayout from "../layouts/SignUpLayout.jsx";
-import useVerifySubscription from "../../../api/subscriptions/useVerifySubscription.js";
+import { useVerifySubscription } from "../../../api/subscriptions/useSubscriptionMutate.js";
 import { useCreateUser } from "../../../api/users/useCreateUser.js";
 
 const SignUpMain = () => {

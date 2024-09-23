@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid } from "@mui/material";
+import { CircularProgress, Grid, Skeleton } from "@mui/material";
 import FormInputText from "../../../components/Input/FormInputText/FormInputText.jsx";
 import FormInputDropdown from "../../../components/Input/FormInputDropdown/FormInputDropdown.jsx";
 import Box from "../../../components/Box/Box.jsx";
@@ -8,15 +8,27 @@ import currencies from "../../../data/currencyOptions.js";
 
 const currencyOptions = currencies.map(c => ({ value: c.code, label: `${c.code} - ${c.name}` }));
 
-const SubscriptionForm = ({ onCancel }) => {
-
+const SkeletonView = () => {
     return (
-        <Grid container spacing={3}>
+        <>
+            <Grid item xs={12} md={12} lg={6}>
+                <Skeleton variant="rectangular" height={60} animation={"wave"} />
+            </Grid>
+            <Grid item xs={12} md={12} lg={6}>
+                <Skeleton variant="rectangular" height={60} animation={"wave"}/>
+            </Grid>
+        </>
+    );
+};
+
+const FormView = () => {
+    return (
+        <>
             <Grid item xs={12} md={12} lg={6}>
                 <FormInputText
                     variant={"standard"}
-                    key={"subscriptionName"}
-                    name={"subscriptionName"}
+                    key={"name"}
+                    name={"name"}
                     label="Subscription Name"
                     placeholder="Enter Subscription Name"
                     required
@@ -30,32 +42,41 @@ const SubscriptionForm = ({ onCancel }) => {
                     name="currency"
                     label={"Currency"}
                     placeholder={"Select Currency"}
-
                     options={currencyOptions}
                     required
                     rules={{ required: "Currency is required" }}
                 />
-
             </Grid>
+        </>
+    );
+};
+
+const SubscriptionForm = ({ isUpdating, isFetching, onCancel }) => {
+
+    return (
+        <Grid container spacing={3}>
+            {isFetching ? <SkeletonView/> : <FormView/>}
 
             <Box display="flex" justifyContent="end" marginTop={2} width="100%" mb={2}>
-                {/*{isLoading && <CircularProgress/>}*/}
-                {/*{!isLoading &&*/}
+                {isUpdating && <CircularProgress/>}
+                {!isUpdating &&
                 <>
                     <Button onClick={onCancel}
                         color="secondary"
                         type={"button"}
+                        disabled={isFetching}
                         sx={{ mx: 1 }}>
                 Cancel
                     </Button>
                     <Button
                         color="primary"
                         type={"submit"}
+                        disabled={isFetching}
                         sx={{ mx: 1 }}>
                 Update
                     </Button>
                 </>
-                {/*}*/}
+                }
             </Box>
         </Grid>
     );

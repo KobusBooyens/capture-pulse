@@ -6,7 +6,6 @@ import Packages from "../components/Tabs/Packages.jsx";
 import Goals from "../components/Tabs/Goals.jsx";
 
 const ViewSettingsPage = () => {
-
     const menuItems = [
         { tab: 0, label: "Subscription", icon: "assignment_id" },
         { tab: 1, label: "Packages", icon: "inventory_2" },

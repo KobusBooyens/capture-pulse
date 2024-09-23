@@ -1,4 +1,5 @@
 const controller = require("../controllers/subscription.controller");
+const { verifyToken } = require("../middleware/authJwt");
 
 module.exports = function (app) {
     app.use(function(req, res, next) {
@@ -6,7 +7,11 @@ module.exports = function (app) {
         next();
     });
 
-    app.get("/api/subscriptions", controller.getAllSubscriptions);
-    app.get("/api/subscription/:id", controller.verifySubscription);
-    app.post("/api/subscription", controller.createSubscription);
+    app.get("/api/subscriptions", verifyToken, controller.getAllSubscriptions);
+    app.get("/api/subscription", verifyToken, controller.getSubscription);
+    app.get("/api/subscription/verify/:id", verifyToken, controller.verifySubscription);
+
+    app.post("/api/subscription", verifyToken, controller.createSubscription);
+    app.patch("/api/subscription", verifyToken, controller.updateSubscription);
+
 };

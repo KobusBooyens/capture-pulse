@@ -3,6 +3,7 @@ import { setMiniSidenav, useUISettingsController } from "../../context/UISetting
 import { Outlet, useLocation } from "react-router-dom";
 import brandDark from "../../assets/images/logo-dark.png";
 import brandWhite from "../../assets/images/logo.png";
+import logo from "../../assets/images/logo-capture_pulse.png";
 import { ThemeProvider } from "@mui/material/styles";
 import themeDark from "../../assets/theme-dark/index.js";
 import theme from "../../assets/theme/index.js";
@@ -13,6 +14,7 @@ import DashboardNavbar from "../../controls/Navbars/DashboardNavbar/DashboardNav
 import DashboardLayout from "../../controls/LayoutContainers/DashboardLayout.jsx";
 import Footer from "../../controls/Footer/Footer.jsx";
 import { SnackbarProvider } from "../../context/SnackbarProvider.jsx";
+import { useAuth } from "../../context/AuthProvider.jsx";
 
 const AppLayout = () => {
     const [controller, dispatch] = useUISettingsController();
@@ -26,6 +28,7 @@ const AppLayout = () => {
     } = controller;
     const [onMouseEnter, setOnMouseEnter] = useState(false);
     const { pathname } = useLocation();
+    const { currentUser } = useAuth();
     const handleOnMouseEnter = () => {
         if (miniSidenav && !onMouseEnter) {
             setMiniSidenav(dispatch, false);
@@ -58,7 +61,7 @@ const AppLayout = () => {
                             <Sidenav
                                 color={sidenavColor}
                                 brand={brand}
-                                brandName={"Capture Pulse"}
+                                brandName={currentUser.subscription.name ?? "Capture Pulse"}
                                 routes={menuItems}
                                 onMouseEnter={handleOnMouseEnter}
                                 onMouseLeave={handleOnMouseLeave}

@@ -116,10 +116,10 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
                         <Icon sx={{ fontWeight: "bold" }}>close</Icon>
                     </Typography>
                 </Box>
-                <Box component={NavLink} to="/" display="flex" alignItems="center">
+                <Box component={NavLink} to="/" display="flex" alignItems="center" gap={1}>
                     {brand && <Box component="img" src={brand} alt="Brand" width="2rem" />}
                     <Box
-                        width={!brandName && "100%"}
+                        // width={!brandName && "100%"}
                         sx={(theme) => sidenavLogoLabel(theme, { miniSidenav })}
                     >
                         <Typography component="h6" variant="button" fontWeight="medium" color={textColor}>

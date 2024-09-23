@@ -18,6 +18,14 @@ exports.getAllSubscription = async () => {
     return db.Subscriptions.find({});
 };
 
+exports.getSubscription = async (id) => {
+    return db.Subscriptions.findOne({ _id: id });
+};
+
+exports.updateSubscription = async (id, payload) => {
+    return db.Subscriptions.findOneAndUpdate({ _id: id }, { $set: { ...payload } });
+};
+
 exports.verifySubscription = async (subscriptionId) => {
     console.log("subscriptionId", subscriptionId);
     if (!ObjectId.isValid(subscriptionId)) {
@@ -71,8 +79,6 @@ exports.addUserToSubscription = async (subscriptionId, activateSubscription = fa
     if (activateSubscription) {
         updateQuery.active = true;
     }
-
-    console.log("updateQuery", updateQuery);
 
     const response = await db.Subscriptions.findOneAndUpdate(
         { _id: subscriptionId },
