@@ -1,11 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
 import FormInputText from "../../../components/Input/FormInputText/FormInputText.jsx";
 import FormInputDropdown from "../../../components/Input/FormInputDropdown/FormInputDropdown.jsx";
-import goalsOptions from "../../../data/goalsOptions.js";
 import PropTypes from "prop-types";
+import { useGoals } from "../../../api/goals/useGoalFetch.js";
 
 const AboutYouForm = ({ addPartner }) => {
+    const goals = useGoals();
+
+    const [goalOptions, setGoalOptions] = useState([]);
+
+    useEffect(() => {
+        if (goals.data) {
+            setGoalOptions(goals?.data.map(g => ({ label: g.name, value: g.name })));
+        }
+
+    }, [goals.data]);
+
     return (
         <Grid container spacing={3}>
             <Grid item xs={12} md={6}>
@@ -45,9 +56,10 @@ const AboutYouForm = ({ addPartner }) => {
             <Grid item xs={12} md={6}>
                 <FormInputDropdown
                     name={addPartner ? "partnerGoal" : "goal"}
-                    label={"Goal"}
-                    placeholder={"Purpose of the program"}
-                    options={goalsOptions}
+                    label={goals.isPending ? "Loading goals..." : "Goal"}
+                    placeholder={"Select a goal"}
+                    disabled={goals.isPending}
+                    options={goalOptions}
                     required
                     rules={{ required: "Goal is required" }}
                 />

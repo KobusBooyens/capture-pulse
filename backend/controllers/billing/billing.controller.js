@@ -18,14 +18,14 @@ const basicSchema = z.object({
     sortDirection: z.string().optional(),
 });
 
-const getAll = async (req, res) => {
+const getAllBilling = async (req, res) => {
     try {
         const { payload, error } = validateAndRespond(basicSchema, req.query);
         if (error) {
             return res.status(400).json({ message: "Validation failed.", errors: error });
         }
 
-        const response = await BillingService.getAll(payload);
+        const response = await BillingService.getAllBilling(req.subscriptionId, payload);
 
         res.status(200).json(response);
     } catch (err) {
@@ -34,14 +34,14 @@ const getAll = async (req, res) => {
     }
 };
 
-const get = async (req, res) => {
+const getBilling = async (req, res) => {
     try {
         const { payload, error } = validateAndRespond(basicSchema, req.query);
         if (error) {
             return res.status(400).json({ message: "Validation failed.", errors: error });
         }
 
-        const response = await BillingService.get(req.params.id, payload);
+        const response = await BillingService.getBilling(req.params.id, payload);
 
         res.status(200).json(response);
     } catch (err) {
@@ -50,14 +50,14 @@ const get = async (req, res) => {
     }
 };
 
-const create = async (req, res) => {
+const createBilling = async (req, res) => {
     try {
         const { payload, error } = validateAndRespond(schema, req.body);
         if (error) {
             return res.status(400).json({ message: "Validation failed.", errors: error });
         }
 
-        const response = await BillingService.create(payload);
+        const response = await BillingService.createBilling(payload);
 
         res.status(201).json(response);
     } catch (err) {
@@ -66,13 +66,13 @@ const create = async (req, res) => {
     }
 };
 
-const edit = async (req, res) => {
+const updateBilling = async (req, res) => {
     try {
         const { payload, error } = validateAndRespond(schema, req.body);
         if (error) {
             return res.status(400).json({ message: "Validation failed.", errors: error });
         }
-        const response = await BillingService.edit(req.params.id, payload);
+        const response = await BillingService.updateBilling(req.params.id, payload);
         // const data = await db.Billing.updateOne({ _id: req.params.id },
         //     { ...payload });
         // if (!data) {
@@ -85,7 +85,7 @@ const edit = async (req, res) => {
     }
 };
 
-const deleteItem = async (req, res) => {
+const deleteBilling = async (req, res) => {
     try {
         const data = await db.Billing.delete({ _id: req.params.id });
         if (!data) {
@@ -98,4 +98,4 @@ const deleteItem = async (req, res) => {
     }
 };
 
-module.exports = { getAll, get, create, edit, deleteItem };
+module.exports = { getAllBilling, getBilling, createBilling, updateBilling, deleteBilling };

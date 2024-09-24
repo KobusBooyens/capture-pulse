@@ -1,4 +1,5 @@
-const generalCheckinsController = require("../../controllers/checkins/generalCheckins.controller");
+const controller = require("../../controllers/checkins/generalCheckins.controller");
+const { verifyToken } = require("../../middleware/authJwt");
 
 module.exports = function (app) {
     app.use(function (req, res, next) {
@@ -7,9 +8,9 @@ module.exports = function (app) {
         next();
     });
 
-    app.get("/api/checkins/general", generalCheckinsController.getAll);
-    app.get("/api/checkins/general/:clientId", generalCheckinsController.get);
-    app.post("/api/checkins/general/", generalCheckinsController.create);
-    app.patch("/api/checkins/general/:id", generalCheckinsController.edit);
-    app.delete("/api/checkins/general/:id", generalCheckinsController.deleteItem);
+    app.get("/api/checkins/general", verifyToken, controller.getAllGeneralCheckins);
+    app.get("/api/checkins/general/:clientId", verifyToken, controller.getGeneralCheckin);
+    app.post("/api/checkins/general/", verifyToken, controller.createGeneralCheckin);
+    app.patch("/api/checkins/general/:id", verifyToken, controller.updateGeneralCheckin);
+    app.delete("/api/checkins/general/:id", verifyToken, controller.deleteGeneralCheckin);
 };

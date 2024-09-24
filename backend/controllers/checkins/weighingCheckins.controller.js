@@ -17,14 +17,14 @@ const basicSchema = z.object({
     sortDirection: z.string().optional(),
 });
 
-const getAll = async (req, res) => {
+const getAllWeighingCheckins = async (req, res) => {
     try {
         const { payload, error } = validateAndRespond(basicSchema, req.query);
         if (error) {
             return res.status(400).json({ message: "Validation failed.", errors: error });
         }
 
-        const response = await CheckinService.getAll(payload);
+        const response = await CheckinService.getAllWeighingCheckins(req.subscriptionId, payload);
 
         return res.status(200).send(response);
     } catch (err) {
@@ -33,14 +33,14 @@ const getAll = async (req, res) => {
     }
 };
 
-const get = async (req, res) => {
+const getWeighingCheckin = async (req, res) => {
     try {
         const { payload, error } = validateAndRespond(basicSchema, req.query);
         if (error) {
             return res.status(400).send({ message: "Validation failed.", errors: error });
         }
 
-        const data = await CheckinService.get(req.params.clientId, payload);
+        const data = await CheckinService.getWeighingCheckin(req.params.clientId, payload);
 
         res.status(200).send(data);
     } catch (err) {
@@ -49,14 +49,14 @@ const get = async (req, res) => {
     }
 };
 
-const create = async (req, res) => {
+const createWeighingCheckin = async (req, res) => {
     try {
         const { payload, error } = validateAndRespond(schema, req.body);
         if (error) {
             return res.status(400).json({ message: "Validation failed.", errors: error });
         }
 
-        const response = CheckinService.create(payload);
+        const response = CheckinService.createWeighingCheckin(payload);
         res.status(201).json(response);
     } catch (err) {
         console.error(err);
@@ -64,13 +64,13 @@ const create = async (req, res) => {
     }
 };
 
-const edit = async (req, res) => {
+const updateWeighingCheckin = async (req, res) => {
     try {
         const { payload, error } = validateAndRespond(schema, req.body);
         if (error) {
             return res.status(400).json({ message: "Validation failed.", errors: error });
         }
-        const response = await CheckinService.edit(req.params.id, payload);
+        const response = await CheckinService.updateWeighingCheckin(req.params.id, payload);
         res.status(200).send(response);
     } catch (err) {
         console.error(err);
@@ -78,7 +78,7 @@ const edit = async (req, res) => {
     }
 };
 
-const deleteItem = async (req, res) => {
+const deleteWeighingCheckin = async (req, res) => {
     try {
         await CheckinService.deleteItem(req.params.id);
         res.status(200).send("Weighing Checkin deleted");
@@ -89,9 +89,9 @@ const deleteItem = async (req, res) => {
 };
 
 module.exports = {
-    getAll,
-    get,
-    create,
-    edit,
-    deleteItem,
+    getAllWeighingCheckins,
+    getWeighingCheckin,
+    createWeighingCheckin,
+    updateWeighingCheckin,
+    deleteWeighingCheckin,
 };

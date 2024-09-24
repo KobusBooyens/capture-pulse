@@ -1,4 +1,5 @@
-const weighingCheckinsController = require("../../controllers/checkins/weighingCheckins.controller");
+const controller = require("../../controllers/checkins/weighingCheckins.controller");
+const { verifyToken } = require("../../middleware/authJwt");
 
 module.exports = function (app) {
     app.use(function (req, res, next) {
@@ -7,9 +8,9 @@ module.exports = function (app) {
         next();
     });
 
-    app.get("/api/checkins/weighing", weighingCheckinsController.getAll);
-    app.get("/api/checkins/weighing/:clientId", weighingCheckinsController.get);
-    app.post("/api/checkins/weighing/", weighingCheckinsController.create);
-    app.patch("/api/checkins/weighing/:id", weighingCheckinsController.edit);
-    app.delete("/api/checkins/weighing/:id", weighingCheckinsController.deleteItem);
+    app.get("/api/checkins/weighing", verifyToken, controller.getAllWeighingCheckins);
+    app.get("/api/checkins/weighing/:clientId", verifyToken, controller.getWeighingCheckin);
+    app.post("/api/checkins/weighing/", verifyToken, controller.createWeighingCheckin);
+    app.patch("/api/checkins/weighing/:id", verifyToken, controller.updateWeighingCheckin);
+    app.delete("/api/checkins/weighing/:id", verifyToken, controller.deleteWeighingCheckin);
 };

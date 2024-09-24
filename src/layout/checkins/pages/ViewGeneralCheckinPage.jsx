@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 import AddEditCheckin from "../dialogs/AddEditCheckin.jsx";
 import AddEditGeneralCheckinForm from "../forms/AddEditGeneralCheckinForm.jsx";
 import { FormProvider, useForm } from "react-hook-form";
-import useCreateCheckinMutation from "../../../api/checkins/useCreateCheckinMutation.js";
+import { useCreateCheckin } from "../../../api/checkins/useCreateCheckinMutation.js";
 import DataTableGrid from "../../../controls/Tables/DataTableGrid/DataTableGrid.jsx";
 import dayjs from "dayjs";
 
@@ -21,7 +21,7 @@ const ViewGeneralCheckinPage = ({
     onSortModelChange
 }) => {
     const { columns, rows, isAdding, setIsAdding } = useGeneralCheckinData(data?.records);
-    const createCheckin = useCreateCheckinMutation();
+    const createCheckin = useCreateCheckin();
     const methods = useForm();
 
     const handleCloseDialog = useCallback(() => {

@@ -37,6 +37,9 @@ const schema = new mongoose.Schema(
         },
         lastLoggedIn: {
             type: Date
+        },
+        role: {
+            type: String
         }
     }, {
         collection: "users",

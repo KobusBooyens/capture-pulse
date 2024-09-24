@@ -43,6 +43,11 @@ const schema = new mongoose.Schema(
             type: String,
             required: true
         },
+        subscription: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Subscriptions",
+            required: true
+        },
         clientPackage: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "ClientPackage",

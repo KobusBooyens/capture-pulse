@@ -6,6 +6,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import Box from "../../../components/Box/Box.jsx";
 import Button from "../../../components/Button/Button.jsx";
 import FormInputDropdown from "../../../components/Input/FormInputDropdown/FormInputDropdown.jsx";
+import PropTypes from "prop-types";
 
 const UserForm = ({ onCancel, isLoading, adding }) => {
     const [showPassword, setShowPassword] = React.useState(false);
@@ -122,4 +123,11 @@ const UserForm = ({ onCancel, isLoading, adding }) => {
         </Grid>
     );
 };
+
+UserForm.prototype = {
+    onCancel: PropTypes.func,
+    isLoading: PropTypes.bool,
+    adding: PropTypes.bool,
+};
+
 export default UserForm;

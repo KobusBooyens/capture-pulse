@@ -1,13 +1,12 @@
 const db = require("../models");
 const { formatClientResponse, formatClientBillingResponse } = require("../controllers/utils");
-const { ObjectId } = require("mongodb");
-const { clientNotesLookup, clientPackageLookup, packageLookup } = require("./pipelineHelpers/_lookupExtensions");
+const { clientPackageLookup, packageLookup } = require("./pipelineHelpers/_lookupExtensions");
 
-exports.getAll = async (payload) => {
+exports.getAllBilling = async (subscriptionId, payload) => {
     const pageSize = payload.pageSize ? Number(payload.pageSize) : 10;
     const page = payload.page ? Number(payload.page) : 1;
 
-    let queryFilter = {};
+    let queryFilter = { subscription: subscriptionId };
 
     if (payload.searchText) {
         queryFilter["$or"] = [
@@ -48,7 +47,7 @@ exports.getAll = async (payload) => {
     };
 };
 
-exports.get = async (clientId, payload) => {
+exports.getBilling = async (clientId, payload) => {
     const pageSize = payload.pageSize ? Number(payload.pageSize) : 10;
     const page = payload.page ? Number(payload.page) : 1;
 
@@ -91,7 +90,7 @@ exports.get = async (clientId, payload) => {
     };
 };
 
-exports.create = async (payload) => {
+exports.createBilling = async (payload) => {
     const handleBillingRecord = async (item) => {
         const newBilling = new db.Billing(item);
         const savedBilling = await newBilling.save();
@@ -111,7 +110,7 @@ exports.create = async (payload) => {
     return await handleBillingRecord(payload);
 };
 
-exports.edit = async (id, payload) => {
+exports.updateBilling = async (id, payload) => {
     const updateLatestPaidDate = async (originalBilling) => {
         if (payload.date && new Date(payload.date).getTime() !== originalBilling.date.getTime()) {
             const latestBilling = await db.Billing

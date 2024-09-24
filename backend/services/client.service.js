@@ -4,11 +4,11 @@ const { startSession } = require("mongoose");
 const { clientNotesLookup, clientPackageLookup, packageLookup } = require("./pipelineHelpers/_lookupExtensions");
 const { ObjectId } = require("mongodb");
 
-exports.getAll = async (payload) => {
+exports.getAllClients = async (subscriptionId, payload) => {
     const pageSize = payload.pageSize ? Number(payload.pageSize) : 10;
     const page = payload.page ? Number(payload.page) : 1;
 
-    let queryFilter = {};
+    let queryFilter = { subscription: subscriptionId };
 
     if (payload.searchText) {
         queryFilter["$or"] = [
@@ -49,7 +49,7 @@ exports.getAll = async (payload) => {
     };
 };
 
-exports.get = async (id) => {
+exports.getClient = async (id) => {
     const aggregationPipeline = [
         { $match: { _id: new ObjectId(id) } },
         { ...clientPackageLookup },
@@ -60,7 +60,7 @@ exports.get = async (id) => {
     return await formatClientResponse(data);
 };
 
-exports.create = async(payload) => {
+exports.createClient = async(subscriptionId, payload) => {
     const session = await startSession();
     session.startTransaction();
     try {
@@ -73,7 +73,11 @@ exports.create = async(payload) => {
 
         const saveClients = (item) => {
             const bulkOps = [];
-            const clientData = { ...item, clientPackage };
+            const clientData = {
+                ...item,
+                subscription: subscriptionId,
+                clientPackage
+            };
             delete clientData.partner;
             bulkOps.push({ insertOne: { document: clientData } });
 
@@ -82,8 +86,10 @@ exports.create = async(payload) => {
                     document: {
                         ...item.partner,
                         clientPackage,
-                        joiningDate: item.joiningDate } }
-                });
+                        joiningDate: item.joiningDate,
+                        subscription: subscriptionId
+                    }
+                } });
             }
             return bulkOps;
         };
@@ -114,7 +120,7 @@ exports.createClientNote = async (payload) => {
     return clientNote.save();
 };
 
-exports.edit = async(id, payload) => {
+exports.updateClient = async(id, payload) => {
     const session = await startSession();
     session.startTransaction();
 
@@ -148,7 +154,7 @@ exports.edit = async(id, payload) => {
     }
 };
 
-exports.deleteItem = async (id) => {
+exports.deleteClient = async (id) => {
     return await db.Client.delete({ _id: id });
 };
 

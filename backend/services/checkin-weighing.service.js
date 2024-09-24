@@ -3,11 +3,11 @@ const { formatResponse } = require("../controllers/checkins/_shared");
 const { formatClientResponse } = require("../controllers/utils");
 const { clientPackageLookup, packageLookup } = require("./pipelineHelpers/_lookupExtensions");
 
-exports.getAll = async (payload) => {
+exports.getAllWeighingCheckins = async (subscriptionId, payload) => {
     const pageSize = payload.pageSize ? Number(payload.pageSize) : 10;
     const page = payload.page ? Number(payload.page) : 1;
 
-    let queryFilter = { };
+    let queryFilter = { subscription: subscriptionId };
 
     if (payload.searchText) {
         queryFilter["$or"] = [
@@ -49,7 +49,7 @@ exports.getAll = async (payload) => {
     };
 };
 
-exports.get = async (clientId, payload) => {
+exports.getWeighingCheckin = async (clientId, payload) => {
     const pageSize = payload.pageSize ? Number(payload.pageSize) : 10;
     const page = payload.page ? Number(payload.page) : 1;
 
@@ -99,7 +99,7 @@ exports.get = async (clientId, payload) => {
     };
 };
 
-exports.create = async(payload) => {
+exports.createWeighingCheckin = async(payload) => {
     const handleCheckinRecord = async (item) => {
         const newCheckin = new db.WeighingCheckins(item);
         const savedCheckin = await newCheckin.save();
@@ -119,7 +119,7 @@ exports.create = async(payload) => {
     return await handleCheckinRecord(payload);
 };
 
-exports.edit = async (id, payload) => {
+exports.updateWeighingCheckin = async (id, payload) => {
     const updateLatestCheckinDate = async (originalCheckin) => {
         if (payload.date && new Date(payload.date).getTime() !== originalCheckin.date.getTime()) {
             const latestWeighing = await db.WeighingCheckins
@@ -146,7 +146,7 @@ exports.edit = async (id, payload) => {
     return updatedCheckin;
 };
 
-exports.deleteItem = async (id) => {
+exports.deleteWeighingCheckin = async (id) => {
     const updateLatestCheckinDate = async (originalCheckin) => {
         const latestWeighing = await db.WeighingCheckins
             .find({ client: originalCheckin.client })

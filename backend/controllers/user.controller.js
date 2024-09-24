@@ -1,7 +1,6 @@
 const UserService = require("../services/user.service");
 const { z } = require("zod");
 const validateAndRespond = require("../utils/zodValidation");
-const ClientService = require("../services/client.service");
 
 const schema = z.object({
     firstName: z.string({ required_error: "firstName is required" }),
@@ -10,9 +9,9 @@ const schema = z.object({
     email: z.string({ required_error: "email is required" }),
     password: z.string().optional(),
     subscriptionCode: z.string({ required_error: "subscriptionCode is required" }),
+    role: z.string().optional(),
     isSubscriptionOwner: z.boolean().optional(),
     activateSubscription: z.boolean().optional()
-
 });
 
 const basicSchema = z.object({

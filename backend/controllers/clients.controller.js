@@ -1,7 +1,5 @@
-const db = require("../models");
 const { z } = require("zod");
 const validateAndRespond = require("../utils/zodValidation");
-const { startSession } = require("mongoose");
 const ClientService = require("../services/client.service");
 
 const clientDetailSchema = {
@@ -42,13 +40,13 @@ const schema = z.object({
     path: ["partner"],
 });
 
-const getAll = async (req, res) => {
+const getAllClients = async (req, res) => {
     try {
         const { payload, error } = validateAndRespond(basicSchema, req.query);
         if (error) {
             return res.status(400).json({ message: "Validation failed.", errors: error });
         }
-        const response = await ClientService.getAll(payload);
+        const response = await ClientService.getAllClients(req.subscriptionId, payload);
         return res.status(200).send(response);
     } catch (err) {
         console.error(err);
@@ -56,9 +54,9 @@ const getAll = async (req, res) => {
     }
 };
 
-const get = async (req, res) => {
+const getClient = async (req, res) => {
     try {
-        const response = await ClientService.get(req.params.id);
+        const response = await ClientService.getClient(req.params.id);
         return res.status(200).send(response[0]);
     } catch (err) {
         console.error(err);
@@ -66,14 +64,14 @@ const get = async (req, res) => {
     }
 };
 
-const create = async (req, res) => {
+const createClient = async (req, res) => {
     try {
         const { payload, error } = validateAndRespond(schema, req.body);
         if (error) {
             return res.status(400).json({ message: "Validation failed.", errors: error });
         }
 
-        const response = await ClientService.create(payload);
+        const response = await ClientService.createClient(req.subscriptionId, payload);
         return res.status(201).send(response);
     } catch (err) {
         console.error(err);
@@ -81,14 +79,14 @@ const create = async (req, res) => {
     }
 };
 
-const edit = async (req, res) => {
+const updateClient = async (req, res) => {
     try {
         const { payload, error } = validateAndRespond(schema, req.body);
         if (error) {
             return res.status(400).json({ message: "Validation failed.", errors: error });
         }
 
-        const response = await ClientService.edit(req.params.id, payload);
+        const response = await ClientService.updateClient(req.params.id, payload);
         res.status(200).send(response);
     } catch (err) {
         console.error(err);
@@ -96,9 +94,9 @@ const edit = async (req, res) => {
     }
 };
 
-const deleteItem = async (req, res) => {
+const deleteClient = async (req, res) => {
     try {
-        await ClientService.deleteItem(req.params.id);
+        await ClientService.deleteClient(req.params.id);
         res.status(200).send("Client deleted");
     } catch (err) {
         console.error(err);
@@ -136,6 +134,6 @@ const deleteClientNote = async (req, res) => {
 };
 
 module.exports = {
-    getAll, get, create, edit, deleteItem,
-    createClientNote,deleteClientNote
+    getAllClients, getClient, createClient, updateClient, deleteClient,
+    createClientNote, deleteClientNote
 };

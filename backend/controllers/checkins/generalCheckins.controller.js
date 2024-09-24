@@ -18,14 +18,14 @@ const basicSchema = z.object({
     sortDirection: z.string().optional(),
 });
 
-const getAll = async (req, res) => {
+const getAllGeneralCheckins = async (req, res) => {
     try {
         const { payload, error } = validateAndRespond(basicSchema, req.query);
         if (error) {
             return res.status(400).send({ message: "Validation failed.", errors: error });
         }
 
-        const response = await CheckinService.getAll(payload);
+        const response = await CheckinService.getAllGeneralCheckins(req.subscriptionId, payload);
         
         return res.status(200).send(response);
 
@@ -35,14 +35,14 @@ const getAll = async (req, res) => {
     }
 };
 
-const get = async (req, res) => {
+const getGeneralCheckin = async (req, res) => {
     try {
         const { payload, error } = validateAndRespond(basicSchema, req.query);
         if (error) {
             return res.status(400).send({ message: "Validation failed.", errors: error });
         }
         
-        const data = await CheckinService.get(req.params.clientId, payload);
+        const data = await CheckinService.getGeneralCheckin(req.params.clientId, payload);
 
         res.json(data);
     } catch (err) {
@@ -51,13 +51,13 @@ const get = async (req, res) => {
     }
 };
 
-const create = async (req, res) => {
+const createGeneralCheckin = async (req, res) => {
     try {
         const { payload, error } = validateAndRespond(schema, req.body);
         if (error) {
             return res.status(400).json({ message: "Validation failed.", errors: error });
         }
-        const response = await CheckinService.create(payload);
+        const response = await CheckinService.createGeneralCheckin(payload);
         res.status(200).send(response);
     } catch (err) {
         console.error(err);
@@ -65,13 +65,13 @@ const create = async (req, res) => {
     }
 };
 
-const edit = async (req, res) => {
+const updateGeneralCheckin = async (req, res) => {
     try {
         const { payload, error } = validateAndRespond(schema, req.body);
         if (error) {
             return res.status(400).json({ message: "Validation failed.", errors: error });
         }
-        const response = await CheckinService.edit(req.params.id, payload);
+        const response = await CheckinService.updateGeneralCheckin(req.params.id, payload);
         res.status(200).send(response);
     } catch (err) {
         console.error(err);
@@ -79,7 +79,7 @@ const edit = async (req, res) => {
     }
 };
 
-const deleteItem = async (req, res) => {
+const deleteGeneralCheckin = async (req, res) => {
     try {
         const data = await db.GeneralCheckins.delete({ _id: req.params.id });
         if (!data) {
@@ -93,9 +93,9 @@ const deleteItem = async (req, res) => {
 };
 
 module.exports = {
-    getAll,
-    get,
-    create,
-    edit,
-    deleteItem,
+    getAllGeneralCheckins,
+    getGeneralCheckin,
+    createGeneralCheckin,
+    updateGeneralCheckin,
+    deleteGeneralCheckin,
 };

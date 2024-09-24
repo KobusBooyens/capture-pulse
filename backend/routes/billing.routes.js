@@ -1,4 +1,5 @@
-const billingController = require("../controllers/billing/billing.controller");
+const controller = require("../controllers/billing/billing.controller");
+const { verifyToken } = require("../middleware/authJwt");
 
 module.exports = function (app) {
     app.use(function (req, res, next) {
@@ -6,9 +7,9 @@ module.exports = function (app) {
         next();
     });
 
-    app.get("/api/billing", billingController.getAll);
-    app.get("/api/billing/:id", billingController.get);
-    app.post("/api/billing", billingController.create);
-    app.patch("/api/billing/:id", billingController.edit);
-    app.delete("/api/billing/:id", billingController.deleteItem);
+    app.get("/api/billing", verifyToken, controller.getAllBilling);
+    app.get("/api/billing/:id", verifyToken, controller.getBilling);
+    app.post("/api/billing", verifyToken, controller.createBilling);
+    app.patch("/api/billing/:id", verifyToken, controller.updateBilling);
+    app.delete("/api/billing/:id", verifyToken, controller.deleteBilling);
 };

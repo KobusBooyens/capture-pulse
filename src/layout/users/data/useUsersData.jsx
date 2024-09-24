@@ -6,10 +6,12 @@ import IconButton from "@mui/material/IconButton";
 import Icon from "@mui/material/Icon";
 import dayjs from "dayjs";
 import Typography from "../../../components/Typography/Typography.jsx";
+import { useAuth } from "../../../context/AuthProvider.jsx";
 
-const UseUsersData = (data) => {
+const useUsersData = (data) => {
 
     const [handleAction, setHandleAction] = useState({ action: null, data: { } });
+    const { currentUser } = useAuth();
 
     const handleDeleteUser = (data) => {
         setHandleAction({ action: "delete", data: data });
@@ -20,6 +22,7 @@ const UseUsersData = (data) => {
     };
 
     const Actions = ({ data }) => {
+        const isCurrentUser = data._id === currentUser._id;
         return (
             <Box>
                 <Tooltip title="Edit" placement="top">
@@ -28,8 +31,8 @@ const UseUsersData = (data) => {
                     </IconButton>
                 </Tooltip>
                 <Tooltip title="Remove" placement="top">
-                    <IconButton onClick={() => handleDeleteUser(data)}>
-                        <Icon fontSize="small" color="error">delete</Icon>
+                    <IconButton onClick={() => handleDeleteUser(data)} disabled={isCurrentUser}>
+                        <Icon fontSize="small" color={isCurrentUser ? "disabled" : "error"}>delete</Icon>
                     </IconButton>
                 </Tooltip>
             </Box>
@@ -98,6 +101,7 @@ const UseUsersData = (data) => {
         loggedIn: row.loggedIn,
         email: row.email,
         contactNumber: row.contactNumber,
+        role: row.role,
         _id: row._id,
     }));
 
@@ -109,4 +113,4 @@ const UseUsersData = (data) => {
     };
 };
 
-export default UseUsersData;
+export default useUsersData;
