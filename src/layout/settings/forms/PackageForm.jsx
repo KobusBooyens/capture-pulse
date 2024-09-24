@@ -7,6 +7,7 @@ import IconButton from "@mui/material/IconButton";
 import Icon from "@mui/material/Icon";
 import Avatar from "@mui/material/Avatar";
 import ListItemText from "@mui/material/ListItemText";
+import PropTypes from "prop-types";
 
 const PackageForm = ({ isAdding }) => {
     return (
@@ -64,4 +65,9 @@ const PackageForm = ({ isAdding }) => {
 
     );
 };
+
+PackageForm.propTypes = {
+    isAdding: PropTypes.bool,
+};
+
 export default PackageForm;

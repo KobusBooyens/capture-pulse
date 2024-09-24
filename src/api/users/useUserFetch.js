@@ -8,5 +8,5 @@ const useGetAllUsers = ({ page, pageSize, searchText, sortColumn, sortDirection 
     return useCustomFetch([...queryKeys.PAGINATED, url], url);
 };
 
-export default useGetAllUsers;
+export { useGetAllUsers };
 

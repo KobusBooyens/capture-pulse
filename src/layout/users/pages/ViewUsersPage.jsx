@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import useUsersData from "../data/useUsersData.jsx";
-import { CircularProgress, DialogActions, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import Card from "@mui/material/Card";
 import Box from "../../../components/Box/Box.jsx";
 import Typography from "../../../components/Typography/Typography.jsx";
@@ -11,9 +11,9 @@ import AddEditUserDialog from "../dialogs/AddEditUserDialog.jsx";
 import { FormProvider, useForm } from "react-hook-form";
 import UserForm from "../forms/UserForm.jsx";
 import DeleteDialog from "../../../controls/Dialogs/DeleteDialog.jsx";
-import useDeleteUser from "../../../api/users/useDeleteUser.js";
-import { useCreateUser, useUpdateUser } from "../../../api/users/useCreateUser.js";
+import { useUserMutation, useUpdateUser, useDeleteUser } from "../../../api/users/useUserMutation.js";
 import { useAuth } from "../../../context/AuthProvider.jsx";
+import PropTypes from "prop-types";
 
 const ViewUsersPage = ({
     data,
@@ -27,7 +27,7 @@ const ViewUsersPage = ({
     const [addingUser, setIAddingUser] = useState(false);
     const { currentUser } = useAuth();
     const deleteUser = useDeleteUser();
-    const createUser = useCreateUser(true, true);
+    const createUser = useUserMutation(true, true);
     const updateUser = useUpdateUser();
     const methods = useForm();
     
@@ -159,4 +159,14 @@ const ViewUsersPage = ({
         </Box>
     );
 };
+
+ViewUsersPage.prototype = {
+    data: PropTypes.object,
+    isLoading: PropTypes.bool,
+    paginationModel: PropTypes.object,
+    onPaginationModelChange: PropTypes.func,
+    onSearchModelChange: PropTypes.func,
+    onSortModelChange: PropTypes.func,
+};
+
 export default ViewUsersPage;

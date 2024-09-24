@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { CircularProgress, Grid, ListItemAvatar, ListItemSecondaryAction, Skeleton, TextField } from "@mui/material";
+import { CircularProgress, Grid, ListItemAvatar, Skeleton } from "@mui/material";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Icon from "@mui/material/Icon";
@@ -12,6 +12,7 @@ import GoalForm from "../../forms/GoalForm.jsx";
 import Box from "../../../../components/Box/Box.jsx";
 import { useGoals } from "../../../../api/goals/useGoalFetch.js";
 import { useCreateGoal, useDeleteGoal } from "../../../../api/goals/useGoalMutation.js";
+import PropTypes from "prop-types";
 
 const Goals = () => {
     const methods = useForm();
@@ -87,6 +88,10 @@ const Goals = () => {
                     </ListItem>)}
             </>
         );
+    };
+
+    DataView.propTypes = {
+        data: PropTypes.array,
     };
 
     return (

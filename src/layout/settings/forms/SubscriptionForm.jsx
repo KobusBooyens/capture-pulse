@@ -5,6 +5,7 @@ import FormInputDropdown from "../../../components/Input/FormInputDropdown/FormI
 import Box from "../../../components/Box/Box.jsx";
 import Button from "../../../components/Button/Button.jsx";
 import currencies from "../../../data/currencyOptions.js";
+import PropTypes from "prop-types";
 
 const currencyOptions = currencies.map(c => ({ value: c.code, label: `${c.code} - ${c.name}` }));
 
@@ -81,4 +82,10 @@ const SubscriptionForm = ({ isUpdating, isFetching, onCancel }) => {
         </Grid>
     );
 };
+SubscriptionForm.propTypes = {
+    isUpdating: PropTypes.bool,
+    isFetching: PropTypes.bool,
+    onCancel: PropTypes.func,
+};
+
 export default SubscriptionForm;

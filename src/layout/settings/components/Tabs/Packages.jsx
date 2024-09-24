@@ -12,6 +12,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import PackageForm from "../../forms/PackageForm.jsx";
 import { usePackages } from "../../../../api/packages/usePackageFetch.js";
 import { useCreatePackage, useDeletePackage } from "../../../../api/packages/usePackageMutation.js";
+import PropTypes from "prop-types";
 
 const Packages = () => {
     const packages = usePackages();
@@ -99,6 +100,10 @@ const Packages = () => {
             </>
 
         );
+    };
+
+    DataView.propTypes = {
+        data: PropTypes.array,
     };
 
     return (

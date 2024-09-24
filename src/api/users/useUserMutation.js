@@ -15,7 +15,12 @@ const updateFn = async ({ id, updatedData }) => {
     return response.data;
 };
 
-const useCreateUser = (showAlert, enablePagination) => {
+const deleteFn = async ({ id }) => {
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    return await apiClient.delete(`/user/${id}`);
+};
+
+const useUserMutation = (showAlert, enablePagination) => {
     return useCustomMutation(createUserFn, enablePagination ?
         queryKeys.PAGINATED : queryKeys.DETAIL,
     showAlert && {
@@ -47,4 +52,19 @@ const useUpdateUser = () => {
     });
 };
 
-export { useCreateUser, useUpdateUser };
+const useDeleteUser = () => {
+    return useCustomMutation(deleteFn, queryKeys.PAGINATED, {
+        success: {
+            title: "Success!",
+            content: "User has been deleted!",
+            severity: "success"
+        },
+        error: {
+            title: "Failed!",
+            content: "Oh no! An error occurred while deleting the user. Please try again!",
+            severity: "error"
+        },
+    });
+};
+
+export { useUserMutation, useUpdateUser, useDeleteUser };

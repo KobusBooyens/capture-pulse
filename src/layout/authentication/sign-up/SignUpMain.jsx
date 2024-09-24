@@ -10,7 +10,7 @@ import Divider from "@mui/material/Divider";
 import { Link } from "react-router-dom";
 import SignUpLayout from "../layouts/SignUpLayout.jsx";
 import { useVerifySubscription } from "../../../api/subscriptions/useSubscriptionMutate.js";
-import { useCreateUser } from "../../../api/users/useCreateUser.js";
+import { useUserMutation } from "../../../api/users/useUserMutation.js";
 
 const SignUpMain = () => {
     const [isVerified, setIsVerified] = useState(false);
@@ -20,7 +20,7 @@ const SignUpMain = () => {
     const registerFormMethods = useForm();
     const verifySubFormMethods = useForm();
     const verifySubscription = useVerifySubscription();
-    const createUser = useCreateUser(false, false);
+    const createUser = useUserMutation(false, false);
 
     const onSubVerificationSubmit = (data) => {
         const { subscriptionCode } = data;

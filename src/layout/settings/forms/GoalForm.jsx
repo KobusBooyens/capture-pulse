@@ -1,13 +1,13 @@
 import React from "react";
-import { CircularProgress, Grid, ListItemAvatar } from "@mui/material";
+import { CircularProgress, ListItemAvatar } from "@mui/material";
 import FormInputText from "../../../components/Input/FormInputText/FormInputText.jsx";
-import Button from "../../../components/Button/Button.jsx";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import Icon from "@mui/material/Icon";
 import Avatar from "@mui/material/Avatar";
 import ListItemText from "@mui/material/ListItemText";
 import ListItem from "@mui/material/ListItem";
+import PropTypes from "prop-types";
 
 const GoalForm = ({ isAdding }) => {
     return (
@@ -46,4 +46,9 @@ const GoalForm = ({ isAdding }) => {
         </ListItem>
     );
 };
+
+GoalForm.propTypes = {
+    isAdding: PropTypes.bool,
+};
+
 export default GoalForm;
