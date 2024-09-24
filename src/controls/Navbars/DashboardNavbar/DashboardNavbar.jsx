@@ -28,7 +28,7 @@ import NotificationItem from "../../Items/NotificationItem/NotificationItem.jsx"
 
 import Box from "../../../components/Box/Box.jsx";
 import Breadcrumbs from "../../Breadcrumbs/Breadcrumbs.jsx";
-import useAuthSignOut from "../../../api/auth/useAuthSignOut.js";
+import { useAuthSignOut } from "../../../api/auth/useAuthMutation.js";
 import { useAuth } from "../../../context/AuthProvider.jsx";
 import Typography from "../../../components/Typography/Typography.jsx";
 

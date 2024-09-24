@@ -8,7 +8,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import Button from "../../../components/Button/Button.jsx";
 import { Link, Navigate } from "react-router-dom";
 import SignInForm from "../forms/SignInForm.jsx";
-import useAuthSignIn from "../../../api/auth/useAuthSignIn.js";
+import { useAuthSignIn } from "../../../api/auth/useAuthMutation.js";
 
 const SignInMain = () => {
     const registerFormMethods = useForm();

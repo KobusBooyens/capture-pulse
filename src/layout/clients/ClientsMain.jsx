@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Typography from "../../components/Typography/Typography.jsx";
-import { useClients } from "../../api/clients/useClientMutation.js";
+import { useClients } from "../../api/clients/useClientFetch.js";
 import ViewClientsPage from "./pages/ViewClientsPage.jsx";
 
 import { useTableQuery } from "../../context/TableQueryProvider.jsx";

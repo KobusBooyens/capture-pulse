@@ -1,42 +1,41 @@
+import { apiClient } from "../api-client.js";
 import queryKeys from "./useQueryKeys.js";
-import useCustomFetch from "../_shared/useCustomFetch.js";
-import { apiClient, buildUrlParams } from "../api-client.js";
 import useCustomMutation from "../_shared/useCustomMutation.js";
 
-const createClientFn = async (data) => {
+const createFn = async (payload) => {
     await new Promise(resolve => setTimeout(resolve, 2000));
-    const response = await apiClient.post("/clients", data);
+    console.log("createFn", payload);
+    const response = await apiClient.post("/billing", payload.data);
     return response.data;
 };
 
 const deleteFn = async ({ id }) => {
     await new Promise(resolve => setTimeout(resolve, 2000));
-    return await apiClient.delete(`/clients/${id}`);
+    return await apiClient.delete(`/billing/${id}`);
 };
 
 const editFn = async ({ id, updatedData }) => {
     await new Promise(resolve => setTimeout(resolve, 2000));
-    console.log(updatedData);
-    const response = await apiClient.patch(`clients/${id}`, updatedData);
+    const response = await apiClient.patch(`billing/${id}`, updatedData);
     return response.data;
 };
 
-const useEditClient = () => {
+const useEditBilling = () => {
     return useCustomMutation(editFn, queryKeys.PAGINATED, {
         success: {
             title: "Success!",
-            content: "Nice! Client was successfully updated!",
+            content: "Nice! Payment was successfully updated!",
             severity: "success"
         },
         error: {
             title: "Failed!",
-            content: "Oh no! An error occurred while updating the client. Please try again!",
+            content: "Oh no! An error occurred while updating the payment. Please try again!",
             severity: "error"
         },
     });
 };
 
-const useDeleteClient = () => {
+const useDeleteBilling = () => {
     return useCustomMutation(deleteFn, queryKeys.PAGINATED, {
         success: {
             title: "Success!",
@@ -45,25 +44,26 @@ const useDeleteClient = () => {
         },
         error: {
             title: "Failed!",
-            content: "Oh no! An error occurred while deleting the client. Please try again!",
+            content: "Oh no! An error occurred while deleting the payment. Please try again!",
             severity: "error"
         },
     });
 };
 
-const useCreateClient = () => {
-    return useCustomMutation(createClientFn, queryKeys.PAGINATED, {
+const useCreateBilling = () => {
+    return useCustomMutation(createFn, queryKeys.PAGINATED, {
         success: {
             title: "Success!",
-            content: "Nice! Client was successfully created!",
+            content: "Nice! Payment has been recorded!",
             severity: "success"
         },
         error: {
             title: "Failed!",
-            content: "Oh no! An error occurred while creating the client. Please try again!",
+            content: "Oh no! An error occurred while adding the payment. Please try again!",
             severity: "error"
         },
     });
 };
 
-export { useCreateClient, useDeleteClient, useEditClient } ;
+export { useCreateBilling,useDeleteBilling, useEditBilling };
+

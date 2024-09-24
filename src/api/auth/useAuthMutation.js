@@ -8,6 +8,24 @@ const signInFn = async (payload) => {
     return response.data;
 };
 
+const signOutFn = async (id) => {
+    const response = await apiClient.get(`/auth/sign-out/${id}`);
+    return response.data;
+};
+
+const useAuthSignOut = () => {
+    const { handleSignOut } = useAuth();
+    return useCustomMutation(signOutFn, queryKeys.DETAIL, {
+        error: {
+            title: "Failed!",
+            content: "Oh no! An error occurred while trying to sign-out. Please try again!",
+            severity: "error"
+        },
+    }, {
+        onSuccess: () => handleSignOut()
+    } );
+};
+
 const useAuthSignIn = () => {
     const { handleSignIn } = useAuth();
     return useCustomMutation(signInFn, queryKeys.DETAIL, { }, {
@@ -19,5 +37,5 @@ const useAuthSignIn = () => {
     } );
 };
 
-export default useAuthSignIn;
+export { useAuthSignIn, useAuthSignOut };
 

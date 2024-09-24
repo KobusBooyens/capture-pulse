@@ -11,4 +11,11 @@ const useBilling = (page, pageSize, searchText, sortColumn, sortDirection) => {
     return useCustomFetch([...queryKeys.PAGINATED, url], url);
 };
 
-export default useBilling;
+const useBillings = (page, pageSize, searchText, sortColumn, sortDirection) => {
+    const url = "/billing?"+
+      `${buildUrlParams(page, pageSize, searchText, sortColumn, sortDirection)}`;
+
+    return useCustomFetch([...queryKeys.PAGINATED, url], url);
+};
+
+export { useBilling, useBillings };

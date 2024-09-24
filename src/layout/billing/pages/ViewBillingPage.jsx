@@ -9,7 +9,7 @@ import PropTypes from "prop-types";
 import AddEditBilling from "../dialogs/AddEditBilling.jsx";
 import { FormProvider, useForm } from "react-hook-form";
 import AddEditBillingForm from "../forms/AddEditBillingForm.jsx";
-import useCreateBilling from "../../../api/billing/useCreateBilling.js";
+import { useCreateBilling } from "../../../api/billing/useCreateBillingMutation.js";
 import dayjs from "dayjs";
 import billingStatus from "../../../data/billingStatus.jsx";
 import Tooltip from "@mui/material/Tooltip";
