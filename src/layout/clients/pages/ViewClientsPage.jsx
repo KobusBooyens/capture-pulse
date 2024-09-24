@@ -9,7 +9,7 @@ import Icon from "@mui/material/Icon";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import DeleteDialog from "../../../controls/Dialogs/DeleteDialog.jsx";
-import useDeleteClient from "../../../api/clients/useDeleteClient.js";
+import { useDeleteClient } from "../../../api/clients/useClientMutation.js";
 import DataTableGrid from "../../../controls/Tables/DataTableGrid/DataTableGrid.jsx";
 import NotesDialog from "../../../controls/Dialogs/NotesDialog.jsx";
 

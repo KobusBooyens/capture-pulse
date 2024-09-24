@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import Typography from "../../components/Typography/Typography.jsx";
-import useClients from "../../api/clients/useClients.js";
+import { useClients } from "../../api/clients/useClientMutation.js";
 import ViewClientsPage from "./pages/ViewClientsPage.jsx";
-import DataTableSkeleton from "../../controls/Tables/Skeleton/DataTable.jsx";
+
 import { useTableQuery } from "../../context/TableQueryProvider.jsx";
 
 const ClientsMain = () => {

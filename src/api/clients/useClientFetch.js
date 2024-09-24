@@ -7,4 +7,4 @@ const useClient = () => {
     return useCustomFetch(queryKeys.DETAIL, `clients/${id}`);
 };
 
-export default useClient;
+export { useClient } ;

@@ -8,7 +8,7 @@ import { CircularProgress, Grid, Step, StepLabel, Stepper } from "@mui/material"
 import Card from "@mui/material/Card";
 import Typography from "../../../components/Typography/Typography.jsx";
 import { FormProvider, useForm } from "react-hook-form";
-import useCreateClient from "../../../api/clients/useCreateClient.js";
+import { useCreateClient } from "../../../api/clients/useClientMutation.js";
 import Button from "../../../components/Button/Button.jsx";
 import { useNavigate } from "react-router-dom";
 
