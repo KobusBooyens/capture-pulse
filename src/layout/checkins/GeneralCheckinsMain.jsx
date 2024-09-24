@@ -1,9 +1,8 @@
 import React from "react";
-import DataTableSkeleton from "../../controls/Tables/Skeleton/DataTable.jsx";
 import Typography from "../../components/Typography/Typography.jsx";
 import ViewGeneralCheckinPage from "./pages/ViewGeneralCheckinPage.jsx";
 import { useTableQuery } from "../../context/TableQueryProvider.jsx";
-import useCheckins from "../../api/checkins/useCheckins.js";
+import { useCheckins } from "../../api/checkins/useCheckinFetch.js";
 
 const GeneralCheckinsMain = () => {
     const {

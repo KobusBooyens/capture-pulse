@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 import { useWeighingCheckinData } from "../data/useWeighingCheckinData.jsx";
 import AddEditCheckin from "../dialogs/AddEditCheckin.jsx";
 import { FormProvider, useForm } from "react-hook-form";
-import useCreateCheckin from "../../../api/checkins/useCreateCheckin.js";
+import { useCreateCheckin } from "../../../api/checkins/useCreateCheckinMutation.js";
 import AddEditWeighingCheckinForm from "../forms/AddEditWeighingCheckinForm.jsx";
 import DataTableGrid from "../../../controls/Tables/DataTableGrid/DataTableGrid.jsx";
 import dayjs from "dayjs";

@@ -7,8 +7,14 @@ const useCheckin = (type, page, pageSize, searchText, sortColumn, sortDirection)
     const { id } = useParams();
     const url = `/checkins/${type}/${id}?`+
       `${buildUrlParams(page, pageSize, searchText, sortColumn, sortDirection)}`;
-    console.log("useCheckin", url);
+    console.log("useCheckinFetch", url);
     return useCustomFetch([...queryKeys.PAGINATED, url], url);
 };
 
-export default useCheckin;
+const useCheckins = (type, page, pageSize, searchText, sortColumn, sortDirection) => {
+    const url = `/checkins/${type}?`+
+      `${buildUrlParams(page, pageSize, searchText, sortColumn, sortDirection)}`;
+
+    return useCustomFetch([...queryKeys.PAGINATED, url], url);
+};
+export { useCheckin, useCheckins };

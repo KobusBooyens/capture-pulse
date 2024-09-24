@@ -7,12 +7,12 @@ import ClientDetails from "../../shared/ClientDetails.jsx";
 import PropTypes from "prop-types";
 import { useCheckinHistoryData } from "../data/useCheckinHistoryData.jsx";
 import { FormProvider, useForm } from "react-hook-form";
-import useEditCheckin from "../../../api/checkins/useEditCheckin.js";
+import { useEditCheckin } from "../../../api/checkins/useCreateCheckinMutation.js";
 import AddEditCheckin from "../dialogs/AddEditCheckin.jsx";
 import AddEditGeneralCheckinForm from "../forms/AddEditGeneralCheckinForm.jsx";
 import AddEditWeighingCheckinForm from "../forms/AddEditWeighingCheckinForm.jsx";
 import DeleteDialog from "../../../controls/Dialogs/DeleteDialog.jsx";
-import useDeleteCheckin from "../../../api/checkins/useDeleteCheckin.js";
+import { useDeleteCheckin } from "../../../api/checkins/useCreateCheckinMutation.js";
 import DataTableGrid from "../../../controls/Tables/DataTableGrid/DataTableGrid.jsx";
 
 const ViewCheckinHistoryPage = ({
