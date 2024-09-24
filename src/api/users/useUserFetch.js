@@ -1,6 +1,6 @@
 import { buildUrlParams } from "../api-client.js";
 import useCustomFetch from "../_shared/useCustomFetch.js";
-import queryKeys from "../clients/useQueryKeys.js";
+import queryKeys from "./useQueryKeys.js";
 
 const useGetAllUsers = ({ page, pageSize, searchText, sortColumn, sortDirection }) => {
     const url = `/users?${buildUrlParams(page, pageSize, searchText, sortColumn, sortDirection)}`;
