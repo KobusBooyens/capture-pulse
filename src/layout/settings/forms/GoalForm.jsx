@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, ListItemAvatar } from "@mui/material";
+import { CircularProgress, Grid, ListItemAvatar } from "@mui/material";
 import FormInputText from "../../../components/Input/FormInputText/FormInputText.jsx";
 import Button from "../../../components/Button/Button.jsx";
 import Tooltip from "@mui/material/Tooltip";
@@ -9,18 +9,20 @@ import Avatar from "@mui/material/Avatar";
 import ListItemText from "@mui/material/ListItemText";
 import ListItem from "@mui/material/ListItem";
 
-const GoalForm = () => {
+const GoalForm = ({ isAdding }) => {
     return (
         <ListItem
             key={"add"}
             sx={{ p: 1 }}
             secondaryAction={
                 <>
-                    <Tooltip placement={"top"} title={"Add"} arrow={false}>
-                        <IconButton edge="end" aria-label="add" type={"submit"}>
-                            <Icon color={"success"}>add</Icon>
-                        </IconButton>
-                    </Tooltip>
+                    {isAdding ?
+                        <CircularProgress color={"success"} size={30}/> :
+                        <Tooltip placement={"top"} title={"Add"} arrow={false}>
+                            <IconButton edge="end" aria-label="add" type={"submit"}>
+                                <Icon color={"success"}>add</Icon>
+                            </IconButton>
+                        </Tooltip>}
                 </>
             }
         >
@@ -31,10 +33,11 @@ const GoalForm = () => {
             </ListItemAvatar>
             <ListItemText>
                 <FormInputText
-                    name={"goal"}
                     variant={"standard"}
+                    name={"name"}
                     label="New Goal"
                     placeholder="Enter Goal"
+                    disabled={isAdding}
                     required
                     rules={{ required: "Goal is required" }}
                 />
