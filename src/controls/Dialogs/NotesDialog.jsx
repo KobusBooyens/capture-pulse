@@ -14,8 +14,7 @@ import Box from "../../components/Box/Box.jsx";
 import Alert from "../../components/Alert/Alert.jsx";
 import Divider from "@mui/material/Divider";
 import PropTypes from "prop-types";
-import useCreateClientNote from "../../api/clientNotes/useCreateClientNote.js";
-import useDeleteClientNote from "../../api/clientNotes/useDeleteClientNote.js";
+import { useClientNote, useDeleteClientNote } from "../../api/clientNotes/useClientNoteMutation.js";
 import { useForm } from "react-hook-form";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -43,7 +42,7 @@ NoteCard.propTypes = {
 };
 
 const NotesDialog = ({ openDialog, onClose, data, clientId }) => {
-    const createClientNote = useCreateClientNote();
+    const createClientNote = useClientNote();
     const deleteClientNote = useDeleteClientNote();
 
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
