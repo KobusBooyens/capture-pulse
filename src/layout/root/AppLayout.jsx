@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { setMiniSidenav, useUISettingsController } from "../../context/UISettingsProvider.jsx";
+import { setMiniSidenav, setOpenConfigurator, useUISettingsController } from "../../context/UISettingsProvider.jsx";
 import { Outlet, useLocation } from "react-router-dom";
 import brandDark from "../../assets/images/logo-dark.png";
 import brandWhite from "../../assets/images/logo.png";
@@ -15,11 +15,16 @@ import DashboardLayout from "../../controls/LayoutContainers/DashboardLayout.jsx
 import Footer from "../../controls/Footer/Footer.jsx";
 import { SnackbarProvider } from "../../context/SnackbarProvider.jsx";
 import { useAuth } from "../../context/AuthProvider.jsx";
+import Icon from "@mui/material/Icon";
+import Box from "../../components/Box/Box.jsx";
+import TodoList from "../../controls/TodoList/TodoList.jsx";
+import Configurator from "../../controls/Configurator/Configurator.jsx";
 
 const AppLayout = () => {
     const [controller, dispatch] = useUISettingsController();
     const {
         miniSidenav,
+        openConfigurator,
         sidenavColor,
         transparentSidenav,
         whiteSidenav,
@@ -42,6 +47,31 @@ const AppLayout = () => {
             setOnMouseEnter(false);
         }
     };
+
+    const handleTodoOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
+
+    const toDoListButton =
+        <Box display="flex"
+            justifyContent="center"
+            alignItems="center"
+            width="3.25rem"
+            height="3.25rem"
+            bgColor="white"
+            shadow="sm"
+            borderRadius="50%"
+            position="fixed"
+            right="2rem"
+            bottom="2rem"
+            zIndex={99}
+            color="dark"
+            sx={{ cursor: "pointer" }}
+            onClick={handleTodoOpen}
+        >
+            <Icon fontSize="small" color="inherit">
+              add_task
+            </Icon>
+        </Box>
+    ;
 
     useEffect(() => {
         document.documentElement.scrollTop = 0;
@@ -69,6 +99,8 @@ const AppLayout = () => {
 
                             <DashboardLayout>
                                 <DashboardNavbar/>
+                                <Configurator/>
+                                {toDoListButton}
                                 <Outlet/>
                                 <Footer/>
                             </DashboardLayout>
