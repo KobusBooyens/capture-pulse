@@ -20,7 +20,7 @@ const deleteFn = async ({ id }) => {
     return await apiClient.delete(`/user/${id}`);
 };
 
-const useUserMutation = (showAlert, enablePagination) => {
+const useUserCreate = (showAlert, enablePagination) => {
     return useCustomMutation(createUserFn, enablePagination ?
         queryKeys.PAGINATED : queryKeys.DETAIL,
     showAlert && {
@@ -67,4 +67,4 @@ const useDeleteUser = () => {
     });
 };
 
-export { useUserMutation, useUpdateUser, useDeleteUser };
+export { useUserCreate, useUpdateUser, useDeleteUser };

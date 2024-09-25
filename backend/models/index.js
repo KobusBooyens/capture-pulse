@@ -15,5 +15,6 @@ db.Checkins = require("./checkins.model");
 db.GeneralCheckins = require("./generalCheckins.model");
 db.WeighingCheckins = require("./weighingCheckins.model");
 db.Billing = require("./billing.model");
+db.TaskReminders = require("./taskReminders.model");
 
 module.exports = db;

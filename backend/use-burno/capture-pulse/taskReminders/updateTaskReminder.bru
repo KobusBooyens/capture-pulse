@@ -1,0 +1,21 @@
+meta {
+  name: updateTaskReminder
+  type: http
+  seq: 3
+}
+
+patch {
+  url: {{url}}/taskReminder/:id
+  body: json
+  auth: none
+}
+
+params:path {
+  id: 66f45b69e0404633743b06dd
+}
+
+body:json {
+  {
+    "title" : "Updated Title"
+  }
+}

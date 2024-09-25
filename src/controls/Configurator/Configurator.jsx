@@ -11,19 +11,26 @@ import Box from "../../components/Box/Box.jsx";
 import Typography from "../../components/Typography/Typography.jsx";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import { ListItemAvatar } from "@mui/material";
+import { CircularProgress, ListItemAvatar } from "@mui/material";
 import ListItemText from "@mui/material/ListItemText";
 import Link from "@mui/material/Link";
 import { FormProvider, useForm } from "react-hook-form";
 import TaskForm from "./forms/TaskForm.jsx";
+import { useGetAllTaskReminders } from "../../api/taskReminders/useTaskReminderFetch.js";
+import { useTaskReminderCreate } from "../../api/taskReminders/useTaskReminderMutation.js";
+import UserForm from "../../layout/users/forms/UserForm.jsx";
+import PropTypes from "prop-types";
 
 function Configurator() {
     const [controller, dispatch] = useUISettingsController();
     const { openConfigurator, darkMode } = controller;
     const [disabled, setDisabled] = useState(false);
-    const [hovered, setHovered] = useState(null);
+    const [hovered, setHovered] = useState({ id: null, show: false });
     const [showTaskForm, setShowTaskForm] = useState(false);
     const methods = useForm();
+
+    const taskReminders = useGetAllTaskReminders();
+    const createTaskReminder = useTaskReminderCreate(true, false);
 
     useEffect(() => {
         function handleDisabled() {
@@ -43,7 +50,11 @@ function Configurator() {
     };
 
     const onFormSubmit = (data) => {
-        console.log("onFormSubmit",data);
+        createTaskReminder.mutate({ ...data }, {
+            onSuccess: () => {
+                setShowTaskForm(false);
+                methods.reset({});
+            } });
     };
 
     const handleAddTask = () => {
@@ -54,9 +65,79 @@ function Configurator() {
     const AddTaskForm = () =>
         <FormProvider {...methods} >
             <form onSubmit={methods.handleSubmit(onFormSubmit)} noValidate>
-                <TaskForm onCancel={handleAddTask} />
+                <TaskForm isAdding={createTaskReminder.isPending} onCancel={handleAddTask} />
             </form>
         </FormProvider>;
+
+    const TaskReminderListItem = ({ record }) => {
+        const [hovered, setHovered] = useState(false);
+
+        return (
+            <ListItem
+                key={record._id}
+                sx={{ mb: 1 }}
+                onMouseEnter={() => setHovered(true)}
+                onMouseLeave={() => setHovered(false)}
+            >
+                <ListItemAvatar>
+                    <Tooltip title="Mark completed" arrow={false}>
+                        <span>
+                            <Icon color={hovered ? "success" : "inherit"}>
+                                {hovered ? "checked" : "radio_button_unchecked"}
+                            </Icon>
+                        </span>
+                    </Tooltip>
+                </ListItemAvatar>
+                <ListItemText
+                    primary={
+                        <Typography variant="body2">
+                            {record.title}
+                        </Typography>
+                    }
+                    secondary={
+                        <Typography variant="button" color="text">
+                            {record.description}
+                        </Typography>
+                    }
+                />
+            </ListItem>
+        );
+    };
+
+    TaskReminderListItem.propTypes = {
+        record: PropTypes.shape({
+            _id: PropTypes.string.isRequired,
+            title: PropTypes.string.isRequired,
+            description: PropTypes.string.isRequired,
+            date: PropTypes.string, // Optional or required depending on your needs
+        }).isRequired,
+    };
+
+    const myTasks = () => {
+        if (taskReminders.isPending) {
+            return <CircularProgress/>;
+        } else if (taskReminders.data.myTaskReminders &&
+          taskReminders.data.myTaskReminders.length > 0) {
+            return (
+                taskReminders.data.myTaskReminders.map(record =>
+                    <TaskReminderListItem key={record._id} record={record}/>)
+            );
+        } 
+        return <Typography variant={"button"}>No task/reminders have been created yet</Typography>;
+    };
+
+    const teamTasks = () => {
+        if (taskReminders.isPending) {
+            return <CircularProgress/>;
+        } else if (taskReminders.data.teamTaskReminders &&
+      taskReminders.data.teamTaskReminders.length > 0) {
+            return (
+                taskReminders.data.teamTaskReminders.map(record =>
+                    <TaskReminderListItem key={record._id} record={record}/>)
+            );
+        }
+        return <Typography variant={"button"}>No task/reminders have been created yet</Typography>;
+    };
 
     return (
         <ConfiguratorRoot variant="permanent" ownerState={{ openConfigurator }}>
@@ -96,9 +177,7 @@ function Configurator() {
           close
                 </Icon>
             </Box>
-
             <Divider />
-
             <Box pt={0.5} pb={3} px={3}>
                 <Box>
                     <Typography variant="h6">My Tasks</Typography>
@@ -107,31 +186,7 @@ function Configurator() {
                     </Typography>
                     <Divider />
                     <List>
-                        <ListItem sx={{ mb:1 }}>
-                            <ListItemAvatar>
-                                <Tooltip title="Mark completed" arrow>
-                                    <Icon
-                                        onMouseEnter={() => setHovered(0)}
-                                        onMouseLeave={() => setHovered(null)}
-                                        color={hovered === 0 ? "success" : "inherit"}
-                                    >
-                                        {hovered === 0 ? "checked" : "radio_button_unchecked"}
-                                    </Icon>
-                                </Tooltip>
-                            </ListItemAvatar>
-                            <ListItemText
-                                primary={<Typography variant={"body2"}>Update John Doe meal plan</Typography>}
-                                secondary={<Typography variant={"button" } color="text">Jan 9, 2014</Typography>} />
-                        </ListItem>
-                        <ListItem>
-                            <ListItemAvatar>
-                                <Icon color="success">checked</Icon>
-                            </ListItemAvatar>
-                            <ListItemText
-                                primary={<Typography variant={"body2"}>Remove Avo for Mary</Typography>}
-                                secondary={<Typography variant={"button" } color="text">Jan 9, 2014</Typography>}
-                            />
-                        </ListItem>
+                        {myTasks()}
                     </List>
                 </Box>
                 <Divider />
@@ -141,30 +196,7 @@ function Configurator() {
             Everyone in your team will be able to see these tasks
                     </Typography>
                     <Divider />
-                    <ListItem sx={{ mb:1 }}>
-                        <ListItemAvatar >
-                            <Tooltip title="Mark completed" arrow>
-                                <Icon
-                                    onMouseEnter={() => setHovered(1)}
-                                    onMouseLeave={() => setHovered(null)}
-                                    color={hovered === 1 ? "success" : "inherit"}
-                                >
-                                    {hovered === 1 ? "checked" : "radio_button_unchecked"}
-                                </Icon>
-                            </Tooltip>
-                        </ListItemAvatar>
-                        <ListItemText
-                            primary={<Typography variant={"body2"}>Update John Doe meal plan</Typography>}
-                            secondary={<Typography variant={"button" } color="text">Jan 9, 2014</Typography>} />
-                    </ListItem>
-                    <ListItem>
-                        <ListItemAvatar>
-                            <Icon color="success">checked</Icon>
-                        </ListItemAvatar>
-                        <ListItemText
-                            primary={<Typography variant={"body2"}>Remove Avo for Mary</Typography>}
-                            secondary={<Typography variant={"button" } color="text">Jan 9, 2014</Typography>} />
-                    </ListItem>
+                    {teamTasks()}
                 </Box>
             </Box>
         </ConfiguratorRoot>

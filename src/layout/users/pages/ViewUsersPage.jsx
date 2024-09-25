@@ -11,7 +11,7 @@ import AddEditUserDialog from "../dialogs/AddEditUserDialog.jsx";
 import { FormProvider, useForm } from "react-hook-form";
 import UserForm from "../forms/UserForm.jsx";
 import DeleteDialog from "../../../controls/Dialogs/DeleteDialog.jsx";
-import { useUserMutation, useUpdateUser, useDeleteUser } from "../../../api/users/useUserMutation.js";
+import { useUserCreate, useUpdateUser, useDeleteUser } from "../../../api/users/useUserMutation.js";
 import { useAuth } from "../../../context/AuthProvider.jsx";
 import PropTypes from "prop-types";
 
@@ -27,7 +27,7 @@ const ViewUsersPage = ({
     const [addingUser, setIAddingUser] = useState(false);
     const { currentUser } = useAuth();
     const deleteUser = useDeleteUser();
-    const createUser = useUserMutation(true, true);
+    const createUser = useUserCreate(true, true);
     const updateUser = useUpdateUser();
     const methods = useForm();
     

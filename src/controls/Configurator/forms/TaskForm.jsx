@@ -10,7 +10,7 @@ import PropTypes from "prop-types";
 import UserForm from "../../../layout/users/forms/UserForm.jsx";
 import FormInputCheckbox from "../../../components/Input/FormInputCheckbox/FormInputCheckbox.jsx";
 
-const TaskForm = ({ onCancel }) => {
+const TaskForm = ({ isAdding, onCancel }) => {
     return (
         <Grid container spacing={1}>
             <Grid item xs={12} md={12}>
@@ -53,23 +53,26 @@ const TaskForm = ({ onCancel }) => {
                     fullWidth />
             </Grid>
             <Grid item xs={12} md={12}>
-                <FormInputCheckbox name={"teamTask"} label={"Team Task/Reminder"}/>
+                <FormInputCheckbox name={"teamTaskReminder"} label={"Team Task/Reminder"}/>
             </Grid>
             <Box display="flex" justifyContent="end" marginTop={2} width="100%" mb={2}>
-                <>
-                    <Button onClick={onCancel}
-                        color="secondary"
-                        type={"button"}
-                        sx={{ mx: 1 }}>
+                {isAdding ?
+                    <CircularProgress/> :
+                    <>
+                        <Button onClick={onCancel}
+                            color="secondary"
+                            type={"button"}
+                            sx={{ mx: 1 }}>
                   CANCEL
-                    </Button>
-                    <Button
-                        color="primary"
-                        type={"submit"}
-                        sx={{ mx: 1 }}>
+                        </Button>
+                        <Button
+                            color="primary"
+                            type={"submit"}
+                            sx={{ mx: 1 }}>
                   SUBMIT
-                    </Button>
-                </>
+                        </Button>
+                    </>
+                }
             </Box>
         </Grid>
     );
@@ -77,7 +80,6 @@ const TaskForm = ({ onCancel }) => {
 
 UserForm.prototype = {
     onCancel: PropTypes.func,
-    isLoading: PropTypes.bool,
-    adding: PropTypes.bool,
+    isAdding: PropTypes.bool,
 };
 export default TaskForm;

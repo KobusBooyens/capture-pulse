@@ -1,0 +1,20 @@
+meta {
+  name: createTaskReminder
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{url}}/taskReminder
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "Task Reminder Title 3",
+    "description": "Task Reminder Description 4",
+    "dateTime": "2024-09-25",
+    "teamTaskReminder": true
+  }
+}
