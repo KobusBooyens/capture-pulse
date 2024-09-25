@@ -13,13 +13,17 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import { ListItemAvatar } from "@mui/material";
 import ListItemText from "@mui/material/ListItemText";
-import Button from "../../components/Button/Button.jsx";
+import Link from "@mui/material/Link";
+import { FormProvider, useForm } from "react-hook-form";
+import TaskForm from "./forms/TaskForm.jsx";
 
 function Configurator() {
     const [controller, dispatch] = useUISettingsController();
     const { openConfigurator, darkMode } = controller;
     const [disabled, setDisabled] = useState(false);
-    const [hovered, setHovered] = useState(null); // Track which task is hovered
+    const [hovered, setHovered] = useState(null);
+    const [showTaskForm, setShowTaskForm] = useState(false);
+    const methods = useForm();
 
     useEffect(() => {
         function handleDisabled() {
@@ -32,7 +36,27 @@ function Configurator() {
         return () => window.removeEventListener("resize", handleDisabled);
     }, []);
 
-    const handleCloseConfigurator = () => setOpenConfigurator(dispatch, false);
+    const handleCloseConfigurator = () => {
+        setOpenConfigurator(dispatch, false);
+        setShowTaskForm(false);
+        methods.reset({});
+    };
+
+    const onFormSubmit = (data) => {
+        console.log("onFormSubmit",data);
+    };
+
+    const handleAddTask = () => {
+        methods.reset({});
+        setShowTaskForm(prevState => !prevState);
+    };
+
+    const AddTaskForm = () =>
+        <FormProvider {...methods} >
+            <form onSubmit={methods.handleSubmit(onFormSubmit)} noValidate>
+                <TaskForm onCancel={handleAddTask} />
+            </form>
+        </FormProvider>;
 
     return (
         <ConfiguratorRoot variant="permanent" ownerState={{ openConfigurator }}>
@@ -44,12 +68,18 @@ function Configurator() {
                 pb={0.5}
                 px={3}
             >
-                <Box>
-                    <Typography variant="h5">Tasks</Typography>
-                    <Button variant={"text"} color={"info"}>Add a task</Button>
-                    {/*<Typography variant="link" color="text" onClick={() => console.log("add task")}>*/}
-                    {/*Add a task*/}
-                    {/*</Typography>*/}
+                <Box display={"flex"} flexDirection={"column"}>
+                    <Typography variant="h5">Tasks / Reminders</Typography>
+                    <Link
+                        href="#"
+                        underline="hover"
+                        color={"secondary"}
+                        component="button"
+                        variant="body2"
+                        onClick={handleAddTask}>
+                      Add a task or reminder
+                    </Link>
+                    {showTaskForm && <AddTaskForm/>}
                 </Box>
 
                 <Icon

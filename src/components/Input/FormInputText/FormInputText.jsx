@@ -3,7 +3,7 @@ import { TextField } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
 import PropTypes from "prop-types";
 
-const FormInputText = ({ name, label, rules, required, endAdornment, ...props }) => {
+const FormInputText = ({ name, label, rules, required, endAdornment, startAdornment, ...props }) => {
     const { control, formState: { errors } } = useFormContext();
 
     return (
@@ -22,6 +22,7 @@ const FormInputText = ({ name, label, rules, required, endAdornment, ...props })
                     required={required}
                     InputProps={{
                         endAdornment: endAdornment,
+                        startAdornment: startAdornment
                     }}
                     {...props}
                 />
@@ -32,9 +33,10 @@ const FormInputText = ({ name, label, rules, required, endAdornment, ...props })
 
 FormInputText.propTypes = {
     name: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
+    label: PropTypes.string,
     rules: PropTypes.object,
     endAdornment: PropTypes.node,
+    startAdornment: PropTypes.node,
     required: PropTypes.bool,
 };
 

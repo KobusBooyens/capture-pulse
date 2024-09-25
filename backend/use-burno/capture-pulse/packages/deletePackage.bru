@@ -5,7 +5,11 @@ meta {
 }
 
 delete {
-  url: {{url}}/package
+  url: {{url}}/package/:id
   body: none
   auth: none
+}
+
+params:path {
+  id: 66f1c24f8d142d369106e736
 }
