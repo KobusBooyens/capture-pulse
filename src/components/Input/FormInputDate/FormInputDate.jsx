@@ -8,7 +8,7 @@ import FormInputText from "../FormInputText/FormInputText.jsx";
 import { InputAdornment } from "@mui/material";
 import Icon from "@mui/material/Icon";
 
-const FormInputDate = ({ name, label, rules, required, maxDate= dayjs(), variant = "outlined", ...props }) => {
+const FormInputDate = ({ name, label, rules, required, maxDate = dayjs(), variant = "outlined", ...props }) => {
     const { control, formState: { errors } } = useFormContext();
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>

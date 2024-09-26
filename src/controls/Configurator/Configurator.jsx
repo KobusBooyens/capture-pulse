@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Divider from "@mui/material/Divider";
 import Icon from "@mui/material/Icon";
-import Tooltip from "@mui/material/Tooltip"; // Import Tooltip
+import Tooltip from "@mui/material/Tooltip";
 import {
     useUISettingsController,
     setOpenConfigurator,
@@ -10,27 +10,31 @@ import ConfiguratorRoot from "./ConfiguratorRoot.js";
 import Box from "../../components/Box/Box.jsx";
 import Typography from "../../components/Typography/Typography.jsx";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import { CircularProgress, ListItemAvatar } from "@mui/material";
-import ListItemText from "@mui/material/ListItemText";
+import { Badge, CircularProgress } from "@mui/material";
 import Link from "@mui/material/Link";
 import { FormProvider, useForm } from "react-hook-form";
 import TaskForm from "./forms/TaskForm.jsx";
 import { useGetAllTaskReminders } from "../../api/taskReminders/useTaskReminderFetch.js";
-import { useTaskReminderCreate } from "../../api/taskReminders/useTaskReminderMutation.js";
-import UserForm from "../../layout/users/forms/UserForm.jsx";
-import PropTypes from "prop-types";
+import { useTaskReminderCreate, useUpdateTaskReminder } from "../../api/taskReminders/useTaskReminderMutation.js";
+import dayjs from "dayjs";
+import isToday from "dayjs/plugin/isToday";
+import isTomorrow from "dayjs/plugin/isTomorrow";
+import TaskReminderListItem from "./components/TaskReminderListItem.jsx";
+
+dayjs.extend(isToday);
+dayjs.extend(isTomorrow);
 
 function Configurator() {
     const [controller, dispatch] = useUISettingsController();
     const { openConfigurator, darkMode } = controller;
-    const [disabled, setDisabled] = useState(false);
-    const [hovered, setHovered] = useState({ id: null, show: false });
+    const [, setDisabled] = useState(false);
+    
     const [showTaskForm, setShowTaskForm] = useState(false);
     const methods = useForm();
 
     const taskReminders = useGetAllTaskReminders();
     const createTaskReminder = useTaskReminderCreate(true, false);
+    const updateTaskReminder = useUpdateTaskReminder();
 
     useEffect(() => {
         function handleDisabled() {
@@ -69,61 +73,27 @@ function Configurator() {
             </form>
         </FormProvider>;
 
-    const TaskReminderListItem = ({ record }) => {
-        const [hovered, setHovered] = useState(false);
-
-        return (
-            <ListItem
-                key={record._id}
-                sx={{ mb: 1 }}
-                onMouseEnter={() => setHovered(true)}
-                onMouseLeave={() => setHovered(false)}
-            >
-                <ListItemAvatar>
-                    <Tooltip title="Mark completed" arrow={false}>
-                        <span>
-                            <Icon color={hovered ? "success" : "inherit"}>
-                                {hovered ? "checked" : "radio_button_unchecked"}
-                            </Icon>
-                        </span>
-                    </Tooltip>
-                </ListItemAvatar>
-                <ListItemText
-                    primary={
-                        <Typography variant="body2">
-                            {record.title}
-                        </Typography>
-                    }
-                    secondary={
-                        <Typography variant="button" color="text">
-                            {record.description}
-                        </Typography>
-                    }
-                />
-            </ListItem>
-        );
-    };
-
-    TaskReminderListItem.propTypes = {
-        record: PropTypes.shape({
-            _id: PropTypes.string.isRequired,
-            title: PropTypes.string.isRequired,
-            description: PropTypes.string.isRequired,
-            date: PropTypes.string, // Optional or required depending on your needs
-        }).isRequired,
+    const onClickTaskReminder = (record) => {
+        updateTaskReminder.mutate({ id: record._id, updatedData: { ...record, actioned: true } });
     };
 
     const myTasks = () => {
         if (taskReminders.isPending) {
             return <CircularProgress/>;
-        } else if (taskReminders.data.myTaskReminders &&
-          taskReminders.data.myTaskReminders.length > 0) {
+        } else if (taskReminders.data.myTaskReminders && taskReminders.data.myTaskReminders.length > 0) {
             return (
                 taskReminders.data.myTaskReminders.map(record =>
-                    <TaskReminderListItem key={record._id} record={record}/>)
+                    <TaskReminderListItem 
+                        key={record._id} 
+                        record={record} 
+                        disableItem={updateTaskReminder.isPending && 
+                            updateTaskReminder.context.data.updatedData._id === record._id}
+                        onClickTaskReminder={onClickTaskReminder}/>)
             );
         } 
-        return <Typography variant={"button"}>No task/reminders have been created yet</Typography>;
+        return <Box display="flex" justifyContent="center">
+            <Typography variant={"button"}>There are currently no task/reminders</Typography>
+        </Box>;
     };
 
     const teamTasks = () => {
@@ -133,10 +103,16 @@ function Configurator() {
       taskReminders.data.teamTaskReminders.length > 0) {
             return (
                 taskReminders.data.teamTaskReminders.map(record =>
-                    <TaskReminderListItem key={record._id} record={record}/>)
+                    <TaskReminderListItem key={record._id} 
+                        disableItem={updateTaskReminder.isPending && 
+                        updateTaskReminder.context.data.updatedData._id === record._id}
+                        onClickTaskReminder={onClickTaskReminder}
+                        record={record}/>)
             );
         }
-        return <Typography variant={"button"}>No task/reminders have been created yet</Typography>;
+        return <Box display="flex" justifyContent="center">
+            <Typography variant={"button"}>There are currently no task/reminders</Typography>
+        </Box>;
     };
 
     return (
@@ -162,7 +138,6 @@ function Configurator() {
                     </Link>
                     {showTaskForm && <AddTaskForm/>}
                 </Box>
-
                 <Icon
                     sx={({ typography: { size }, palette: { dark, white } }) => ({
                         fontSize: `${size.lg} !important`,
@@ -180,7 +155,12 @@ function Configurator() {
             <Divider />
             <Box pt={0.5} pb={3} px={3}>
                 <Box>
-                    <Typography variant="h6">My Tasks</Typography>
+                    <Box>
+                        <Badge badgeContent={taskReminders.data?.myTaskReminders.length} color={"secondary"}>
+                            <Typography variant="h6">My Tasks</Typography>
+                        </Badge>
+                    </Box>
+                    
                     <Typography variant="button" color="text">
             Only you are able to see these tasks
                     </Typography>
@@ -191,7 +171,11 @@ function Configurator() {
                 </Box>
                 <Divider />
                 <Box mt={3} lineHeight={1}>
-                    <Typography variant="h6">Team Tasks</Typography>
+                    <Box>
+                        <Badge badgeContent={taskReminders.data?.teamTaskReminders.length} color={"secondary"}>
+                            <Typography variant="h6">Team Tasks</Typography>
+                        </Badge>
+                    </Box>
                     <Typography variant="button" color="text">
             Everyone in your team will be able to see these tasks
                     </Typography>

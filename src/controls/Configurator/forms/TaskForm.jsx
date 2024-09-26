@@ -7,7 +7,6 @@ import Typography from "../../../components/Typography/Typography.jsx";
 import Button from "../../../components/Button/Button.jsx";
 import Box from "../../../components/Box/Box.jsx";
 import PropTypes from "prop-types";
-import UserForm from "../../../layout/users/forms/UserForm.jsx";
 import FormInputCheckbox from "../../../components/Input/FormInputCheckbox/FormInputCheckbox.jsx";
 
 const TaskForm = ({ isAdding, onCancel }) => {
@@ -55,9 +54,12 @@ const TaskForm = ({ isAdding, onCancel }) => {
             <Grid item xs={12} md={12}>
                 <FormInputCheckbox name={"teamTaskReminder"} label={"Team Task/Reminder"}/>
             </Grid>
-            <Box display="flex" justifyContent="end" marginTop={2} width="100%" mb={2}>
-                {isAdding ?
-                    <CircularProgress/> :
+           
+            {isAdding ? 
+                <Box display="flex" justifyContent="center" width="100%" mb={2}>
+                    <CircularProgress/>
+                </Box> :
+                <Box display="flex" justifyContent="end" marginTop={2} width="100%" mb={2}>
                     <>
                         <Button onClick={onCancel}
                             color="secondary"
@@ -71,14 +73,14 @@ const TaskForm = ({ isAdding, onCancel }) => {
                             sx={{ mx: 1 }}>
                   SUBMIT
                         </Button>
-                    </>
-                }
-            </Box>
+                    </>   
+                </Box>
+            }
         </Grid>
     );
 };
 
-UserForm.prototype = {
+TaskForm.prototype = {
     onCancel: PropTypes.func,
     isAdding: PropTypes.bool,
 };

@@ -6,7 +6,8 @@ const schema = z.object({
     title: z.string({ required_error: "title is required" }),
     description: z.string().optional(),
     dateTime: z.string().optional(),
-    teamTaskReminder: z.boolean().optional()
+    teamTaskReminder: z.boolean().optional(),
+    actioned: z.boolean().optional(),
 });
 
 const getAllTaskReminders = async (req, res) => {
@@ -40,7 +41,7 @@ const updateTaskReminder = async (req, res) => {
         if (error) {
             return res.status(400).json({ message: "Validation failed.", errors: error });
         }
-        const response = await TaskReminderService.updateTaskReminder(req.params.id, payload);
+        const response = await TaskReminderService.updateTaskReminder(req.params.id, req.userId, payload);
         res.status(200).send(response);
     } catch (err) {
         console.error(err);

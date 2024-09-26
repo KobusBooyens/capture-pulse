@@ -1,7 +1,10 @@
 const db = require("../models");
 
 exports.getAllTaskReminders = async (subscriptionId, userId) => {
-    const taskReminders = await db.TaskReminders.find({ subscription: subscriptionId }).lean();
+    const taskReminders = await db.TaskReminders.find({ 
+        subscription: subscriptionId, 
+        actioned: { $eq: false } 
+    }).lean();
     console.log(subscriptionId, userId);
 
     const { teamTaskReminders, myTaskReminders } = taskReminders.reduce((acc, taskReminder) => {
@@ -30,7 +33,12 @@ exports.createTaskReminder = async (subscriptionId, userId, payload) => {
     return await taskReminder.save();
 };
 
-exports.updateTaskReminder = async (id, payload) => {
+exports.updateTaskReminder = async (id, userId, payload) => {
+    if (payload.actioned === true) {
+        payload.actionedDateTime = Date.now();
+        payload.actionedBy = userId;    
+    }
+
     return db.TaskReminders.findOneAndUpdate({ _id: id }, { $set: { ...payload } });
 };
 

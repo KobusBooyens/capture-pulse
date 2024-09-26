@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const mongoose_delete = require("mongoose-delete");
+const { boolean } = require("zod");
 
 const schema = new mongoose.Schema(
     {
@@ -22,6 +23,17 @@ const schema = new mongoose.Schema(
         },
         dateTime: {
             type: Date,
+        },
+        actioned: {
+            type: Boolean,
+            default: false
+        },
+        actionedDateTime: {
+            type: Date,
+        },
+        actionedBy: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Users"
         },
         teamTaskReminder : {
             type: Boolean,
