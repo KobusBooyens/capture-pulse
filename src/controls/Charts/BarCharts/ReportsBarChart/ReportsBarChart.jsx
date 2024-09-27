@@ -19,31 +19,34 @@ import Icon from "@mui/material/Icon";
 import config from "./config.js";
 import Box from "../../../../components/Box/Box.jsx";
 import Typography from "../../../../components/Typography/Typography.jsx";
+import { CircularProgress } from "@mui/material";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-function ReportsBarChart({ color, title, description, chart, children }) {
+function ReportsBarChart({ color, title, description, chart, children, isLoading }) {
     const { data, options } = config(chart.labels || [], chart.datasets || {});
 
     return (
         <Card>
             <Box padding="1rem">
+                {isLoading && <CircularProgress/>}
                 {useMemo(
-                    () => 
-                        <Box
-                            variant="gradient"
-                            bgColor={color}
-                            borderRadius="lg"
-                            coloredShadow={color}
-                            py={2}
-                            pr={0.5}
-                            mt={-5}
-                            height="12.5rem"
-                        >
-                            <Bar data={data} options={options} redraw />
-                        </Box>
-                    ,
-                    [color, chart]
+                    () => {
+                        return (
+                            <Box
+                                variant="gradient"
+                                bgColor={color}
+                                borderRadius="lg"
+                                coloredShadow={color}
+                                py={2}
+                                pr={0.5}
+                                mt={-5}
+                                height="12.5rem"
+                            >
+                                <Bar data={data} options={options} redraw />
+                            </Box>
+                        );
+                    },[color, chart]
                 )}
                 <Box pt={3} pb={1} px={1}>
                     <Typography variant="h6" textTransform="capitalize">
@@ -72,6 +75,7 @@ ReportsBarChart.propTypes = {
     title: PropTypes.string.isRequired,
     description: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     children: PropTypes.node,
+    isLoading: PropTypes.bool,
     chart: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.array, PropTypes.object])).isRequired,
 };
 

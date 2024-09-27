@@ -12,6 +12,7 @@ import dayjs from "dayjs";
 import { useDashboardClientSummary } from "../../api/dashboard/useDashboardFetch.js";
 import TotalClientsCard from "./components/TotalClientsCard.jsx";
 import TotalNewClients from "./components/TotalNewClients.jsx";
+import WeeklyNewClientsBarChart from "./graphs/WeeklyNewClientsBarChart.jsx";
 
 const DashboardMain = () => {
     const { joined, payments } = reportsLineChartData;
@@ -79,13 +80,7 @@ const DashboardMain = () => {
                     <Grid container spacing={3}>
                         <Grid item xs={12} md={6} lg={4}>
                             <Box mb={3}>
-                                <ReportsBarChart
-                                    color="info"
-                                    title="New Clients"
-                                    description="Weekly insights"
-                                    date="latest client joined 2 days ago"
-                                    chart={reportsBarChartData}
-                                />
+                                <WeeklyNewClientsBarChart />
                             </Box>
                         </Grid>
                         <Grid item xs={12} md={6} lg={4}>

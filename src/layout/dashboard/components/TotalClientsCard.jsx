@@ -20,7 +20,7 @@ const TotalClientsCard = ({ totalClients, totalMales, totalFemales, isLoading })
                         component="span"
                         variant="button"
                         fontWeight="bold"
-                        color={"info"}>
+                        color={"male"}>
                         {"Males"}
                     </Typography>
                     {totalMales}
@@ -28,7 +28,7 @@ const TotalClientsCard = ({ totalClients, totalMales, totalFemales, isLoading })
                         component="span"
                         variant="button"
                         fontWeight="bold"
-                        color={"primary"}>
+                        color={"female"}>
                         {"Female"}
                     </Typography>
                     {totalFemales}

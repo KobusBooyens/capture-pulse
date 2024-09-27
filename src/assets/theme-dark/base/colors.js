@@ -65,6 +65,16 @@ const colors = {
         focus: "#2c3c58",
     },
 
+    male: {
+        main: "#02b0f0",
+        focus: "#1092c3"
+    },
+
+    female: {
+        main: "#f75b95",
+        focus: "#ba4b78"
+    },
+
     grey: {
         100: "#f8f9fa",
         200: "#f0f2f5",
@@ -117,6 +127,16 @@ const colors = {
             main: "#344767",
             state: "#2c3c58",
         },
+
+        male: {
+            main: "#02b0f0",
+            state: "#1092c3"
+        },
+
+        female: {
+            main: "#f75b95",
+            state: "#ba4b78"
+        },
     },
 
     badgeColors: {
@@ -159,6 +179,16 @@ const colors = {
             background: "#d6d8db",
             text: "#1b1e21",
         },
+
+        male: {
+            background: "#02b0f0",
+            text: "#0261f0"
+        },
+
+        female: {
+            background: "#f75b95",
+            text: "#c3306a"
+        },
     },
 
     coloredShadows: {
@@ -170,6 +200,8 @@ const colors = {
         error: "#F44335",
         light: "#adb5bd",
         dark: "#344767",
+        male: "#02b0f0",
+        female: "#f75b95",
     },
 
     inputBorderColor: "#d2d6da",

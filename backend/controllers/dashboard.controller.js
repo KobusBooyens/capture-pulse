@@ -1,8 +1,28 @@
-const DashboarService = require("../services/dashboard.service");
+const DashboardService = require("../services/dashboard.service");
 
 const getClientSummary = async (req, res) => {
     try {
-        const response = await DashboarService.getClientSummary(req.subscriptionId);
+        const response = await DashboardService.getClientSummary(req.subscriptionId);
+        res.status(200).send(response);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send({ message: "Internal Server Error", error: err });
+    }
+};
+
+const getClientWeeklySummary = async (req, res) => {
+    try {
+        const response = await DashboardService.getClientWeeklySummary(req.subscriptionId);
+        res.status(200).send(response);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send({ message: "Internal Server Error", error: err });
+    }
+};
+
+const getClientMonthlySummary = async (req, res) => {
+    try {
+        const response = await DashboardService.getClientMonthlySummary(req.subscriptionId);
         res.status(200).send(response);
     } catch (err) {
         console.error(err);
@@ -12,7 +32,7 @@ const getClientSummary = async (req, res) => {
 
 const getCheckinSummary = async (req, res) => {
     try {
-        const response = await DashboarService.getCheckinSummary();
+        const response = await DashboardService.getCheckinSummary();
         res.status(200).send(response);
     } catch (err) {
         console.error(err);
@@ -22,7 +42,7 @@ const getCheckinSummary = async (req, res) => {
 
 const getBillingSummary = async (req, res) => {
     try {
-        const response = await DashboarService.getBillingSummary();
+        const response = await DashboardService.getBillingSummary();
         res.status(200).send(response);
     } catch (err) {
         console.error(err);
@@ -31,5 +51,6 @@ const getBillingSummary = async (req, res) => {
 };
 
 module.exports = {
-    getClientSummary, getCheckinSummary, getBillingSummary
+    getClientSummary, getClientWeeklySummary, getClientMonthlySummary,
+    getCheckinSummary, getBillingSummary
 };

@@ -22,8 +22,8 @@ Avatar.propTypes = {
         "error",
         "light",
         "dark",
-        "blue",
-        "pink"
+        "male",
+        "female"
     ]),
     size: PropTypes.oneOf(["xs", "sm", "md", "lg", "xl", "xxl"]),
     shadow: PropTypes.oneOf(["none", "xs", "sm", "md", "lg", "xl", "xxl", "inset"]),

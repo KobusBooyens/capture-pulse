@@ -42,6 +42,7 @@ function configs(labels, datasets) {
                         suggestedMax: 500,
                         beginAtZero: true,
                         padding: 10,
+                        stepSize: 1,
                         font: {
                             size: 14,
                             weight: 300,
