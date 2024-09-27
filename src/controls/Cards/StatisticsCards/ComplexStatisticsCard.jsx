@@ -56,7 +56,8 @@ ComplexStatisticsCard.propTypes = {
     title: PropTypes.string.isRequired,
     titleContent: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     icon: PropTypes.node.isRequired,
-    children: PropTypes.node.isRequired
+    children: PropTypes.node.isRequired,
+    isLoading: PropTypes.bool,
 };
 
 export default ComplexStatisticsCard;

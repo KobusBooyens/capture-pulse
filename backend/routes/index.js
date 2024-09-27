@@ -1,6 +1,7 @@
 
 const routes = (app) => {
     require("./subscription.routes")(app);
+    require("./dashboard.routes")(app);
     require("./taskReminders.routes")(app);
     require("./goals.routes")(app);
     require("./user.routes")(app);

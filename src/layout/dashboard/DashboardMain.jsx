@@ -9,9 +9,14 @@ import reportsBarChartData from "./data/reportsBarChartData";
 import reportsLineChartData from "./data/reportsLineChartData";
 import Typography from "../../components/Typography/Typography.jsx";
 import dayjs from "dayjs";
+import { useDashboardClientSummary } from "../../api/dashboard/useDashboardFetch.js";
+import TotalClientsCard from "./components/TotalClientsCard.jsx";
+import TotalNewClients from "./components/TotalNewClients.jsx";
 
 const DashboardMain = () => {
     const { joined, payments } = reportsLineChartData;
+
+    const clientSummary = useDashboardClientSummary();
 
     return (
         <>
@@ -19,51 +24,12 @@ const DashboardMain = () => {
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={6} lg={3}>
                         <Box mb={1.5}>
-                            <ComplexStatisticsCard
-                                color="dark"
-                                icon="people_alt"
-                                title="Total Clients"
-                                titleContent={281}
-                            >
-                                <Typography component="p" variant="button" color="text" display="flex" gap={1}>
-                                    <Typography
-                                        component="span"
-                                        variant="button"
-                                        fontWeight="bold"
-                                        color={"info"}>
-                                        {"Male"}
-                                    </Typography>
-                                    {"81"}
-                                    <Typography
-                                        component="span"
-                                        variant="button"
-                                        fontWeight="bold"
-                                        color={"primary"}>
-                                        {"Female"}
-                                    </Typography>
-                                    {"200"}
-                                </Typography>
-                            </ComplexStatisticsCard>
+                            <TotalClientsCard {...clientSummary.data} isLoading={clientSummary.isLoading}/>
                         </Box>
                     </Grid>
                     <Grid item xs={12} md={6} lg={3}>
                         <Box mb={1.5} >
-                            <ComplexStatisticsCard
-                                color="primary"
-                                icon="person_add"
-                                title="Total New Clients"
-                                titleContent="+12"
-                            >
-                                <Typography component="p" variant="button" color="text" display="flex">
-                                    <Typography
-                                        component="span"
-                                        variant="button"
-                                        fontWeight="bold"
-                                        color={"primary"}>
-                                        {`${dayjs().format("MMMM")}`}
-                                    </Typography>
-                                </Typography>
-                            </ComplexStatisticsCard>
+                            <TotalNewClients {...clientSummary.data} isLoading={clientSummary.isLoading}/>
                         </Box>
                     </Grid>
 
