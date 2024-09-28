@@ -1,10 +1,9 @@
 import React from "react";
-import ComplexStatisticsCard from "../../../controls/Cards/StatisticsCards/ComplexStatisticsCard";
-import Typography from "../../../components/Typography/Typography";
+import ComplexStatisticsCard from "../../../controls/Cards/StatisticsCards/ComplexStatisticsCard.jsx";
+import Typography from "../../../components/Typography/Typography.jsx";
 import { CircularProgress } from "@mui/material";
 
-const TotalClientsCard = ({ totalClients, totalMales, totalFemales, isLoading }) => {
-    console.log({ totalClients, totalMales, isLoading });
+const TotalClients = ({ totalClients, totalMales, totalFemales, isLoading }) => {
     return (
         <ComplexStatisticsCard
             color="dark"
@@ -38,4 +37,4 @@ const TotalClientsCard = ({ totalClients, totalMales, totalFemales, isLoading })
     );
 };
 
-export default TotalClientsCard;   
+export default TotalClients;

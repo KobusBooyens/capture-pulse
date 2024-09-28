@@ -44,6 +44,7 @@ function configs(labels, datasets) {
                         display: true,
                         color: "#f8f9fa",
                         padding: 10,
+                        stepSize: 1,
                         font: {
                             size: 14,
                             weight: 300,

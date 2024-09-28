@@ -48,11 +48,11 @@ function ReportsBarChart({ color, title, description, chart, children, isLoading
                         );
                     },[color, chart]
                 )}
-                <Box pt={3} pb={1} px={1}>
+                <Box pt={3} pb={1} px={1} >
                     <Typography variant="h6" textTransform="capitalize">
                         {title}
                     </Typography>
-                    <Typography component="div" variant="button" color="text" fontWeight="light">
+                    <Typography variant="body2" color="text" fontWeight="light">
                         {description}
                     </Typography>
                     <Divider />
@@ -72,7 +72,7 @@ ReportsBarChart.defaultProps = {
 
 ReportsBarChart.propTypes = {
     color: PropTypes.oneOf(["primary", "secondary", "info", "success", "warning", "error", "dark"]),
-    title: PropTypes.string.isRequired,
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     description: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     children: PropTypes.node,
     isLoading: PropTypes.bool,

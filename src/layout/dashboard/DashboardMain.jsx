@@ -2,17 +2,16 @@ import React from "react";
 import Box from "../../components/Box/Box.jsx";
 import { Grid } from "@mui/material";
 import ComplexStatisticsCard from "../../controls/Cards/StatisticsCards/ComplexStatisticsCard.jsx";
-import ReportsBarChart from "../../controls/Charts/BarCharts/ReportsBarChart/ReportsBarChart.jsx";
 import ReportsLineChart from "../../controls/Charts/LineCharts/ReportsLineChart/ReportLineChart.jsx";
-
-import reportsBarChartData from "./data/reportsBarChartData";
-import reportsLineChartData from "./data/reportsLineChartData";
+import reportsLineChartData from "./data/reportsLineChartData.js";
 import Typography from "../../components/Typography/Typography.jsx";
-import dayjs from "dayjs";
 import { useDashboardClientSummary } from "../../api/dashboard/useDashboardFetch.js";
-import TotalClientsCard from "./components/TotalClientsCard.jsx";
-import TotalNewClients from "./components/TotalNewClients.jsx";
-import WeeklyNewClientsBarChart from "./graphs/WeeklyNewClientsBarChart.jsx";
+import TotalClients from "./cards/TotalClients.jsx";
+import TotalNewClients from "./cards/TotalNewClients.jsx";
+import DailyClientInsightsReport from "./graphs/dailyClientInsights/DailyClientInsightsReport.jsx";
+import MonthlyClientInsightsReport from "./graphs/monthlyClientInsights/MonthlyClientInsightsReport.jsx";
+import WeeklyClientInsightsReport from "./graphs/weeklyClientInsights/WeeklyClientInsightsReport.jsx";
+import TotalCheckins from "./cards/TotalCheckins.jsx";
 
 const DashboardMain = () => {
     const { joined, payments } = reportsLineChartData;
@@ -25,7 +24,7 @@ const DashboardMain = () => {
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={6} lg={3}>
                         <Box mb={1.5}>
-                            <TotalClientsCard {...clientSummary.data} isLoading={clientSummary.isLoading}/>
+                            <TotalClients {...clientSummary.data} isLoading={clientSummary.isLoading}/>
                         </Box>
                     </Grid>
                     <Grid item xs={12} md={6} lg={3}>
@@ -36,75 +35,59 @@ const DashboardMain = () => {
 
                     <Grid item xs={12} md={6} lg={3}>
                         <Box mb={1.5}>
-                            <ComplexStatisticsCard
-                                icon="settings_accessibility"
-                                title="Check-ins"
-                                titleContent="150"
-                            >
-                                <Typography component="p" variant="button" color="text" display="flex" gap={1}>
-                                    <Typography
-                                        component="span"
-                                        variant="button"
-                                        fontWeight="bold"
-                                        color={"warning"}>
-                                        {"Remaining"}
-                                    </Typography>
-                                    {"131"}
-                                </Typography>
-                            </ComplexStatisticsCard>
+                            <TotalCheckins/>
                         </Box>
                     </Grid>
-                    <Grid item xs={12} md={6} lg={3}>
-                        <Box mb={1.5}>
-                            <ComplexStatisticsCard
-                                color="success"
-                                icon="receipt_long"
-                                title="BillingMain"
-                                titleContent="4500"
-                            >
-                                <Typography component="p" variant="button" color="text" display="flex" gap={1}>
-                                    <Typography
-                                        component="span"
-                                        variant="button"
-                                        fontWeight="bold"
-                                        color={"error"}>
-                                        {"To be collected"}
-                                    </Typography>
-                                    {"4800"}
-                                </Typography>
-                            </ComplexStatisticsCard>
-                        </Box>
-                    </Grid>
+                    {/*<Grid item xs={12} md={6} lg={3}>*/}
+                    {/*    <Box mb={1.5}>*/}
+                    {/*        <ComplexStatisticsCard*/}
+                    {/*            color="success"*/}
+                    {/*            icon="receipt_long"*/}
+                    {/*            title="BillingMain"*/}
+                    {/*            titleContent="4500"*/}
+                    {/*        >*/}
+                    {/*            <Typography component="p" variant="button" color="text" display="flex" gap={1}>*/}
+                    {/*                <Typography*/}
+                    {/*                    component="span"*/}
+                    {/*                    variant="button"*/}
+                    {/*                    fontWeight="bold"*/}
+                    {/*                    color={"error"}>*/}
+                    {/*                    {"To be collected"}*/}
+                    {/*                </Typography>*/}
+                    {/*                {"4800"}*/}
+                    {/*            </Typography>*/}
+                    {/*        </ComplexStatisticsCard>*/}
+                    {/*    </Box>*/}
+                    {/*</Grid>*/}
                 </Grid>
                 <Box mt={4.5}>
                     <Grid container spacing={3}>
                         <Grid item xs={12} md={6} lg={4}>
                             <Box mb={3}>
-                                <WeeklyNewClientsBarChart />
+                                <DailyClientInsightsReport />
                             </Box>
                         </Grid>
                         <Grid item xs={12} md={6} lg={4}>
                             <Box mb={3}>
-                                <ReportsLineChart
-                                    color="success"
-                                    title="New Clients"
-                                    description="Monthly insights"
-                                    date="updated 4 min ago"
-                                    chart={joined}
-                                />
+                                <WeeklyClientInsightsReport />
                             </Box>
                         </Grid>
                         <Grid item xs={12} md={6} lg={4}>
                             <Box mb={3}>
-                                <ReportsLineChart
-                                    color="dark"
-                                    title="BillingMain"
-                                    description="Payments Received Insights"
-                                    date="just updated"
-                                    chart={payments}
-                                />
+                                <MonthlyClientInsightsReport/>
                             </Box>
                         </Grid>
+                        {/*<Grid item xs={12} md={6} lg={4}>*/}
+                        {/*    <Box mb={3}>*/}
+                        {/*        <ReportsLineChart*/}
+                        {/*            color="dark"*/}
+                        {/*            title="BillingMain"*/}
+                        {/*            description="Payments Received Insights"*/}
+                        {/*            date="just updated"*/}
+                        {/*            chart={payments}*/}
+                        {/*        />*/}
+                        {/*    </Box>*/}
+                        {/*</Grid>*/}
                     </Grid>
                 </Box>
             </Box>

@@ -5,8 +5,16 @@ const useDashboardClientSummary = () => {
     return useCustomFetch(queryKeys.clientSummary, "/dashboard/client-summary");
 };
 
-const useDashboardClientWeeklySummary = () => {
-    return useCustomFetch(queryKeys.clientWeeklySummary, "/dashboard/client-weekly-summary");
+const useDashboardClientDailyInsights = () => {
+    return useCustomFetch(queryKeys.clientDailyInsights, "/dashboard/client-daily-insights");
+};
+
+const useDashboardClientWeeklyInsights = () => {
+    return useCustomFetch(queryKeys.clientWeeklyInsights, "/dashboard/client-weekly-insights");
+};
+
+const useDashboardClientMonthlyInsights = (months) => {
+    return useCustomFetch(queryKeys.clientMonthlyInsights, `/dashboard/client-monthly-insights?months=${months}`);
 };
 
 const useDashboardCheckinSummary = () => {
@@ -19,5 +27,5 @@ const useDashboardBillingSummary = () => {
 
 export {
     useDashboardClientSummary,
-    useDashboardClientWeeklySummary,
+    useDashboardClientDailyInsights, useDashboardClientWeeklyInsights, useDashboardClientMonthlyInsights,
     useDashboardCheckinSummary, useDashboardBillingSummary };

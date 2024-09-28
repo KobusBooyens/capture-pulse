@@ -8,8 +8,9 @@ module.exports = function (app) {
     });
 
     app.get("/api/dashboard/client-summary", verifyToken, controller.getClientSummary);
-    app.get("/api/dashboard/client-weekly-summary", verifyToken, controller.getClientWeeklySummary);
-    app.get("/api/dashboard/client-monthly-summary", verifyToken, controller.getClientMonthlySummary);
+    app.get("/api/dashboard/client-daily-insights", verifyToken, controller.getClientDailyInsights);
+    app.get("/api/dashboard/client-weekly-insights", verifyToken, controller.getClientWeeklyInsights);
+    app.get("/api/dashboard/client-monthly-insights", verifyToken, controller.getClientMonthlyInsights);
 
     app.get("/api/dashboard/checkin-summary", verifyToken, controller.getCheckinSummary); 
     app.get("/api/dashboard/billing-summary", verifyToken, controller.getBillingSummary); 

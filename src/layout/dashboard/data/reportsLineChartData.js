@@ -1,7 +1,7 @@
 export default {
     joined: {
-        labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-        datasets: { label: "Joined", data: [2, 8, 4, 8, 4, 3, 4, 0, 2] },
+        labels: ["May", "Jun", "Jul", "Aug", "Sep", "Oct"],
+        datasets: { label: "Joined", data: [8, 4, 8, 42, 2, 4] },
     },
     payments: {
         labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],

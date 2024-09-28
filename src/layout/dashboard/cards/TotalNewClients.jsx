@@ -1,6 +1,6 @@
 import React from "react";
-import ComplexStatisticsCard from "../../../controls/Cards/StatisticsCards/ComplexStatisticsCard";
-import Typography from "../../../components/Typography/Typography";
+import ComplexStatisticsCard from "../../../controls/Cards/StatisticsCards/ComplexStatisticsCard.jsx";
+import Typography from "../../../components/Typography/Typography.jsx";
 import dayjs from "dayjs";
 import { CircularProgress } from "@mui/material";
 

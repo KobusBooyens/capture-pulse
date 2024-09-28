@@ -21,6 +21,7 @@ import Icon from "@mui/material/Icon";
 import Box from "../../../../components/Box/Box.jsx";
 import config from "./config.js";
 import Typography from "../../../../components/Typography/Typography.jsx";
+import { CircularProgress } from "@mui/material";
 
 ChartJS.register(
     CategoryScale,
@@ -33,12 +34,13 @@ ChartJS.register(
     Filler
 );
 
-function ReportsLineChart({ color, title, description, date, chart }) {
+function ReportsLineChart({ color, title, description, chart, children, isLoading }) {
     const { data, options } = config(chart.labels || [], chart.datasets || {});
 
     return (
         <Card sx={{ height: "100%" }}>
             <Box padding="1rem">
+                {isLoading && <CircularProgress/>}
                 {useMemo(
                     () => 
                         <Box
@@ -60,17 +62,12 @@ function ReportsLineChart({ color, title, description, date, chart }) {
                     <Typography variant="h6" textTransform="capitalize">
                         {title}
                     </Typography>
-                    <Typography component="div" variant="button" color="text" fontWeight="light">
+                    <Typography variant="body2" color="text" fontWeight="light">
                         {description}
                     </Typography>
                     <Divider />
                     <Box display="flex" alignItems="center">
-                        <Typography variant="button" color="text" lineHeight={1} sx={{ mt: 0.15, mr: 0.5 }}>
-                            <Icon>schedule</Icon>
-                        </Typography>
-                        <Typography variant="button" color="text" fontWeight="light">
-                            {date}
-                        </Typography>
+                        {children}
                     </Box>
                 </Box>
             </Box>
@@ -87,7 +84,8 @@ ReportsLineChart.propTypes = {
     color: PropTypes.oneOf(["primary", "secondary", "info", "success", "warning", "error", "dark"]),
     title: PropTypes.string.isRequired,
     description: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-    date: PropTypes.string.isRequired,
+    children: PropTypes.node,
+    isLoading: PropTypes.bool,
     chart: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.array, PropTypes.object])).isRequired,
 };
 
