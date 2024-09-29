@@ -2,9 +2,9 @@ const DashboardService = require("../services/dashboard.service");
 const { z } = require("zod");
 const validateAndRespond = require("../utils/zodValidation");
 
-const getClientSummary = async (req, res) => {
+const getClientInsights = async (req, res) => {
     try {
-        const response = await DashboardService.getClientSummary(req.subscriptionId);
+        const response = await DashboardService.getClientInsights(req.subscriptionId);
         res.status(200).send(response);
     } catch (err) {
         console.error(err);
@@ -50,9 +50,9 @@ const getClientMonthlyInsights = async (req, res) => {
     }
 };
 
-const getCheckinSummary = async (req, res) => {
+const getCheckinInsights = async (req, res) => {
     try {
-        const response = await DashboardService.getCheckinSummary();
+        const response = await DashboardService.getCheckinInsights(req.subscriptionId);
         res.status(200).send(response);
     } catch (err) {
         console.error(err);
@@ -60,9 +60,9 @@ const getCheckinSummary = async (req, res) => {
     }
 };
 
-const getBillingSummary = async (req, res) => {
+const getBillingInsights = async (req, res) => {
     try {
-        const response = await DashboardService.getBillingSummary();
+        const response = await DashboardService.getBillingInsights();
         res.status(200).send(response);
     } catch (err) {
         console.error(err);
@@ -71,7 +71,7 @@ const getBillingSummary = async (req, res) => {
 };
 
 module.exports = {
-    getClientSummary,
+    getClientInsights,
     getClientDailyInsights, getClientWeeklyInsights, getClientMonthlyInsights,
-    getCheckinSummary, getBillingSummary
+    getCheckinInsights, getBillingInsights
 };

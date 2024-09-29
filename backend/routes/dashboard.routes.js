@@ -7,11 +7,11 @@ module.exports = function (app) {
         next();
     });
 
-    app.get("/api/dashboard/client-summary", verifyToken, controller.getClientSummary);
+    app.get("/api/dashboard/client-insights", verifyToken, controller.getClientInsights);
     app.get("/api/dashboard/client-daily-insights", verifyToken, controller.getClientDailyInsights);
     app.get("/api/dashboard/client-weekly-insights", verifyToken, controller.getClientWeeklyInsights);
     app.get("/api/dashboard/client-monthly-insights", verifyToken, controller.getClientMonthlyInsights);
 
-    app.get("/api/dashboard/checkin-summary", verifyToken, controller.getCheckinSummary); 
-    app.get("/api/dashboard/billing-summary", verifyToken, controller.getBillingSummary); 
+    app.get("/api/dashboard/checkin-insights", verifyToken, controller.getCheckinInsights);
+    app.get("/api/dashboard/billing-insights", verifyToken, controller.getBillingInsights);
 };

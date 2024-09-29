@@ -1,8 +1,8 @@
 import useCustomFetch from "../_shared/useCustomFetch.js";
 import queryKeys from "./useQueryKeys.js";
 
-const useDashboardClientSummary = () => {
-    return useCustomFetch(queryKeys.clientSummary, "/dashboard/client-summary");
+const useDashboardClientInsights = () => {
+    return useCustomFetch(queryKeys.clientInsights, "/dashboard/client-insights");
 };
 
 const useDashboardClientDailyInsights = () => {
@@ -17,15 +17,15 @@ const useDashboardClientMonthlyInsights = (months) => {
     return useCustomFetch(queryKeys.clientMonthlyInsights, `/dashboard/client-monthly-insights?months=${months}`);
 };
 
-const useDashboardCheckinSummary = () => {
-    return useCustomFetch(queryKeys.checkinSummary, "/dashboard/checkin-summary");
+const useDashboardCheckinInsights = () => {
+    return useCustomFetch(queryKeys.checkinInsights, "/dashboard/checkin-insights");
 };
 
-const useDashboardBillingSummary = () => {
-    return useCustomFetch(queryKeys.checkinSummary, "/dashboard/billing-summary");
+const useDashboardBillingInsights = () => {
+    return useCustomFetch(queryKeys.billingInsights, "/dashboard/billing-insights");
 };
 
 export {
-    useDashboardClientSummary,
+    useDashboardClientInsights,
     useDashboardClientDailyInsights, useDashboardClientWeeklyInsights, useDashboardClientMonthlyInsights,
-    useDashboardCheckinSummary, useDashboardBillingSummary };
+    useDashboardCheckinInsights, useDashboardBillingInsights };

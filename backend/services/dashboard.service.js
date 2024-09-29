@@ -1,11 +1,13 @@
 const dayjs = require("dayjs");
 const localizedFormat = require("dayjs/plugin/localizedFormat");
+const isoWeek = require("dayjs/plugin/isoWeek");
 const db = require("../models");
+const { ObjectId } = require("mongodb");
 
 dayjs.extend(localizedFormat);
-dayjs().format("L LT");
+dayjs.extend(isoWeek);
 
-exports.getClientSummary = async (subscription) => {
+exports.getClientInsights = async (subscription) => {
     const clients = await db.Client.find({ subscription: subscription });
 
     const monthStart = dayjs().startOf("month");
@@ -72,18 +74,14 @@ exports.getClientWeeklyInsights = async (subscription) => {
         }
 
         const data = await db.Client.aggregate([
-            {
-                $match: {
-                    subscription: subscription,
-                    joiningDate: { $gte: currentWeekStart.toDate(), $lte: currentWeekEnd.toDate() }
-                }
-            },
-            {
-                $group: {
-                    _id: null,
-                    totalCount: { $sum: 1 }
-                }
-            }
+            { $match: {
+                subscription: subscription,
+                joiningDate: { $gte: currentWeekStart.toDate(), $lte: currentWeekEnd.toDate() }
+            } },
+            { $group: {
+                _id: null,
+                totalCount: { $sum: 1 }
+            } }
         ]);
 
         const totalCount = data?.[0]?.totalCount || 0;
@@ -112,7 +110,7 @@ exports.getClientMonthlyInsights = async (subscription, payload) => {
     for (let month = 0; month < parseInt(months); month++) {
         const currentMonthStart = startDate.add(month + 1, "month").startOf("month");
         const currentMonthEnd = currentMonthStart.endOf("month");
-        console.log("month", { currentMonthStart, currentMonthEnd, month });
+
         const data = await db.Client.aggregate([
             { $match: {
                 subscription: subscription,
@@ -135,10 +133,37 @@ exports.getClientMonthlyInsights = async (subscription, payload) => {
     return monthsInRange;
 };
 
-exports.getCheckinSummary = async (subscription) => {
+exports.getCheckinInsights = async (subscription) => {
+    const startOfWeek = dayjs().startOf("week").toDate();
+    const endOfWeek = dayjs().endOf("week").toDate();
 
+    const totalClients = await db.Client.countDocuments({ subscription: subscription });
+
+    const totalCheckinsAggregation = await db.GeneralCheckins.aggregate([
+        { $lookup: {
+            from: "clients",
+            localField: "client",
+            foreignField: "_id",
+            as: "clientInfo"
+        } },
+        { $unwind: "$clientInfo" },
+        { $match: {
+            "clientInfo.subscription": new ObjectId(subscription),
+            date: {
+                $gte: startOfWeek,
+                $lt: endOfWeek
+            }
+        } },
+        { $count: "totalCheckins" }
+    ]);
+
+    return {
+        totalClients,
+        totalCheckins: totalCheckinsAggregation[0].totalCheckins,
+        totalRemaining: totalClients - totalCheckinsAggregation[0].totalCheckins
+    };
 };
 
-exports.getBillingSummary = async (subscription) => {
+exports.getBillingInsights = async (subscription) => {
 
 };

@@ -5,7 +5,7 @@ import ComplexStatisticsCard from "../../controls/Cards/StatisticsCards/ComplexS
 import ReportsLineChart from "../../controls/Charts/LineCharts/ReportsLineChart/ReportLineChart.jsx";
 import reportsLineChartData from "./data/reportsLineChartData.js";
 import Typography from "../../components/Typography/Typography.jsx";
-import { useDashboardClientSummary } from "../../api/dashboard/useDashboardFetch.js";
+import { useDashboardCheckinInsights, useDashboardClientInsights } from "../../api/dashboard/useDashboardFetch.js";
 import TotalClients from "./cards/TotalClients.jsx";
 import TotalNewClients from "./cards/TotalNewClients.jsx";
 import DailyClientInsightsReport from "./graphs/dailyClientInsights/DailyClientInsightsReport.jsx";
@@ -16,7 +16,8 @@ import TotalCheckins from "./cards/TotalCheckins.jsx";
 const DashboardMain = () => {
     const { joined, payments } = reportsLineChartData;
 
-    const clientSummary = useDashboardClientSummary();
+    const clientInsights = useDashboardClientInsights();
+    const checkinInsights = useDashboardCheckinInsights();
 
     return (
         <>
@@ -24,18 +25,18 @@ const DashboardMain = () => {
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={6} lg={3}>
                         <Box mb={1.5}>
-                            <TotalClients {...clientSummary.data} isLoading={clientSummary.isLoading}/>
+                            <TotalClients {...clientInsights.data} isLoading={clientInsights.isLoading}/>
                         </Box>
                     </Grid>
                     <Grid item xs={12} md={6} lg={3}>
                         <Box mb={1.5} >
-                            <TotalNewClients {...clientSummary.data} isLoading={clientSummary.isLoading}/>
+                            <TotalNewClients {...clientInsights.data} isLoading={clientInsights.isLoading}/>
                         </Box>
                     </Grid>
 
                     <Grid item xs={12} md={6} lg={3}>
                         <Box mb={1.5}>
-                            <TotalCheckins/>
+                            <TotalCheckins {...checkinInsights.data}/>
                         </Box>
                     </Grid>
                     {/*<Grid item xs={12} md={6} lg={3}>*/}

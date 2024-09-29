@@ -1,14 +1,14 @@
 const rootQueryKey = "dashboard";
 
 const queryKeys = {
-    clientSummary: [rootQueryKey, "clientSummary"],
+    clientInsights: [rootQueryKey, "clientInsights"],
 
     clientDailyInsights: [rootQueryKey, "clientDailyInsights"],
     clientWeeklyInsights: [rootQueryKey, "clientWeeklyInsights"],
     clientMonthlyInsights: [rootQueryKey, "clientMonthlyInsights"],
 
-    checkinSummary: [rootQueryKey, "checkinSummary"],
-    billing: [rootQueryKey, "billingSummary"],
+    checkinInsights: [rootQueryKey, "checkinInsights"],
+    billingInsights: [rootQueryKey, "billingInsights"],
 };
 
 export default queryKeys;
