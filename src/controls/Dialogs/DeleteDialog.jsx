@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     CircularProgress,
     Dialog,
@@ -18,7 +18,11 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props}/>;
 });
 
-const DeleteDialog = ({ openDialog, onClose, onConfirm, isLoading }) => {
+const DeleteDialog = ({ openDialog, onClose, onConfirm, isLoading, contentTextValue }) => {
+
+    const [contentText, setContextText] = useState(contentTextValue || "Are you sure you want to permanently " +
+      "delete this record? This action cannot be undone.");
+
     return (
         <>
             <Dialog
@@ -37,7 +41,7 @@ const DeleteDialog = ({ openDialog, onClose, onConfirm, isLoading }) => {
                     </DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-slide-description">
-                                Are you sure you want to permanently delete this record? This action cannot be undone.
+                            {contentText}
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
@@ -69,7 +73,8 @@ DeleteDialog.propTypes = {
     openDialog: PropTypes.bool,
     onClose: PropTypes.func,
     onConfirm: PropTypes.func,
-    isLoading: PropTypes.bool
+    isLoading: PropTypes.bool,
+    contentTextValue: PropTypes.string
 };
 
 export default DeleteDialog;

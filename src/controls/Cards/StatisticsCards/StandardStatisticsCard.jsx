@@ -6,7 +6,7 @@ import Icon from "@mui/material/Icon";
 import Box from "../../../components/Box/Box.jsx";
 import Typography from "../../../components/Typography/Typography.jsx";
 
-function PercentageStatisticsCard({ color= "info", title, titleContent, children, icon, watermark }) {
+function StandardStatisticsCard({ color= "info", title, subTitle, children, icon, watermark }) {
     return (
         <Box>
             <Card >
@@ -19,7 +19,7 @@ function PercentageStatisticsCard({ color= "info", title, titleContent, children
                         left: "50%",
                         transform: "translate(-50%, -50%)",
                         opacity: 0.1,
-                        fontSize: "4rem",
+                        fontSize: "5rem",
                         zIndex: 1,
                     }}
                 >
@@ -45,14 +45,14 @@ function PercentageStatisticsCard({ color= "info", title, titleContent, children
                     </Box>
                     <Box textAlign="right" lineHeight={1.25}>
 
-                        <Typography variant="button" fontWeight="light" color="text">
+                        <Typography variant="h6" fontWeight="light">
                             {title}
                         </Typography>
-                        <Typography variant="h4">{titleContent}</Typography>
+                        <Typography variant="button">{subTitle}</Typography>
                     </Box>
                 </Box>
-                <Divider />
-                <Box pb={2} px={2}>
+                <Divider light={true} />
+                <Box pb={2} px={2} >
                     {children}
                 </Box>
             </Card>
@@ -61,7 +61,7 @@ function PercentageStatisticsCard({ color= "info", title, titleContent, children
     );
 }
 
-PercentageStatisticsCard.propTypes = {
+StandardStatisticsCard.propTypes = {
     color: PropTypes.oneOf([
         "primary",
         "secondary",
@@ -72,11 +72,11 @@ PercentageStatisticsCard.propTypes = {
         "light",
         "dark",
     ]),
-    title: PropTypes.string.isRequired,
+    title: PropTypes.string,
     watermark: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.node]),
-    titleContent: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    subTitle: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     icon: PropTypes.node.isRequired,
     children: PropTypes.node.isRequired
 };
 
-export default PercentageStatisticsCard;
+export default StandardStatisticsCard;

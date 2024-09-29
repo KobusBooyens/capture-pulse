@@ -4,15 +4,17 @@ import Typography from "../../../components/Typography/Typography.jsx";
 import { Chip, CircularProgress } from "@mui/material";
 import PropTypes from "prop-types";
 import dayjs from "dayjs";
+import StandardStatisticsCard from "../../../controls/Cards/StatisticsCards/StandardStatisticsCard.jsx";
 
 const TotalClients = ({ totalClients, totalMales, totalFemales, isLoading }) => {
     return (
-        <ComplexStatisticsCard
+        <StandardStatisticsCard
             color="dark"
             icon="people_alt"
             title="Total Clients"
-            titleContent={totalClients}
+            // subTitle={totalClients}
             isLoading={isLoading}
+            watermark={totalClients}
         >
             {isLoading ? <CircularProgress/> :
         
@@ -37,7 +39,7 @@ const TotalClients = ({ totalClients, totalMales, totalFemales, isLoading }) => 
                     }/>
                 </Typography>
             }
-        </ComplexStatisticsCard>
+        </StandardStatisticsCard>
     );
 };
 

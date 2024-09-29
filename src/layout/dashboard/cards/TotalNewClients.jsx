@@ -4,14 +4,16 @@ import Typography from "../../../components/Typography/Typography.jsx";
 import dayjs from "dayjs";
 import { Chip, CircularProgress } from "@mui/material";
 import PropTypes from "prop-types";
+import StandardStatisticsCard from "../../../controls/Cards/StatisticsCards/StandardStatisticsCard.jsx";
 
 const TotalNewClients = ({ totalNew, isLoading }) => {
     return (
-        <ComplexStatisticsCard
+        <StandardStatisticsCard
             color="primary"
             icon="person_add"
             title="Total New Clients"
-            titleContent={`+${totalNew}`}
+            // subTitle={`+${totalNew}`}
+            watermark={`+${totalNew}`}
         >
             {isLoading ? <CircularProgress/> :
                 <Typography component="p" variant="button" color="text" display="flex">
@@ -21,7 +23,7 @@ const TotalNewClients = ({ totalNew, isLoading }) => {
                         </Typography>
                     }/>
                 </Typography> }
-        </ComplexStatisticsCard>
+        </StandardStatisticsCard>
     );
 };
 

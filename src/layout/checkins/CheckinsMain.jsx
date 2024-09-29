@@ -4,7 +4,7 @@ import Box from "../../components/Box/Box.jsx";
 import { Grid } from "@mui/material";
 import dayjs from "dayjs";
 import Divider from "@mui/material/Divider";
-import PercentageStatisticsCard from "../../controls/Cards/StatisticsCards/PercentageStatisticsCard.jsx";
+import StandardStatisticsCard from "../../controls/Cards/StatisticsCards/StandardStatisticsCard.jsx";
 import ReportsBarChart from "../../controls/Charts/BarCharts/ReportsBarChart/ReportsBarChart.jsx";
 import PieChart from "../../controls/Charts/PieChart/PieChart.jsx";
 import dailyCheckinBarChartData from "./dashboard/data/dailyCheckinBarChartData.js";

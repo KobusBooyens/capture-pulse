@@ -87,6 +87,7 @@ const ViewClientsPage = ({
                 onClose={handleCloseDeleteDialog}
                 onConfirm={() => deleteClient.mutate({ id: isDeleting.data._id })}
                 isLoading={deleteClient.isPending}
+                contentTextValue={"Are you sure you want to remove this client?"}
             />
             <NotesDialog
                 openDialog={viewNotes.show}

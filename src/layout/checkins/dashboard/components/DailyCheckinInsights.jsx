@@ -1,7 +1,7 @@
 import React from "react";
 import Typography from "../../../../components/Typography/Typography.jsx";
 import { Grid } from "@mui/material";
-import PercentageStatisticsCard from "../../../../controls/Cards/StatisticsCards/PercentageStatisticsCard.jsx";
+import StandardStatisticsCard from "../../../../controls/Cards/StatisticsCards/StandardStatisticsCard.jsx";
 import dayjs from "dayjs";
 import ReportsBarChart from "../../../../controls/Charts/BarCharts/ReportsBarChart/ReportsBarChart.jsx";
 import dailyCheckinBarChartData from "../data/dailyCheckinBarChartData.js";
@@ -26,7 +26,7 @@ const DailyCheckinInsights = () => {
             <Grid container spacing={2}>
                 {/* Card Section */}
                 <Grid item xs={12} md={6} lg={3} mb={3}>
-                    <PercentageStatisticsCard
+                    <StandardStatisticsCard
                         color="primary"
                         icon="how_to_reg"
                         title="Total Checkins this week"
@@ -46,7 +46,7 @@ const DailyCheckinInsights = () => {
                             {`${dayjs().startOf("week").format("ddd, D MMM")} - 
                     ${dayjs().endOf("week").format("ddd, D MMM")}`}
                         </Typography>
-                    </PercentageStatisticsCard>
+                    </StandardStatisticsCard>
                 </Grid>
 
                 {/* Bar Chart */}

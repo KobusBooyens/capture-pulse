@@ -60,7 +60,7 @@ export default function useClientData(data) {
             headerName: "Client",
             field: "client",
             align: "left",
-            flex: 1,
+            flex: 0.5,
             renderCell: (params) =>
                 <ClientDetails
                     name={params.row.firstName}
@@ -74,7 +74,7 @@ export default function useClientData(data) {
             headerName: "Package",
             field: "package",
             align: "left",
-            flex: 1,
+            flex: 0.5,
             renderCell: (params) =>
                 <PackageDetails
                     name={params.row?.packageName ?? "N/A"}

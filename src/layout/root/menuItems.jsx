@@ -1,5 +1,5 @@
 import DashboardMain from "../dashboard/DashboardMain.jsx";
-import ViewClients from "../clients/ClientsMain.jsx";
+import ClientsMain from "../clients/ClientsMain.jsx";
 import CheckinsMain from "../checkins/CheckinsMain.jsx";
 import BillingMain from "../billing/BillingMain.jsx";
 
@@ -9,6 +9,7 @@ import SettingsMain from "../settings/SettingsMain.jsx";
 import UsersMain from "../users/UsersMain.jsx";
 import GeneralCheckinsMain from "../checkins/GeneralCheckinsMain.jsx";
 import WeighingCheckinsMain from "../checkins/WeighingCheckinsMain.jsx";
+import ManagePackagesMain from "../managePackages/ManagePackagesMain.jsx";
 
 const menuItems = [
     {
@@ -25,7 +26,15 @@ const menuItems = [
         key: "clients",
         icon: <Icon fontSize={"small"}>people_alt</Icon>,
         route: "/clients",
-        component: <ViewClients />
+        component: <ClientsMain />
+    },
+    {
+        type: "collapse",
+        name: "Manage Packages",
+        key: "packages",
+        icon: <Icon fontSize={"small"}>article</Icon>,
+        route: "/managePackages",
+        component: <ManagePackagesMain />
     },
     {
         type: "collapse",
