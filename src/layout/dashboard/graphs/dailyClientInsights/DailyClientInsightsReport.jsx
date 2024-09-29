@@ -10,6 +10,7 @@ import Box from "../../../../components/Box/Box.jsx";
 import Button from "../../../../components/Button/Button.jsx";
 import { Chip } from "@mui/material";
 import dayjs from "dayjs";
+import ReportTrending from "../components/ReportTrending.jsx";
 
 const DailyClientInsightsReport = () => {
     const clientDailyInsights = useDashboardClientDailyInsights();
@@ -54,21 +55,7 @@ const DailyClientInsightsReport = () => {
             chart={barChartData}
             isLoading={clientDailyInsights.isLoading}
         >
-            <Box display="flex" width={"100%"} justifyContent={"center"} gap={5}>
-                <Typography color={"success"} variant="body2">
-                    <Box display={"flex"} flexDirection={"row"} gap={1} color={"inherit"}>
-                        <Icon>trending_up</Icon>
-                        {"Total New (+2)"}
-                    </Box>
-
-                </Typography>
-                <Typography color="error" variant="body2">
-                    <Box display={"flex"} flexDirection={"row"} gap={1} color={"inherit"}>
-                        <Icon>trending_down</Icon>
-                        {"Total left (-1)"}
-                    </Box>
-                </Typography>
-            </Box>
+            <ReportTrending totalUp={totalCountValue} totalDown={0}/>
         </ReportsBarChart>
     );
 };

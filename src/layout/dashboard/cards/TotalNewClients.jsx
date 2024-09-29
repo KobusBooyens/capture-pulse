@@ -3,6 +3,7 @@ import ComplexStatisticsCard from "../../../controls/Cards/StatisticsCards/Compl
 import Typography from "../../../components/Typography/Typography.jsx";
 import dayjs from "dayjs";
 import { CircularProgress } from "@mui/material";
+import PropTypes from "prop-types";
 
 const TotalNewClients = ({ totalNew, isLoading }) => {
     return (
@@ -24,6 +25,11 @@ const TotalNewClients = ({ totalNew, isLoading }) => {
                 </Typography> }
         </ComplexStatisticsCard>
     );
+};
+
+TotalNewClients.propTypes = {
+    totalNew: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    isLoading: PropTypes.bool,
 };
 
 export default TotalNewClients;

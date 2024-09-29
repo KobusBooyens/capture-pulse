@@ -51,8 +51,6 @@ exports.getClientDailyInsights = async (subscription) => {
         { $sort: { _id: 1 } }
     ]);
 
-    console.log(data);
-
     return data?.map(({ _id, count }) => ({
         day: _id,
         count
@@ -82,7 +80,7 @@ exports.getClientWeeklyInsights = async (subscription) => {
             },
             {
                 $group: {
-                    _id: null, // No need to group by day
+                    _id: null,
                     totalCount: { $sum: 1 }
                 }
             }

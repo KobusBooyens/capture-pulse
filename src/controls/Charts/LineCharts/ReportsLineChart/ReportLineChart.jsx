@@ -82,7 +82,7 @@ ReportsLineChart.defaultProps = {
 
 ReportsLineChart.propTypes = {
     color: PropTypes.oneOf(["primary", "secondary", "info", "success", "warning", "error", "dark"]),
-    title: PropTypes.string.isRequired,
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     description: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     children: PropTypes.node,
     isLoading: PropTypes.bool,

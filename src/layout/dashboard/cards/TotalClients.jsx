@@ -2,6 +2,7 @@ import React from "react";
 import ComplexStatisticsCard from "../../../controls/Cards/StatisticsCards/ComplexStatisticsCard.jsx";
 import Typography from "../../../components/Typography/Typography.jsx";
 import { CircularProgress } from "@mui/material";
+import PropTypes from "prop-types";
 
 const TotalClients = ({ totalClients, totalMales, totalFemales, isLoading }) => {
     return (
@@ -35,6 +36,13 @@ const TotalClients = ({ totalClients, totalMales, totalFemales, isLoading }) => 
             }
         </ComplexStatisticsCard>
     );
+};
+
+TotalClients.propTypes = {
+    totalClients: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    totalMales: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    totalFemales: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    isLoading: PropTypes.bool,
 };
 
 export default TotalClients;

@@ -1,20 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ReportsLineChart from "../../../../controls/Charts/LineCharts/ReportsLineChart/ReportLineChart.jsx";
-import reportsLineChartData from "../../data/reportsLineChartData.js";
 import Typography from "../../../../components/Typography/Typography.jsx";
 import Icon from "@mui/material/Icon";
-import Button from "../../../../components/Button/Button.jsx";
 import Box from "../../../../components/Box/Box.jsx";
 import { Chip } from "@mui/material";
 import dayjs from "dayjs";
 import { useDashboardClientMonthlyInsights } from "../../../../api/dashboard/useDashboardFetch.js";
 import useMonthlyClientInsightsData from "./useMonthlyClientInsightsData.js";
+import ReportTrending from "../components/ReportTrending.jsx";
 
 const MonthlyClientInsightsReport = () => {
-
     const monthlyClientInsights = useDashboardClientMonthlyInsights(6);
     const reportData = useMonthlyClientInsightsData(monthlyClientInsights.data);
-    console.log(reportData.datasets.data);
+
+    const [totalCountValue, setTotalCountValue] = useState(0);
+
+    useEffect(() => {
+        if (!monthlyClientInsights.isPending && monthlyClientInsights.data) {
+            const totalCount = monthlyClientInsights?.data.reduce((acc, record) => {
+                acc.totalCountValue += record.totalCount;
+                return acc;
+            }, { totalCountValue: 0 });
+
+            setTotalCountValue(totalCount.totalCountValue);
+        }
+    }, [monthlyClientInsights.data]);
+
     const description = "Report reflects the trend for total number of " +
       "clients who have joined and left throughout the past 6 months";
 
@@ -42,19 +53,7 @@ const MonthlyClientInsightsReport = () => {
             chart={reportData}
         >
             <Box display="flex" width={"100%"} justifyContent={"center"} gap={5}>
-                <Typography color={"success"} variant="body2">
-                    <Box display={"flex"} flexDirection={"row"} gap={1} color={"inherit"}>
-                        <Icon>trending_up</Icon>
-                        {"Total New (+4)"}
-                    </Box>
-
-                </Typography>
-                <Typography color="error" variant="body2">
-                    <Box display={"flex"} flexDirection={"row"} gap={1} color={"inherit"}>
-                        <Icon>trending_down</Icon>
-                        {"Total left (-3)"}
-                    </Box>
-                </Typography>
+                <ReportTrending totalUp={totalCountValue} totalDown={2}/>
             </Box>
         </ReportsLineChart>
     );

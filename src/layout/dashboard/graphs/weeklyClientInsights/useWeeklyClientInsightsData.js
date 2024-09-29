@@ -3,7 +3,7 @@ const useWeeklyClientInsightsData = (data) => {
     const defaultValues = new Array(labels?.length).fill(0);
 
     data?.forEach(({ weekNumber, totalCount }) => {
-        defaultValues[weekNumber] = totalCount;
+        defaultValues[weekNumber - 1] = totalCount;
     });
 
     return {
