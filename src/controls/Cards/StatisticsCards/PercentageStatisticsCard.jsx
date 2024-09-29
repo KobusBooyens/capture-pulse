@@ -6,7 +6,7 @@ import Icon from "@mui/material/Icon";
 import Box from "../../../components/Box/Box.jsx";
 import Typography from "../../../components/Typography/Typography.jsx";
 
-function PercentageStatisticsCard({ color= "info", title, titleContent, children, icon, percentage }) {
+function PercentageStatisticsCard({ color= "info", title, titleContent, children, icon, watermark }) {
     return (
         <Box>
             <Card >
@@ -23,7 +23,7 @@ function PercentageStatisticsCard({ color= "info", title, titleContent, children
                         zIndex: 1,
                     }}
                 >
-                    {percentage}%
+                    {watermark}
                 </Typography>
                 <Box display="flex" justifyContent="space-between" pt={1} px={2}>
                     <Box
@@ -73,7 +73,7 @@ PercentageStatisticsCard.propTypes = {
         "dark",
     ]),
     title: PropTypes.string.isRequired,
-    percentage: PropTypes.number,
+    watermark: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.node]),
     titleContent: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     icon: PropTypes.node.isRequired,
     children: PropTypes.node.isRequired

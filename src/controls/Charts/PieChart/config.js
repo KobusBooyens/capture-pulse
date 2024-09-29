@@ -4,8 +4,7 @@ const { gradients, dark } = colors;
 
 function configs(labels, datasets, options) {
     const backgroundColors = [];
-    console.log("labels", labels);
-    console.log("backgroundColors", datasets.backgroundColors);
+
     if (datasets.backgroundColors) {
         datasets.backgroundColors.forEach((color) =>
             gradients[color]

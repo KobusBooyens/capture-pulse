@@ -59,8 +59,6 @@ const AddClientPage = () => {
             };
         }
 
-        console.log(data);
-
         createClient.mutate(dateToSubmit);
     };
 

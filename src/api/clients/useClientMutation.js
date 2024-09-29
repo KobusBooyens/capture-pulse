@@ -16,7 +16,7 @@ const deleteFn = async ({ id }) => {
 
 const editFn = async ({ id, updatedData }) => {
     await new Promise(resolve => setTimeout(resolve, 2000));
-    console.log(updatedData);
+
     const response = await apiClient.patch(`clients/${id}`, updatedData);
     return response.data;
 };

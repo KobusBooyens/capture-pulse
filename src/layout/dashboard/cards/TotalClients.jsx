@@ -1,8 +1,9 @@
 import React from "react";
 import ComplexStatisticsCard from "../../../controls/Cards/StatisticsCards/ComplexStatisticsCard.jsx";
 import Typography from "../../../components/Typography/Typography.jsx";
-import { CircularProgress } from "@mui/material";
+import { Chip, CircularProgress } from "@mui/material";
 import PropTypes from "prop-types";
+import dayjs from "dayjs";
 
 const TotalClients = ({ totalClients, totalMales, totalFemales, isLoading }) => {
     return (
@@ -16,22 +17,24 @@ const TotalClients = ({ totalClients, totalMales, totalFemales, isLoading }) => 
             {isLoading ? <CircularProgress/> :
         
                 <Typography component="p" variant="button" color="text" display="flex" gap={1}>
-                    <Typography
-                        component="span"
-                        variant="button"
-                        fontWeight="bold"
-                        color={"male"}>
-                        {"Males"}
-                    </Typography>
-                    {totalMales}
-                    <Typography
-                        component="span"
-                        variant="button"
-                        fontWeight="bold"
-                        color={"female"}>
-                        {"Female"}
-                    </Typography>
-                    {totalFemales}
+                    <Chip title={"Current month"} size={"small"} label={
+                        <Typography
+                            component="span"
+                            variant="button"
+                            fontWeight="bold"
+                            color={"male"}>
+                            {"Males"} {totalMales}
+                        </Typography>
+                    }/>
+                    <Chip title={"Current month"} size={"small"} label={
+                        <Typography
+                            component="span"
+                            variant="button"
+                            fontWeight="bold"
+                            color={"female"}>
+                            {"Female"} {totalFemales}
+                        </Typography>
+                    }/>
                 </Typography>
             }
         </ComplexStatisticsCard>

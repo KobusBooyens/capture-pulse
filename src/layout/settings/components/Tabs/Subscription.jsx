@@ -19,7 +19,6 @@ const Subscription = () => {
     };
 
     const onFormSubmit = (data) => {
-        console.log(data);
         updateSubscription.mutate({ name: data.name, currency: data.currency });
     };
 

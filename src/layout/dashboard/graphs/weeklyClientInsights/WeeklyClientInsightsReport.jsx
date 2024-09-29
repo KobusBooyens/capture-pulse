@@ -3,17 +3,10 @@ import ReportsBarChart from "../../../../controls/Charts/BarCharts/ReportsBarCha
 import { useDashboardClientWeeklyInsights } from "../../../../api/dashboard/useDashboardFetch.js";
 import useWeeklyClientInsightsData from "./useWeeklyClientInsightsData.js";
 import Typography from "../../../../components/Typography/Typography.jsx";
-import Icon from "@mui/material/Icon";
 import Box from "../../../../components/Box/Box.jsx";
 import { Chip } from "@mui/material";
-import dayjs from "dayjs";
 import ReportTrending from "../components/ReportTrending.jsx";
-
-const getCurrentWeekOfMonth = () => {
-    const currentDate = dayjs();
-    const startOfMonth = currentDate.startOf("month");
-    return Math.ceil((currentDate.date() + startOfMonth.day()) / 7);
-};
+import { getWeekOfMonth } from "../../../../utils/functions.js";
 
 const WeeklyClientInsightsReport = () => {
     const clientWeeklyInsights = useDashboardClientWeeklyInsights();
@@ -44,7 +37,7 @@ const WeeklyClientInsightsReport = () => {
 
                 <Chip title={"Current week"} label={
                     <Typography variant="h6" fontWeight={"light"}>
-                        {`Week ${getCurrentWeekOfMonth()}`}
+                        {`Week ${getWeekOfMonth()}`}
                     </Typography>
                 }/>
             </Box>

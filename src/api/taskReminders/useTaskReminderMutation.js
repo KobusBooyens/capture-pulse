@@ -10,7 +10,7 @@ const createFn = async (data) => {
 
 const updateFn = async ({ id, updatedData }) => {
     await new Promise(resolve => setTimeout(resolve, 2000));
-    console.log(updatedData);
+
     const response = await apiClient.patch(`taskReminder/${id}`, updatedData);
     return response.data;
 };

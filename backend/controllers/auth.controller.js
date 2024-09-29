@@ -23,7 +23,6 @@ const signIn = async(req, res) => {
 
 const signOut = async (req, res) => {
     try {
-        console.log(req.params);
         const response = await AuthService.signOut(req.params.id);
         res.status(response.status).send(response.data);
     } catch (err) {

@@ -4,7 +4,7 @@ import useCustomMutation from "../_shared/useCustomMutation.js";
 
 const createFn = async (payload) => {
     await new Promise(resolve => setTimeout(resolve, 2000));
-    console.log("createFn", payload);
+
     const response = await apiClient.post("/billing", payload.data);
     return response.data;
 };

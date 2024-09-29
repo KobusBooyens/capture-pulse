@@ -27,7 +27,6 @@ exports.updateSubscription = async (id, payload) => {
 };
 
 exports.verifySubscription = async (subscriptionId) => {
-    console.log("subscriptionId", subscriptionId);
     if (!ObjectId.isValid(subscriptionId)) {
         return {
             status: 404,
@@ -35,7 +34,7 @@ exports.verifySubscription = async (subscriptionId) => {
         };
     }
     const subscription = await db.Subscriptions.findOne({ _id: subscriptionId });
-    console.log("exists", subscription);
+
     if (!subscription) {
         return {
             status: 404,

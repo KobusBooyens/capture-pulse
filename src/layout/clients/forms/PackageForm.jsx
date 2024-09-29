@@ -124,6 +124,7 @@ const PackageForm = () => {
                     <FormInputDate
                         name={"joiningDate"}
                         label={"Joining Date"}
+                        maxDate={null}
                         required
                         rules={{ required: "Joining Date is required" }}
                     />

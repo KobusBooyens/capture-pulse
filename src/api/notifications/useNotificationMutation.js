@@ -4,7 +4,7 @@ import useQueryKeys from "./useQueryKeys.js";
 
 const updateFn = async ({ id, updatedData }) => {
     await new Promise(resolve => setTimeout(resolve, 2000));
-    console.log(updatedData);
+
     const response = await apiClient.patch(`notifications/${id}`, updatedData);
     return response.data;
 };

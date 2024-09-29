@@ -37,12 +37,10 @@ function DataTable({
 
     const goToNextPage = () => {
         tableInstance.nextPage();
-        console.log("nextPage", pageIndex + 1);
     };
 
     const goToPreviousPage = () => {
         tableInstance.previousPage();
-        console.log("previousPage", pageIndex - 1);
     };
 
     const {

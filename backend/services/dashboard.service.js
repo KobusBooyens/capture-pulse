@@ -29,7 +29,6 @@ exports.getClientInsights = async (subscription) => {
         return acc;
     }, { totalClients: 0, totalMales: 0, totalFemales: 0, totalNew: 0 });
 
-    console.log(data);
     return data;
 };
 
@@ -37,7 +36,6 @@ exports.getClientDailyInsights = async (subscription) => {
     const startOfWeek = dayjs().startOf("week").format("YYYY/MM/DD");
     const endOfWeek = dayjs().endOf("week").format("YYYY/MM/DD");
 
-    console.log("getClientDailyInsights", { startOfWeek, endOfWeek });
     const data = await db.Client.aggregate([
         { $match: {
             subscription: subscription,
@@ -58,6 +56,59 @@ exports.getClientDailyInsights = async (subscription) => {
         count
     }));
 };
+
+// exports.getClientDailyInsights = async (subscription) => {
+//     const startOfWeek = dayjs().startOf("week").toDate();
+//     const endOfWeek = dayjs().endOf("week").toDate();
+//
+//     console.log("getClientDailyInsights", { startOfWeek, endOfWeek });
+//
+//     const data = await db.Client.aggregate([
+//         // Match clients based on subscription and joining date within the week
+//         {
+//             $match: {
+//                 subscription: subscription,
+//                 $or: [
+//                     { joiningDate: { $gte: startOfWeek, $lte: endOfWeek } }, // Joined this week
+//                     { deletedAt: { $gte: startOfWeek, $lte: endOfWeek } } // Left this week
+//                 ]
+//             }
+//         },
+//         {
+//             // Project the day of week for both joining and deletion dates
+//             $project: {
+//                 dayOfWeek: {
+//                     $cond: {
+//                         if: { $gte: ["$deletedAt", startOfWeek] },
+//                         then: { $dayOfWeek: "$deletedAt" }, // Day of the week they were deleted
+//                         else: { $dayOfWeek: "$joiningDate" } // Day of the week they joined
+//                     }
+//                 },
+//                 isDeleted: {
+//                     $cond: { if: { $gte: ["$deletedAt", startOfWeek] }, then: true, else: false }
+//                 }
+//             }
+//         },
+//         {
+//             // Group by the day of week and whether they are deleted or new
+//             $group: {
+//                 _id: { dayOfWeek: "$dayOfWeek", isDeleted: "$isDeleted" },
+//                 count: { $sum: 1 }
+//             }
+//         },
+//         {
+//             // Sort by the day of the week
+//             $sort: { "_id.dayOfWeek": 1 }
+//         }
+//     ]);
+//
+//     // Process and return the data
+//     return data.map(({ _id, count }) => ({
+//         day: _id.dayOfWeek,
+//         count,
+//         type: _id.isDeleted ? "totalLeft" : "totalNew"
+//     }));
+// };
 
 exports.getClientWeeklyInsights = async (subscription) => {
     const startOfMonth = dayjs().startOf("month");

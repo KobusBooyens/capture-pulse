@@ -5,7 +5,6 @@ exports.getAllTaskReminders = async (subscriptionId, userId) => {
         subscription: subscriptionId, 
         actioned: { $eq: false } 
     }).lean();
-    console.log(subscriptionId, userId);
 
     const { teamTaskReminders, myTaskReminders } = taskReminders.reduce((acc, taskReminder) => {
         if (taskReminder.teamTaskReminder) {

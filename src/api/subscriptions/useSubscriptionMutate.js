@@ -9,7 +9,7 @@ const verifySubscriptionFn = async (id) => {
 };
 
 const updateSubscriptionFn = async (data) => {
-    console.log("updateSubscriptionFn", data);
+
     await new Promise(resolve => setTimeout(resolve, 2000));
     const response = await apiClient.patch("/subscription", data);
     return response.data;

@@ -1,11 +1,10 @@
 import React from "react";
 import useSnackbar from "../../hooks/useSnackbar.js";
 import SnackbarAlert from "../../components/Snackbar/SnackbarAlert.jsx";
+
 const SnackbarQueryAlert = () => {
 
     const { snackbar, hideSnackBar } = useSnackbar();
-
-    console.log("SnackbarQueryAlert", snackbar);
 
     if (!snackbar || !snackbar.show) return null;
 
