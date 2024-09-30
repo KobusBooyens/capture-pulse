@@ -5,7 +5,11 @@ meta {
 }
 
 get {
-  url: {{url}}/dashboard/client-monthly-insights
+  url: {{url}}/dashboard/client-monthly-insights?months=6
   body: none
   auth: none
+}
+
+params:query {
+  months: 6
 }

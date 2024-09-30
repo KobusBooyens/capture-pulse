@@ -23,6 +23,14 @@ const PackageForm = () => {
     const [packageOptions, setPackageOptions] = useState([]);
     const [showPartnerSection, setShowPartnerSection] = useState(false);
 
+    const paymentDayList = [
+        { value: "1", label: "1st" },
+        { value: "5", label: "5th" },
+        { value: "15", label: "15th" },
+        { value: "25", label: "25th" },
+        { value: "28", label: "28th" },
+    ];
+
     useEffect(() => {
         if (data && !isLoading) {
             const options = data.map(p => ({ value: p._id.toString(), label: p.name }));
@@ -127,6 +135,18 @@ const PackageForm = () => {
                         maxDate={null}
                         required
                         rules={{ required: "Joining Date is required" }}
+                    />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <FormInputDropdown
+                        key={"paymentDay"}
+                        name="pamymentDay"
+                        label={"Payment Day"}
+                        placeholder={"Select Payment Day"}
+                        // disabled={isLoading }
+                        options={paymentDayList}
+                        required
+                        rules={{ required: "Payment Day is required" }}
                     />
                 </Grid>
             </Grid>

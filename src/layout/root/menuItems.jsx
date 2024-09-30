@@ -9,7 +9,7 @@ import SettingsMain from "../settings/SettingsMain.jsx";
 import UsersMain from "../users/UsersMain.jsx";
 import GeneralCheckinsMain from "../checkins/GeneralCheckinsMain.jsx";
 import WeighingCheckinsMain from "../checkins/WeighingCheckinsMain.jsx";
-import ManagePackagesMain from "../managePackages/ManagePackagesMain.jsx";
+import MembershipMain from "../managePackages/MembershipMain.jsx";
 
 const menuItems = [
     {
@@ -30,11 +30,11 @@ const menuItems = [
     },
     {
         type: "collapse",
-        name: "Manage Packages",
+        name: "Memberships",
         key: "packages",
-        icon: <Icon fontSize={"small"}>article</Icon>,
-        route: "/managePackages",
-        component: <ManagePackagesMain />
+        icon: <Icon fontSize={"small"}>card_membership</Icon>,
+        route: "/memberships",
+        component: <MembershipMain />
     },
     {
         type: "collapse",

@@ -13,7 +13,7 @@ const TotalCheckins = ({ totalClients, totalCheckins, totalRemaining }) => {
             color={"light"}
             icon="settings_accessibility"
             title="Check-ins this week"
-            // subTitle={`${totalCheckins}/${totalClients}`}
+            subTitle={`${totalCheckins}/${totalClients}`}
             watermark={`${Math.round(totalCheckins / totalClients * 100)}%`}
         >
             <Typography component="p" variant="button" color="text" display="flex" gap={1}>
