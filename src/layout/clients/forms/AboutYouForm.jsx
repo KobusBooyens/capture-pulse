@@ -38,17 +38,17 @@ const AboutYouForm = ({ addPartner }) => {
             </Grid>
             <Grid item xs={12} md={6}>
                 <FormInputText
-                    key={addPartner ? "partnerLength" : "length"}
-                    name={addPartner ? "partnerLength" : "length"}
-                    label={"Length"}
+                    key={addPartner ? "partnerHeight" : "height"}
+                    name={addPartner ? "partnerHeight" : "height"}
+                    label={"Height"}
                     type={"number"}
-                    placeholder={"Enter Length (cm) e.g. 180"}
+                    placeholder={"Enter Height (cm) e.g. 180"}
                     fullWidth
                     required
                     rules={{
-                        required: "Length is required", min: {
+                        required: "Height is required", min: {
                             value: 0,
-                            message: "Length must be greater than 0"
+                            message: "Height must be greater than 0"
                         }
                     }}
                 />

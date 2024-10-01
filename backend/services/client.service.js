@@ -34,8 +34,8 @@ exports.getAllClients = async (subscriptionId, payload) => {
         { $skip: pageSize * (page - 1) },
         { $limit: pageSize },
         { ...clientNotesLookup },
-        { ...clientPackageLookup },
-        { ...packageLookup },
+        // { ...clientPackageLookup },
+        // { ...packageLookup },
     ];
 
     const [data, recordCount] = await Promise.all([

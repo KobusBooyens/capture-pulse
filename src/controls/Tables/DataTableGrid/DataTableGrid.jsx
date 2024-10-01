@@ -62,8 +62,8 @@ const DataTableGrid = ({
                 disableRowSelectionOnClick
                 disableColumnFilter
                 disableColumnMenu
-
             />
+
         </TableContainer>
     );
 };

@@ -10,6 +10,8 @@ import PackageDetails from "../../shared/PackageDetails.jsx";
 import Typography from "../../../components/Typography/Typography.jsx";
 import Badge from "../../../components/Badge/Badge.jsx";
 import IconButton from "@mui/material/IconButton";
+import { Chip } from "@mui/material";
+import Divider from "@mui/material/Divider";
 
 export default function useClientData(data) {
     const [isDeleting, setIsDeleting] = useState({ deleting: false, data: {} });
@@ -20,7 +22,7 @@ export default function useClientData(data) {
     },[]);
 
     const handleViewNotes = useCallback((data) => {
-        setViewNotes({ show: true, data: data.notes, clientId: data._id });
+        setViewNotes({ show: true, data: data.clientNotes, clientId: data._id });
     });
 
     const Actions = ({ data }) => {
@@ -34,7 +36,8 @@ export default function useClientData(data) {
                 </Tooltip>
                 <Tooltip title="Notes" placement="top">
                     <IconButton onClick={() => handleViewNotes(data)}>
-                        <Badge badgeContent={data.notes.length} circular size={"xs"} color={"light"}>
+                        <Badge badgeContent={data.clientNotes?.length}
+                            circular size={"xs"} color={"light"}>
                             <Icon fontSize="small" color={"action"}>notes</Icon>
                         </Badge>
 
@@ -69,6 +72,13 @@ export default function useClientData(data) {
                     contactNumber={params.row.contactNumber}
                 />,
             sortable: true
+        },
+        {
+            headerName: "Membership Status",
+            field: "membershipStatus",
+            align: "left",
+            flex: 0.5,
+            renderCell: (params) => <Chip color={"warning"} label={"Pending First Payment"}/>
         },
         {
             headerName: "Package",
@@ -116,13 +126,53 @@ export default function useClientData(data) {
         goal: row.goal,
         packagePartners: row.packagePartners,
         joined: row.joiningDate,
-        notes: row.clientNotes,
+        clientNotes: row.clientNotes,
         _id: row._id,
     }));
+
+    const cardItemsContent = () => {
+        console.log(data);
+        return data?.map(row =>
+            <>
+                {/*Heading/Title*/}
+                <Box display={"flex"} flexDirection={"column"} gap={1} key={row._id}>
+                    <Box display={"flex"} justifyContent={"space-between"} pt={2}>
+                        <ClientDetails
+                            name={row.firstName}
+                            surname={row.lastName}
+                            gender={row.gender}
+                            contactNumber={row.contactNumber}
+                        />
+                        <Actions data={row}/>
+                    </Box>
+
+                    <Chip
+                        color={"warning"}
+                        label={
+                            <Box display={"flex"} alignItems="center" gap={1} >
+                                <Icon fontSize={"small"}>card_membership</Icon>
+                        Pending First Payment
+                            </Box>
+                        }
+                    />
+                </Box>
+                <Divider/>
+                {/*Content*/}
+                <Box display={"flex"} flexDirection={"row"} justifyContent={"center"} gap={2}>
+                    <Typography variant={"button"}>Joined: Pending</Typography>
+                    <Typography variant={"button"}>Package: Pending</Typography>
+                </Box>
+
+                {/*Footer*/}
+
+            </>
+        );
+    };
 
     return {
         columns,
         rows,
+        cardItemsContent,
         viewNotes,
         setViewNotes,
         isDeleting,

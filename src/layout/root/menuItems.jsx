@@ -31,7 +31,7 @@ const menuItems = [
     {
         type: "collapse",
         name: "Memberships",
-        key: "packages",
+        key: "memberships",
         icon: <Icon fontSize={"small"}>card_membership</Icon>,
         route: "/memberships",
         component: <MembershipMain />

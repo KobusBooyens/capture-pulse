@@ -13,7 +13,7 @@ const schema = new mongoose.Schema(
         },
         dob: {
             type: Date,
-            required: true
+            // required: true
         },
         gender: {
             type: String,
@@ -21,37 +21,21 @@ const schema = new mongoose.Schema(
         },
         email: {
             type: String,
-            required: true
+            // required: true
         },
         contactNumber: {
             type: String,
             required: true,
-        },
-        joiningDate: {
-            type: Date,
-            required: true,
-        },
-        weight: {
-            type: Number,
-            required: true,
-        },
-        length: {
-            type: Number,
-            required: true
-        },
-        goal: {
-            type: String,
-            required: true
         },
         subscription: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Subscriptions",
             required: true
         },
-        clientPackage: {
+        membership: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "ClientPackage",
-            required: true,
+            ref: "Memberships",
+            required: true
         },
         latestPaidDate: {
             type: mongoose.Schema.Types.Date

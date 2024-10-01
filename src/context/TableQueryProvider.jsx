@@ -24,6 +24,8 @@ export const TableQueryProvider = ({ children }) => {
         setPageSize(newPageSize);
     };
 
+    console.log("pageSize", pageSize);
+
     updatePagination.propTypes = {
         newPage: PropTypes.number,
         newPageSize: PropTypes.number,

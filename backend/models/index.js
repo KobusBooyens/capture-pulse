@@ -8,6 +8,7 @@ db.Goals = require("./goals.model");
 db.Users = require("./users.model");
 db.Client = require("./clients.model");
 db.ClientNotes = require("./clientNotes.model");
+db.Memberships = require("./memberships.model");
 db.Notifications = require("./notifications.model");
 db.Packages = require("./packages.model");
 db.ClientPackage = require("./clientPackage.model");

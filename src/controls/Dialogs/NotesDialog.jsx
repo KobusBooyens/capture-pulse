@@ -42,6 +42,8 @@ NoteCard.propTypes = {
 };
 
 const NotesDialog = ({ openDialog, onClose, data, clientId }) => {
+
+    console.log(data);
     const createClientNote = useClientNote();
     const deleteClientNote = useDeleteClientNote();
 
