@@ -1,49 +1,56 @@
 import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import {
+    CircularProgress,
     Dialog,
     DialogActions,
     DialogContent,
     DialogTitle,
-    Grid, Slide,
+    Grid, Icon, ListItemButton, Slide,
     TextField,
 } from "@mui/material";
-import Typography from "../../components/Typography/Typography.jsx";
-import Button from "../../components/Button/Button.jsx";
-import Box from "../../components/Box/Box.jsx";
-import Alert from "../../components/Alert/Alert.jsx";
+import Typography from "../../../components/Typography/Typography.jsx";
+import Button from "../../../components/Button/Button.jsx";
+import Box from "../../../components/Box/Box.jsx";
+import Alert from "../../../components/Alert/Alert.jsx";
 import Divider from "@mui/material/Divider";
 import PropTypes from "prop-types";
-import { useClientNote, useDeleteClientNote } from "../../api/clientNotes/useClientNoteMutation.js";
+import { useClientNote, useDeleteClientNote } from "../../../api/clientNotes/useClientNoteMutation.js";
 import { useForm } from "react-hook-form";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props}/>;
 });
 
-const NoteCard = ({ note, dateTime, onDismiss }) =>
-    <Alert color="dark" dismissible onDismiss={onDismiss}>
-        <Box sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
-            <Typography variant="body2" color="white">
-                {note}
-            </Typography>
-            <Divider sx={{ display:"flex", opacity: 1, width: "50%" }} />
-            <Typography variant="caption" color="white">
-                {`Created ${dayjs(dateTime).fromNow(dayjs(), true)} ago`}
-            </Typography>
-       
-        </Box>
-    </Alert>
-;
-NoteCard.propTypes = {
+const NoteListItem = ({ note, dateTime, onDismiss, disableItem }) =>
+    <ListItem disablePadding>
+        <ListItemButton onClick={onDismiss} disabled={disableItem}>
+            <ListItemIcon>
+                <Icon fontSize={"large"}>{disableItem ? "pending" : "edit_note"}</Icon>
+            </ListItemIcon>
+            <ListItemText
+                primary={<Typography variant="body2">
+                    {note}
+                </Typography>}
+                secondary={
+                    <Typography variant="caption">
+                        {`Created ${dayjs(dateTime).fromNow(dayjs(), true)} ago`}
+                    </Typography>}/>
+        </ListItemButton>
+    </ListItem>;
+
+NoteListItem.propTypes = {
     note: PropTypes.string,
     dateTime: PropTypes.string,
     onDismiss: PropTypes.func,
+    disableItem: PropTypes.bool
 };
 
 const NotesDialog = ({ openDialog, onClose, data, clientId }) => {
-
-    console.log(data);
     const createClientNote = useClientNote();
     const deleteClientNote = useDeleteClientNote();
 
@@ -82,6 +89,7 @@ const NotesDialog = ({ openDialog, onClose, data, clientId }) => {
     };
 
     const handleDeleteNote = (record) => {
+        console.log(record);
         deleteClientNote.mutate({ id: record._id }, {
             onSuccess: () => {
                 setNotesData((prevNotes) =>
@@ -97,15 +105,15 @@ const NotesDialog = ({ openDialog, onClose, data, clientId }) => {
         }
 
         return (
-            notesData?.map((d) =>
-                <Grid item sx={6} md={8} lg={12} key={d}>
-                    <NoteCard
-                        note={d.note}
-                        dateTime={d.createdAt}
-                        onDismiss={() => handleDeleteNote(d)}
-                    />
-                </Grid>
-            )
+            <List sx={{ px:2 }}>
+                {notesData.map(record =>
+                    <NoteListItem key={record._id}
+                        note={record.note}
+                        dateTime={record.createdAt}
+                        disableItem={deleteClientNote.isPending && deleteClientNote.context.data.id === record._id}
+                        onDismiss={() => handleDeleteNote(record)}/>
+                )}
+            </List>
         );
     };
 
@@ -122,6 +130,7 @@ const NotesDialog = ({ openDialog, onClose, data, clientId }) => {
                 <Box margin={2}>
                     <form onSubmit={handleSubmit(handleAddNote)} noValidate>
                         <TextField
+                            variant={"standard"}
                             label={"Add Note"}
                             placeholder={"Add a note"}
                             disabled={notesData?.length >= 4}
@@ -141,20 +150,25 @@ const NotesDialog = ({ openDialog, onClose, data, clientId }) => {
                                 errors.note ? errors.note.message :
                                     "Maximum of 100 characters"}
                         />
-                        <Button
-                            type={"submit"}
-                            color="primary"
-                            disabled={notesData?.length >= 4}
-                            variant="contained"
-                            sx={{ marginTop: 2 }}>
+
+                        {createClientNote.isPending ?
+                            <CircularProgress/> :
+                            <Button
+                                type={"submit"}
+                                color="primary"
+                                disabled={notesData?.length >= 4}
+                                variant="contained"
+                                sx={{ marginTop: 2 }}>
                             Add Note
-                        </Button>
+                            </Button>
+                        }
                     </form>
                 </Box>
-
-                <Grid container spacing={2} sx={{ marginTop: 2 }} display={"flex"} justifyContent={"center"}>
+                <Divider/>
+                <Box>
                     {dialogContentToDisplay()}
-                </Grid>
+                </Box>
+
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleOnClose} color="secondary">Back</Button>

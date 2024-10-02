@@ -37,7 +37,7 @@ Badge.propTypes = {
         "light",
         "dark",
     ]),
-    variant: PropTypes.oneOf(["gradient", "contained"]),
+    variant: PropTypes.oneOf(["gradient", "contained", "dot"]),
     size: PropTypes.oneOf(["xs", "sm", "md", "lg"]),
     circular: PropTypes.bool,
     indicator: PropTypes.bool,

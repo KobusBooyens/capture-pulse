@@ -10,7 +10,7 @@ import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import DeleteDialog from "../../../controls/Dialogs/DeleteDialog.jsx";
 import { useDeleteClient } from "../../../api/clients/useClientMutation.js";
-import NotesDialog from "../../../controls/Dialogs/NotesDialog.jsx";
+import NotesDialog from "../../../controls/Dialogs/NotesDialog/NotesDialog.jsx";
 import DataTableView from "../../../controls/Tables/DataTableView/DataTableView.jsx";
 
 const ViewClientsPage = ({

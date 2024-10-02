@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import Box from "../../../components/Box/Box.jsx";
 import { CardContent, Grid, TableContainer, TablePagination } from "@mui/material";
@@ -20,7 +20,7 @@ const DataTableCards = ({
                 <>
                     <Grid container spacing={2} px={2}>
                         {data?.map((item, key) =>
-                            <Grid item xs={12} sm={12} md={12} lg={4} key={key}>
+                            <Grid item xs={12} sm={12} md={6} lg={4} key={key}>
                                 <Box shadow={2} variant={"gradient"} borderRadius="lg" coloredShadow="dark" >
                                     <CardContent>
                                         {item}
@@ -33,11 +33,11 @@ const DataTableCards = ({
                         <TablePagination
                             component={"div"}
                             rowsPerPageOptions={pageSizeOptions}
-                            count={Math.ceil(totalRecords / paginationModel.pageSize)}
-                            page={paginationModel.page + 1}
+                            count={totalRecords}
+                            page={paginationModel.page}
                             onPageChange={(event, value) => onPaginationModelChange({
                                 ...paginationModel,
-                                page: value - 1
+                                page: value
                             })}
                             rowsPerPage={paginationModel.pageSize}
                             onRowsPerPageChange={(event ) => onPaginationModelChange({

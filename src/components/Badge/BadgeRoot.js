@@ -10,7 +10,6 @@ export default styled(Badge)(({ theme, ownerState }) => {
     const { borderRadius, borderWidth } = borders;
     const { pxToRem, linearGradient } = functions;
 
-    // padding values
     const paddings = {
         xs: "0.45em 0.775em",
         sm: "0.55em 0.9em",
@@ -18,16 +17,12 @@ export default styled(Badge)(({ theme, ownerState }) => {
         lg: "0.85em 1.375em",
     };
 
-    // fontSize value
     const fontSizeValue = size === "xs" ? fontSize.xxs : fontSize.xs;
 
-    // border value
     const borderValue = border ? `${borderWidth[3]} solid ${white.main}` : "none";
 
-    // borderRadius value
     const borderRadiusValue = circular ? borderRadius.section : borderRadius.md;
 
-    // styles for the badge with indicator={true}
     const indicatorStyles = (sizeProp) => {
         let widthValue = pxToRem(20);
         let heightValue = pxToRem(20);
@@ -52,7 +47,6 @@ export default styled(Badge)(({ theme, ownerState }) => {
         };
     };
 
-    // styles for the badge with variant="gradient"
     const gradientStyles = (colorProp) => {
         const backgroundValue = gradients[colorProp]
             ? linearGradient(gradients[colorProp].main, gradients[colorProp].state)
@@ -78,6 +72,21 @@ export default styled(Badge)(({ theme, ownerState }) => {
         return {
             background: backgroundValue,
             color: colorValue,
+        };
+    };
+
+    const dotStyles = (colorProp) => {
+        const backgroundValue = badgeColors[colorProp]
+            ? badgeColors[colorProp].background
+            : badgeColors.info.background;
+
+        return {
+            width: pxToRem(8),
+            height: pxToRem(8),
+            minWidth: pxToRem(8),
+            padding: 0,
+            borderRadius: "50%",
+            background: backgroundValue,
         };
     };
 
@@ -111,6 +120,7 @@ export default styled(Badge)(({ theme, ownerState }) => {
             ...indicator && indicatorStyles(size),
             ...variant === "gradient" && gradientStyles(color),
             ...variant === "contained" && containedStyles(color),
+            ...variant === "dot" && dotStyles(color),
             ...!children && !container && standAloneStyles(color),
             ...container && containerStyles(color),
         },

@@ -46,9 +46,12 @@ export default function useClientData(data) {
             <Box>
                 {isXs ?
                     <>
-                        <IconButton onClick={handleMenuClick}>
-                            <Icon fontSize="small">more_vert</Icon> {/* Hamburger or dotted menu icon */}
-                        </IconButton>
+                        <Badge variant={"dot"} overlap="circular"
+                            circular size={"xs"} color={"light"}>
+                            <IconButton onClick={handleMenuClick}>
+                                <Icon fontSize="small">more_vert</Icon> {/* Hamburger or dotted menu icon */}
+                            </IconButton>
+                        </Badge>
                         <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
                             <MenuItem onClick={handleEdit}>
                                 <Box display={"flex"} gap={1}>
@@ -60,7 +63,10 @@ export default function useClientData(data) {
                             </MenuItem>
                             <MenuItem onClick={() => handleViewNotes(data)}>
                                 <Box display={"flex"} gap={1}>
-                                    <Icon fontSize="small" color="action">notes</Icon>
+                                    <Badge badgeContent={data.clientNotes?.length}
+                                        circular size={"xs"} color={"light"}>
+                                        <Icon fontSize="small" color="action">notes</Icon>
+                                    </Badge>
                                     <Typography variant={"button"}>
                                         View Notes
                                     </Typography>
@@ -181,7 +187,6 @@ export default function useClientData(data) {
     }));
 
     const cardItemsContent = () => {
-        console.log(data);
         return data?.map(row =>
             <>
                 {/*Heading/Title*/}

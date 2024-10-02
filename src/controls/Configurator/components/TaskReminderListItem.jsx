@@ -15,8 +15,6 @@ const TaskReminderListItem = ({ record, disableItem, onClickTaskReminder }) => {
         setHovered(false);
     };
 
-    // const disableItem = isPending
-    //                 && updateTaskReminder.context.data.updatedData._id === record._id;
     return (
         <ListItem
             key={record._id}
