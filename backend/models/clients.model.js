@@ -35,7 +35,6 @@ const schema = new mongoose.Schema(
         membership: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Memberships",
-            required: true
         },
         latestPaidDate: {
             type: mongoose.Schema.Types.Date

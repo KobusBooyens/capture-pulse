@@ -18,11 +18,11 @@ import MenuItem from "@mui/material/MenuItem";
 export default function useClientData(data) {
     const [isDeleting, setIsDeleting] = useState({ deleting: false, data: {} });
     const [viewNotes, setViewNotes] = useState({ show: false, data: [], clientId: null });
+    const [isEditing, setIsEditing] = useState({ show: false, data: [], clientId: null });
     const theme = useTheme();
     const isXs = useMediaQuery(theme.breakpoints.down("md"));
 
     const Actions = ({ data }) => {
-        const navigate = useNavigate();
         const [anchorEl, setAnchorEl] = useState(null);
         const handleMenuClick = (event) => setAnchorEl(event.currentTarget);
         const handleMenuClose = () => setAnchorEl(null);
@@ -37,23 +37,24 @@ export default function useClientData(data) {
             handleMenuClose();
         });
 
-        const handleEdit = () => {
+        const handleEdit = (record) => {
+            setIsEditing({ show: true, data: record, clientId: record._id });
             handleMenuClose();
-            navigate(`./edit/${data._id}`);
+            // navigate(`./edit/${data._id}`);
         };
 
         return (
             <Box>
                 {isXs ?
                     <>
-                        <Badge variant={"dot"} overlap="circular"
+                        <Badge badgeContent={data.clientNotes?.length} overlap={"circular"}
                             circular size={"xs"} color={"light"}>
                             <IconButton onClick={handleMenuClick}>
                                 <Icon fontSize="small">more_vert</Icon> {/* Hamburger or dotted menu icon */}
                             </IconButton>
                         </Badge>
                         <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
-                            <MenuItem onClick={handleEdit}>
+                            <MenuItem onClick={() => handleEdit(data)}>
                                 <Box display={"flex"} gap={1}>
                                     <Icon fontSize="small" color="info">edit</Icon>
                                     <Typography variant={"button"}>
@@ -84,7 +85,7 @@ export default function useClientData(data) {
                     </> :
                     <>
                         <Tooltip title="Edit" placement="top">
-                            <IconButton onClick={handleEdit}>
+                            <IconButton onClick={() => handleEdit(data)}>
                                 <Icon fontSize="small" color="info">edit</Icon>
                             </IconButton>
                         </Tooltip>
@@ -177,6 +178,8 @@ export default function useClientData(data) {
         firstName: row.firstName,
         lastName: row.lastName,
         gender: row.gender,
+        email: row.email,
+        dob: row.dob,
         contactNumber: row.contactNumber,
         packageName: row?.packageName,
         goal: row.goal,
@@ -189,7 +192,6 @@ export default function useClientData(data) {
     const cardItemsContent = () => {
         return data?.map(row =>
             <>
-                {/*Heading/Title*/}
                 <Box display={"flex"} flexDirection={"column"} gap={1} key={row._id}>
                     <Box display={"flex"} justifyContent={"space-between"} pt={2}>
                         <ClientDetails
@@ -200,7 +202,6 @@ export default function useClientData(data) {
                         />
                         <Actions data={row}/>
                     </Box>
-
                     <Chip
                         color={"warning"}
                         label={
@@ -212,7 +213,6 @@ export default function useClientData(data) {
                     />
                 </Box>
                 <Divider/>
-                {/*Content*/}
                 <Box display={"flex"} flexDirection={"row"} justifyContent={"center"} gap={2}>
                     <Typography variant={"button"}>Joined: Pending</Typography>
                     <Typography variant={"button"}>Package: Pending</Typography>
@@ -222,12 +222,10 @@ export default function useClientData(data) {
     };
 
     return {
-        columns,
-        rows,
+        columns, rows,
         cardItemsContent,
-        viewNotes,
-        setViewNotes,
-        isDeleting,
-        setIsDeleting
+        viewNotes, setViewNotes,
+        isDeleting, setIsDeleting,
+        isEditing, setIsEditing
     };
 }

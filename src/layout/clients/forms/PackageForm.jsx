@@ -6,7 +6,7 @@ import FormInputDate from "../../../components/Input/FormInputDate/FormInputDate
 import { usePackages } from "../../../api/packages/usePackageFetch.js";
 import { useFormContext } from "react-hook-form";
 import { useParams } from "react-router-dom";
-import PersonalForm from "./PersonalForm.jsx";
+import BasicInfoForm from "./BasicInfoForm.jsx";
 import Divider from "@mui/material/Divider";
 import Box from "../../../components/Box/Box.jsx";
 import AboutYouForm from "./AboutYouForm.jsx";
@@ -75,7 +75,7 @@ const PackageForm = () => {
                             </Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                            <PersonalForm addPartner={true} />
+                            <BasicInfoForm addPartner={true} />
                         </AccordionDetails>
                     </Accordion>
                     <Accordion>

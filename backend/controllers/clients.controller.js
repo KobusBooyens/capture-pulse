@@ -5,16 +5,17 @@ const ClientService = require("../services/client.service");
 const clientDetailSchema = {
     firstName: z.string({ required_error: "firstName is required" }),
     lastName: z.string({ required_error: "lastName is required" }),
-    dob: z.string({ required_error: "dob is required" }),
     gender: z.enum(["Male", "Female"], { required_error: "gender is required" }),
-    email: z.string({ required_error: "email is required" }),
     contactNumber: z.string({ required_error: "contactNumber is required" }),
-    weight: z.string({ required_error: "weight is required" }),
-    length: z.string({ required_error: "length is required" }),
-    goal: z.string({ required_error: "goal is required" }),
+    dob: z.string().optional(),
+    email: z.string().optional(),
+
+    // weight: z.string({ required_error: "weight is required" }),
+    // length: z.string({ required_error: "length is required" }),
+    // goal: z.string({ required_error: "goal is required" }),
 };
 
-const basicSchema = z.object({
+const paginationSchema = z.object({
     page: z.string({ required_error: "page is required" }),
     pageSize: z.string({ required_error: "pageSize is required" }),
     searchText: z.string().optional(),
@@ -40,9 +41,18 @@ const schema = z.object({
     path: ["partner"],
 });
 
+const basicClientSchema = z.object({
+    firstName: z.string({ required_error: "firstName is required" }),
+    lastName: z.string({ required_error: "lastName is required" }),
+    gender: z.enum(["Male", "Female"], { required_error: "gender is required" }),
+    contactNumber: z.string({ required_error: "contactNumber is required" }),
+    dob: z.string().optional(),
+    email: z.string().optional(),
+});
+
 const getAllClients = async (req, res) => {
     try {
-        const { payload, error } = validateAndRespond(basicSchema, req.query);
+        const { payload, error } = validateAndRespond(paginationSchema, req.query);
         if (error) {
             return res.status(400).json({ message: "Validation failed.", errors: error });
         }
@@ -66,7 +76,7 @@ const getClient = async (req, res) => {
 
 const createClient = async (req, res) => {
     try {
-        const { payload, error } = validateAndRespond(schema, req.body);
+        const { payload, error } = validateAndRespond(basicClientSchema, req.body);
         if (error) {
             return res.status(400).json({ message: "Validation failed.", errors: error });
         }
@@ -81,7 +91,7 @@ const createClient = async (req, res) => {
 
 const updateClient = async (req, res) => {
     try {
-        const { payload, error } = validateAndRespond(schema, req.body);
+        const { payload, error } = validateAndRespond(basicClientSchema, req.body);
         if (error) {
             return res.status(400).json({ message: "Validation failed.", errors: error });
         }

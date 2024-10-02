@@ -7,11 +7,13 @@ import Typography from "../../../components/Typography/Typography.jsx";
 import Button from "../../../components/Button/Button.jsx";
 import Icon from "@mui/material/Icon";
 import PropTypes from "prop-types";
-import { useNavigate } from "react-router-dom";
 import DeleteDialog from "../../../controls/Dialogs/DeleteDialog.jsx";
-import { useDeleteClient } from "../../../api/clients/useClientMutation.js";
+import { useCreateClient, useDeleteClient, useEditClient } from "../../../api/clients/useClientMutation.js";
 import NotesDialog from "../../../controls/Dialogs/NotesDialog/NotesDialog.jsx";
 import DataTableView from "../../../controls/Tables/DataTableView/DataTableView.jsx";
+import ClientBasicInfoDialog from "../dialogs/ClientBasicInfoDialog.jsx";
+import BasicInfoForm from "../forms/BasicInfoForm.jsx";
+import { FormProvider, useForm } from "react-hook-form";
 
 const ViewClientsPage = ({
     data,
@@ -21,10 +23,27 @@ const ViewClientsPage = ({
     onSearchModelChange,
     onSortModelChange
 }) => {
-    const navigate = useNavigate();
+    const methods = useForm();
     const deleteClient = useDeleteClient();
-    const { columns, rows, cardItemsContent, isDeleting, setIsDeleting, viewNotes, setViewNotes } =
+    const createClient = useCreateClient();
+    const editClient = useEditClient();
+    const [showBasicInfoDialog, setShowBasicInfoDialog] = useState(false);
+    
+    const { columns, rows, cardItemsContent,
+        isDeleting, setIsDeleting,
+        isEditing, setIsEditing,
+        viewNotes, setViewNotes } =
       useClientTableData(data?.records);
+
+    useEffect(() => {
+        methods.reset({ ...isEditing.data });
+    }, [isEditing.data]);
+    
+    const handleCloseBasicInfoDialog = () => {
+        setShowBasicInfoDialog(false);
+        setIsEditing({ show: false, data: {}, clientId: null });
+        methods.reset({});
+    };
 
     const handleCloseDeleteDialog = () => {
         setIsDeleting({ deleting: false, data: {} });
@@ -34,11 +53,40 @@ const ViewClientsPage = ({
         setViewNotes({ show: false, data: [], clientId: null });
     };
 
-    useEffect(() => {
-        if (deleteClient.isSuccess) {
-            setIsDeleting({ deleting: false, data: {} });
+    const onFormSubmit = (data) => {
+        if (showBasicInfoDialog) {
+            let dateToSubmit = {
+                firstName: data.firstName,
+                lastName:data.lastName,
+                dob: data.dob,
+                gender: data.gender,
+                email: data.email,
+                contactNumber: data.contactNumber,
+            };
+            createClient.mutate(dateToSubmit, {
+                onSuccess: () => {
+                    handleCloseBasicInfoDialog();
+                } });
+        } else if (isEditing.show) {
+            editClient.mutate({
+                id: isEditing.clientId,
+                updatedData: {
+                    ...data
+                }
+            }, {
+                onSuccess: () => {
+                    handleCloseBasicInfoDialog();
+                } });
         }
-    }, [deleteClient.isSuccess]);
+    };
+
+    const handleDelete = () => {
+        deleteClient.mutate({ id: isDeleting.data._id }, {
+            onSuccess: () => {
+                setIsDeleting({ deleting: false, data: {} });
+            }
+        });
+    };
 
     return (
         <Box pt={6} pb={3}>
@@ -61,7 +109,8 @@ const ViewClientsPage = ({
                                 color={"secondary"}
                                 className={"flex gap-2"}
                                 onClick={() =>
-                                    navigate("add")
+                                    setShowBasicInfoDialog(true)
+                                    // navigate("add")
                                 }
                             >
                                 <Icon>add</Icon> Add Client
@@ -83,10 +132,25 @@ const ViewClientsPage = ({
                     </Card>
                 </Grid>
             </Grid>
+
+            <ClientBasicInfoDialog
+                openDialog={showBasicInfoDialog || isEditing.show}
+                onClose={handleCloseBasicInfoDialog}
+                isLoading={false}
+                title={isEditing.show ? "Edit Client" : "Add Client"}
+            >
+                <FormProvider {...methods}>
+                    <form onSubmit={methods.handleSubmit(onFormSubmit)} noValidate>
+                        <BasicInfoForm
+                            isLoading={createClient.isPending || editClient.isPending}
+                            onCancel={handleCloseBasicInfoDialog}/>
+                    </form>
+                </FormProvider>
+            </ClientBasicInfoDialog>
             <DeleteDialog
                 openDialog={isDeleting.deleting}
                 onClose={handleCloseDeleteDialog}
-                onConfirm={() => deleteClient.mutate({ id: isDeleting.data._id })}
+                onConfirm={handleDelete}
                 isLoading={deleteClient.isPending}
                 contentTextValue={"Are you sure you want to remove this client?"}
             />

@@ -61,52 +61,59 @@ exports.getClient = async (id) => {
 };
 
 exports.createClient = async(subscriptionId, payload) => {
-    const session = await startSession();
-    session.startTransaction();
-    try {
-        const clientPackage = new db.ClientPackage({
-            package: payload.package,
-            amount: payload.amount
-        });
+    const client = new db.Client({
+        ...payload,
+        subscription: subscriptionId
+    });
 
-        await clientPackage.save({ session });
+    return await client.save();
 
-        const saveClients = (item) => {
-            const bulkOps = [];
-            const clientData = {
-                ...item,
-                subscription: subscriptionId,
-                clientPackage
-            };
-            delete clientData.partner;
-            bulkOps.push({ insertOne: { document: clientData } });
-
-            if (item.partner) {
-                bulkOps.push({ insertOne: {
-                    document: {
-                        ...item.partner,
-                        clientPackage,
-                        joiningDate: item.joiningDate,
-                        subscription: subscriptionId
-                    }
-                } });
-            }
-            return bulkOps;
-        };
-
-        const insertOperations = Array.isArray(payload) ?
-            payload.flatMap(saveClients) :
-            saveClients(payload);
-
-        const result = await db.Client.bulkWrite(insertOperations, { session });
-        await session.commitTransaction();
-        return result;
-    } catch (err) {
-        await session.abortTransaction();
-        throw err;
-    } finally {
-        await session.endSession();
-    }
+    // const session = await startSession();
+    // session.startTransaction();
+    // try {
+    //     const clientPackage = new db.ClientPackage({
+    //         package: payload.package,
+    //         amount: payload.amount
+    //     });
+    //
+    //     await clientPackage.save({ session });
+    //
+    //     const saveClients = (item) => {
+    //         const bulkOps = [];
+    //         const clientData = {
+    //             ...item,
+    //             subscription: subscriptionId,
+    //             clientPackage
+    //         };
+    //         delete clientData.partner;
+    //         bulkOps.push({ insertOne: { document: clientData } });
+    //
+    //         if (item.partner) {
+    //             bulkOps.push({ insertOne: {
+    //                 document: {
+    //                     ...item.partner,
+    //                     clientPackage,
+    //                     joiningDate: item.joiningDate,
+    //                     subscription: subscriptionId
+    //                 }
+    //             } });
+    //         }
+    //         return bulkOps;
+    //     };
+    //
+    //     const insertOperations = Array.isArray(payload) ?
+    //         payload.flatMap(saveClients) :
+    //         saveClients(payload);
+    //
+    //     const result = await db.Client.bulkWrite(insertOperations, { session });
+    //     await session.commitTransaction();
+    //     return result;
+    // } catch (err) {
+    //     await session.abortTransaction();
+    //     throw err;
+    // } finally {
+    //     await session.endSession();
+    // }
 };
 
 exports.getClientNotesByClientId = async(clientId) => {
@@ -121,37 +128,40 @@ exports.createClientNote = async (payload) => {
 };
 
 exports.updateClient = async(id, payload) => {
-    const session = await startSession();
-    session.startTransaction();
 
-    try {
-        const client = await db.Client.findById(id).session(session);
+    return db.Client.findOneAndUpdate({ _id: id }, { $set: { ...payload } });
 
-        client.set(payload);
-
-        if (client.clientPackage) {
-            await db.ClientPackage.findByIdAndUpdate(client.clientPackage, {
-                package: payload.package,
-                amount: payload.amount
-            }, { session });
-        } else {
-            const clientPackage = new db.ClientPackage({
-                package: payload.package,
-                amount: payload.amount
-            });
-            await clientPackage.save({ session });
-            client.clientPackage = clientPackage._id;
-        }
-
-        await client.save({ session });
-        await session.commitTransaction();
-        return client;
-    } catch (err) {
-        await session.abortTransaction();
-        throw err;
-    } finally {
-        await session.endSession();
-    }
+    // const session = await startSession();
+    // session.startTransaction();
+    //
+    // try {
+    //     const client = await db.Client.findById(id).session(session);
+    //
+    //     client.set(payload);
+    //
+    //     if (client.clientPackage) {
+    //         await db.ClientPackage.findByIdAndUpdate(client.clientPackage, {
+    //             package: payload.package,
+    //             amount: payload.amount
+    //         }, { session });
+    //     } else {
+    //         const clientPackage = new db.ClientPackage({
+    //             package: payload.package,
+    //             amount: payload.amount
+    //         });
+    //         await clientPackage.save({ session });
+    //         client.clientPackage = clientPackage._id;
+    //     }
+    //
+    //     await client.save({ session });
+    //     await session.commitTransaction();
+    //     return client;
+    // } catch (err) {
+    //     await session.abortTransaction();
+    //     throw err;
+    // } finally {
+    //     await session.endSession();
+    // }
 };
 
 exports.deleteClient = async (id) => {

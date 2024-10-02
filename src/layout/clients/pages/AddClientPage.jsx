@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import useMultistepForm from "../../../hooks/useMultistepForm.js";
-import PersonalForm from "../forms/PersonalForm.jsx";
+import BasicInfoForm from "../forms/BasicInfoForm.jsx";
 import PackageForm from "../forms/PackageForm.jsx";
 import AboutYouForm from "../forms/AboutYouForm.jsx";
 import Box from "../../../components/Box/Box.jsx";
@@ -18,7 +18,7 @@ const AddClientPage = () => {
     const navigate = useNavigate();
 
     const { steps, currentStepIndex, step, isFirstStep, isLastStep, back, next } = useMultistepForm([
-        { component: <PersonalForm/>, label: "Personal" },
+        { component: <BasicInfoForm/>, label: "Personal" },
         { component: <AboutYouForm/>, label: "About You" },
         { component: <PackageForm/>, label: "Package" }
     ]);
