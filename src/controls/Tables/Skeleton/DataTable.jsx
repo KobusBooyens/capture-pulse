@@ -5,8 +5,8 @@ import TableRow from "@mui/material/TableRow";
 import TableBody from "@mui/material/TableBody";
 import TableContainer from "@mui/material/TableContainer";
 import Box from "../../../components/Box/Box.jsx";
-import DataTableHeadCell from "../DataTable/DataTableHeadCell.jsx";
-import DataTableBodyCell from "../DataTable/DataTableBodyCell.jsx";
+import DataTableHeadCell from "../DataTableView/DataTableHeadCell.jsx";
+import DataTableBodyCell from "../DataTableView/DataTableBodyCell.jsx";
 
 const DataTableSkeleton = () => {
     const skeletonRows = 5;

@@ -2,48 +2,21 @@ import { DataGrid } from "@mui/x-data-grid";
 import React, { useMemo } from "react";
 import PropTypes from "prop-types";
 import { TableContainer } from "@mui/material";
-import Box from "../../../components/Box/Box.jsx";
-import SearchInput from "../../Inputs/SearchInput.jsx";
 
 const DataTableGrid = ({
     table,
+    pageSizeOptions= [10, 30, 50, 70, 100],
     totalRecords,
     isDataLoading,
     paginationModel,
     onPaginationModelChange,
-    searchModel,
-    onSearchModelChange,
     onSortModelChange,
-    TableHeaderComponent
 }) => {
-    const pageSizeOptions = [10, 30, 50, 70, 100];
     const columns = useMemo(() => table.columns, [table]);
     const rows = useMemo(() => table.rows, [table]);
 
     return (
         <TableContainer>
-            {searchModel && searchModel.enabled &&
-              <Box display="flex"
-                  justifyContent={TableHeaderComponent ? "space-between" : "flex-end"}
-                  alignItems="center"
-                  p={2}
-                  width="100%" >
-                  {TableHeaderComponent && 
-                    <Box display="flex" justifyContent="flex-start">
-                        <TableHeaderComponent />
-                    </Box>
-                  }
-                  <Box display="flex" justifyContent="flex-end">
-                      <SearchInput
-                          label={searchModel.label}
-                          placeholder={searchModel.placeholder}
-                          onChange={onSearchModelChange}
-                      />
-                  </Box>
-              </Box>
-
-            }
-
             <DataGrid 
                 autoHeight
                 columns={columns}
@@ -69,25 +42,17 @@ const DataTableGrid = ({
 };
 
 DataTableGrid.propTypes = {
-    totalRecords: PropTypes.number,
-    isDataLoading: PropTypes.bool,
-    paginationModel: PropTypes.shape({
-        page: PropTypes.number,
-        perPage: PropTypes.number,
-    }),
-    onPaginationModelChange: PropTypes.func,
-    TableHeaderComponent: PropTypes.node,
     table: PropTypes.shape({
         columns: PropTypes.array.isRequired,
         rows: PropTypes.array.isRequired,
     }).isRequired,
-    searchModel: PropTypes.shape({
-        enabled: PropTypes.bool,
-        label: PropTypes.string,
-        placeholder: PropTypes.string
+    totalRecords: PropTypes.number,
+    pageSizeOptions: PropTypes.array,
+    paginationModel: PropTypes.shape({
+        page: PropTypes.number,
+        pageSize: PropTypes.number,
     }),
-    onSearchModelChange: PropTypes.func,
-    onSortModelChange: PropTypes.func
+    onPaginationModelChange: PropTypes.func
 };
 
 export default DataTableGrid;
