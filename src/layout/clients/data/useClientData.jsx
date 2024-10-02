@@ -10,44 +10,94 @@ import PackageDetails from "../../shared/PackageDetails.jsx";
 import Typography from "../../../components/Typography/Typography.jsx";
 import Badge from "../../../components/Badge/Badge.jsx";
 import IconButton from "@mui/material/IconButton";
-import { Chip } from "@mui/material";
+import { Chip, useMediaQuery, useTheme } from "@mui/material";
 import Divider from "@mui/material/Divider";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 
 export default function useClientData(data) {
     const [isDeleting, setIsDeleting] = useState({ deleting: false, data: {} });
     const [viewNotes, setViewNotes] = useState({ show: false, data: [], clientId: null });
-
-    const handleDeleteClient = useCallback((data) => {
-        setIsDeleting({ deleting: true, data });
-    },[]);
-
-    const handleViewNotes = useCallback((data) => {
-        setViewNotes({ show: true, data: data.clientNotes, clientId: data._id });
-    });
+    const theme = useTheme();
+    const isXs = useMediaQuery(theme.breakpoints.down("md"));
 
     const Actions = ({ data }) => {
         const navigate = useNavigate();
+        const [anchorEl, setAnchorEl] = useState(null);
+        const handleMenuClick = (event) => setAnchorEl(event.currentTarget);
+        const handleMenuClose = () => setAnchorEl(null);
+
+        const handleDeleteClient = useCallback((data) => {
+            setIsDeleting({ deleting: true, data });
+            handleMenuClose();
+        },[]);
+
+        const handleViewNotes = useCallback((data) => {
+            setViewNotes({ show: true, data: data.clientNotes, clientId: data._id });
+            handleMenuClose();
+        });
+
+        const handleEdit = () => {
+            handleMenuClose();
+            navigate(`./edit/${data._id}`);
+        };
+
         return (
             <Box>
-                <Tooltip title="Edit" placement="top">
-                    <IconButton onClick={() => navigate(`./edit/${data._id}`)}>
-                        <Icon fontSize="small" color="info">edit</Icon>
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="Notes" placement="top">
-                    <IconButton onClick={() => handleViewNotes(data)}>
-                        <Badge badgeContent={data.clientNotes?.length}
-                            circular size={"xs"} color={"light"}>
-                            <Icon fontSize="small" color={"action"}>notes</Icon>
-                        </Badge>
+                {isXs ?
+                    <>
+                        <IconButton onClick={handleMenuClick}>
+                            <Icon fontSize="small">more_vert</Icon> {/* Hamburger or dotted menu icon */}
+                        </IconButton>
+                        <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
+                            <MenuItem onClick={handleEdit}>
+                                <Box display={"flex"} gap={1}>
+                                    <Icon fontSize="small" color="info">edit</Icon>
+                                    <Typography variant={"button"}>
+                                        Edit
+                                    </Typography>
+                                </Box>
+                            </MenuItem>
+                            <MenuItem onClick={() => handleViewNotes(data)}>
+                                <Box display={"flex"} gap={1}>
+                                    <Icon fontSize="small" color="action">notes</Icon>
+                                    <Typography variant={"button"}>
+                                        View Notes
+                                    </Typography>
+                                </Box>
+                            </MenuItem>
+                            <MenuItem onClick={() => handleDeleteClient(data)}>
+                                <Box display={"flex"} gap={1}>
+                                    <Icon fontSize="small" color="error">delete</Icon>
+                                    <Typography variant={"button"}>
+                                        Remove
+                                    </Typography>
+                                </Box>
+                            </MenuItem>
+                        </Menu>
+                    </> :
+                    <>
+                        <Tooltip title="Edit" placement="top">
+                            <IconButton onClick={handleEdit}>
+                                <Icon fontSize="small" color="info">edit</Icon>
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Notes" placement="top">
+                            <IconButton onClick={() => handleViewNotes(data)}>
+                                <Badge badgeContent={data.clientNotes?.length}
+                                    circular size={"xs"} color={"light"}>
+                                    <Icon fontSize="small" color={"action"}>notes</Icon>
+                                </Badge>
 
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="Remove" placement="top">
-                    <IconButton onClick={() => handleDeleteClient(data)}>
-                        <Icon fontSize="small" color="error">delete</Icon>
-                    </IconButton>
-                </Tooltip>
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Remove" placement="top">
+                            <IconButton onClick={() => handleDeleteClient(data)}>
+                                <Icon fontSize="small" color="error">delete</Icon>
+                            </IconButton>
+                        </Tooltip>
+                    </>
+                }
             </Box>
         );
     };
@@ -162,9 +212,6 @@ export default function useClientData(data) {
                     <Typography variant={"button"}>Joined: Pending</Typography>
                     <Typography variant={"button"}>Package: Pending</Typography>
                 </Box>
-
-                {/*Footer*/}
-
             </>
         );
     };
