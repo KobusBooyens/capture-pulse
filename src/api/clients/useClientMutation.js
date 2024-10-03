@@ -1,5 +1,4 @@
 import queryKeys from "./useQueryKeys.js";
-import useCustomFetch from "../_shared/useCustomFetch.js";
 import { apiClient, buildUrlParams } from "../api-client.js";
 import useCustomMutation from "../_shared/useCustomMutation.js";
 

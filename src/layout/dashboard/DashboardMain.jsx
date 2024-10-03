@@ -1,10 +1,6 @@
 import React from "react";
 import Box from "../../components/Box/Box.jsx";
 import { Grid } from "@mui/material";
-import ComplexStatisticsCard from "../../controls/Cards/StatisticsCards/ComplexStatisticsCard.jsx";
-import ReportsLineChart from "../../controls/Charts/LineCharts/ReportsLineChart/ReportLineChart.jsx";
-import reportsLineChartData from "./data/reportsLineChartData.js";
-import Typography from "../../components/Typography/Typography.jsx";
 import { useDashboardCheckinInsights, useDashboardClientInsights } from "../../api/dashboard/useDashboardFetch.js";
 import TotalClients from "./cards/TotalClients.jsx";
 import TotalNewClients from "./cards/TotalNewClients.jsx";
@@ -12,10 +8,8 @@ import DailyClientInsightsReport from "./graphs/dailyClientInsights/DailyClientI
 import MonthlyClientInsightsReport from "./graphs/monthlyClientInsights/MonthlyClientInsightsReport.jsx";
 import WeeklyClientInsightsReport from "./graphs/weeklyClientInsights/WeeklyClientInsightsReport.jsx";
 import TotalCheckins from "./cards/TotalCheckins.jsx";
-import CardSkeleton from "../../controls/Cards/CardSkeleton.jsx";
 
 const DashboardMain = () => {
-    const { joined, payments } = reportsLineChartData;
 
     const clientInsights = useDashboardClientInsights();
     const checkinInsights = useDashboardCheckinInsights();

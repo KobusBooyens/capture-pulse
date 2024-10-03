@@ -8,7 +8,7 @@ import FormInputText from "../FormInputText/FormInputText.jsx";
 import { InputAdornment } from "@mui/material";
 import Icon from "@mui/material/Icon";
 
-const FormInputDate = ({ name, label, rules, required, maxDate = dayjs(), variant = "outlined", ...props }) => {
+const FormInputDate = ({ name, label, rules, required, maxDate = dayjs(), variant = "outlined", inputProps, ...props }) => {
     const { control, formState: { errors } } = useFormContext();
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -42,12 +42,13 @@ const FormInputDate = ({ name, label, rules, required, maxDate = dayjs(), varian
                                 helperText: errors[name] ? errors[name].message : null,
                                 error: !!errors[name],
                                 variant:  variant,
-                                InputProps: {
-                                    startAdornment:
-                                  <InputAdornment position="start">
-                                      <Icon>calendar_month</Icon>
-                                  </InputAdornment>
-                                },
+                                InputProps: { inputProps }
+                                //   {
+                                //     startAdornment:
+                                //   <InputAdornment position="start">
+                                //       <Icon>calendar_month</Icon>
+                                //   </InputAdornment>
+                                // },
                             },
                         }}
 

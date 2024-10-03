@@ -8,13 +8,14 @@ import dayjs from "dayjs";
 import { Chip } from "@mui/material";
 
 const TotalCheckins = ({ totalClients, totalCheckins, totalRemaining, isLoading }) => {
+    console.log({ totalClients, totalCheckins });
     return (
         <StandardStatisticsCard
             color={"light"}
             icon="settings_accessibility"
             title="Check-ins this week"
-            subTitle={`${totalCheckins}/${totalClients}`}
-            watermark={`${Math.round(totalCheckins / totalClients * 100)}%`}
+            subTitle={totalClients ? `${totalCheckins ?? 0}/${totalClients}` : "No clients available"}
+            watermark={`${Math.round(totalCheckins ?? 0 / totalClients * 100)}%`}
             isLoading={isLoading}
         >
             <Typography component="p" variant="button" color="text" display="flex" gap={1}>

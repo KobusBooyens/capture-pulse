@@ -9,7 +9,6 @@ import SettingsMain from "../settings/SettingsMain.jsx";
 import UsersMain from "../users/UsersMain.jsx";
 import GeneralCheckinsMain from "../checkins/GeneralCheckinsMain.jsx";
 import WeighingCheckinsMain from "../checkins/WeighingCheckinsMain.jsx";
-import MembershipMain from "../managePackages/MembershipMain.jsx";
 
 const menuItems = [
     {
@@ -27,14 +26,6 @@ const menuItems = [
         icon: <Icon fontSize={"small"}>people_alt</Icon>,
         route: "/clients",
         component: <ClientsMain />
-    },
-    {
-        type: "collapse",
-        name: "Memberships",
-        key: "memberships",
-        icon: <Icon fontSize={"small"}>card_membership</Icon>,
-        route: "/memberships",
-        component: <MembershipMain />
     },
     {
         type: "collapse",

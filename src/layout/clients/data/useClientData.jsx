@@ -3,7 +3,6 @@ import Icon from "@mui/material/Icon";
 import Tooltip from "@mui/material/Tooltip";
 import dayjs from "dayjs";
 import PropTypes from "prop-types";
-import { useNavigate } from "react-router-dom";
 import { useCallback, useState } from "react";
 import ClientDetails from "../../shared/ClientDetails.jsx";
 import PackageDetails from "../../shared/PackageDetails.jsx";
@@ -15,10 +14,11 @@ import Divider from "@mui/material/Divider";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 
-export default function useClientData(data) {
-    const [isDeleting, setIsDeleting] = useState({ deleting: false, data: {} });
-    const [viewNotes, setViewNotes] = useState({ show: false, data: [], clientId: null });
-    const [isEditing, setIsEditing] = useState({ show: false, data: [], clientId: null });
+export default function useClientData(data, selectedAction, setSelectedAction) {
+    // const [isDeleting, setIsDeleting] = useState({ deleting: false, data: {} });
+    // const [viewNotes, setViewNotes] = useState({ show: false, data: [], clientId: null });
+    // const [isEditing, setIsEditing] = useState({ show: false, data: [], clientId: null });
+
     const theme = useTheme();
     const isXs = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -27,21 +27,26 @@ export default function useClientData(data) {
         const handleMenuClick = (event) => setAnchorEl(event.currentTarget);
         const handleMenuClose = () => setAnchorEl(null);
 
-        const handleDeleteClient = useCallback((data) => {
-            setIsDeleting({ deleting: true, data });
+        const handleSelectedAction = useCallback((data, action) => {
+            setSelectedAction({ action: action, show: true, data: data, clientId: data._id });
             handleMenuClose();
-        },[]);
+        }, []);
 
-        const handleViewNotes = useCallback((data) => {
-            setViewNotes({ show: true, data: data.clientNotes, clientId: data._id });
-            handleMenuClose();
-        });
-
-        const handleEdit = (record) => {
-            setIsEditing({ show: true, data: record, clientId: record._id });
-            handleMenuClose();
-            // navigate(`./edit/${data._id}`);
-        };
+        // const handleDeleteClient = useCallback((data) => {
+        //     setIsDeleting({ deleting: true, data });
+        //     handleMenuClose();
+        // },[]);
+        //
+        // const handleViewNotes = useCallback((data) => {
+        //     setViewNotes({ show: true, data: data.clientNotes, clientId: data._id });
+        //     handleMenuClose();
+        // });
+        //
+        // const handleEdit = (record) => {
+        //     setIsEditing({ show: true, data: record, clientId: record._id });
+        //     handleMenuClose();
+        //     // navigate(`./edit/${data._id}`);
+        // };
 
         return (
             <Box>
@@ -54,7 +59,7 @@ export default function useClientData(data) {
                             </IconButton>
                         </Badge>
                         <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
-                            <MenuItem onClick={() => handleEdit(data)}>
+                            <MenuItem onClick={() => handleSelectedAction(data, "edit")}>
                                 <Box display={"flex"} gap={1}>
                                     <Icon fontSize="small" color="info">edit</Icon>
                                     <Typography variant={"button"}>
@@ -62,7 +67,15 @@ export default function useClientData(data) {
                                     </Typography>
                                 </Box>
                             </MenuItem>
-                            <MenuItem onClick={() => handleViewNotes(data)}>
+                            <MenuItem onClick={() => handleSelectedAction(data, "membership")}>
+                                <Box display={"flex"} gap={1}>
+                                    <Icon fontSize="small" color="warning">card_membership</Icon>
+                                    <Typography variant={"button"}>
+                                        Membership
+                                    </Typography>
+                                </Box>
+                            </MenuItem>
+                            <MenuItem onClick={() => handleSelectedAction(data, "notes")}>
                                 <Box display={"flex"} gap={1}>
                                     <Badge badgeContent={data.clientNotes?.length}
                                         circular size={"xs"} color={"light"}>
@@ -73,7 +86,7 @@ export default function useClientData(data) {
                                     </Typography>
                                 </Box>
                             </MenuItem>
-                            <MenuItem onClick={() => handleDeleteClient(data)}>
+                            <MenuItem onClick={() => handleSelectedAction(data, "delete")}>
                                 <Box display={"flex"} gap={1}>
                                     <Icon fontSize="small" color="error">delete</Icon>
                                     <Typography variant={"button"}>
@@ -85,21 +98,25 @@ export default function useClientData(data) {
                     </> :
                     <>
                         <Tooltip title="Edit" placement="top">
-                            <IconButton onClick={() => handleEdit(data)}>
+                            <IconButton onClick={() => handleSelectedAction(data, "edit")}>
                                 <Icon fontSize="small" color="info">edit</Icon>
                             </IconButton>
                         </Tooltip>
+                        <Tooltip title="Membership" placement="top">
+                            <IconButton onClick={() => handleSelectedAction(data, "membership")}>
+                                <Icon fontSize="small" color={"warning"}>card_membership</Icon>
+                            </IconButton>
+                        </Tooltip>
                         <Tooltip title="Notes" placement="top">
-                            <IconButton onClick={() => handleViewNotes(data)}>
+                            <IconButton onClick={() => handleSelectedAction(data, "notes")}>
                                 <Badge badgeContent={data.clientNotes?.length}
                                     circular size={"xs"} color={"light"}>
                                     <Icon fontSize="small" color={"action"}>notes</Icon>
                                 </Badge>
-
                             </IconButton>
                         </Tooltip>
                         <Tooltip title="Remove" placement="top">
-                            <IconButton onClick={() => handleDeleteClient(data)}>
+                            <IconButton onClick={() => handleSelectedAction(data, "delete")}>
                                 <Icon fontSize="small" color="error">delete</Icon>
                             </IconButton>
                         </Tooltip>
@@ -131,11 +148,11 @@ export default function useClientData(data) {
             sortable: true
         },
         {
-            headerName: "Membership Status",
+            headerName: "Status",
             field: "membershipStatus",
             align: "left",
             flex: 0.5,
-            renderCell: (params) => <Chip color={"warning"} label={"Pending First Payment"}/>
+            renderCell: (params) => <Chip color={"warning"} label={"Pending"}/>
         },
         {
             headerName: "Package",
@@ -144,7 +161,7 @@ export default function useClientData(data) {
             flex: 0.5,
             renderCell: (params) =>
                 <PackageDetails
-                    name={params.row?.packageName ?? "N/A"}
+                    name={params.row?.packageName}
                     goal={params.row.goal}
                     partnersDetail={params.row.packagePartners}
                 />,
@@ -157,9 +174,8 @@ export default function useClientData(data) {
             flex: 0.5,
             renderCell: (params) =>
                 <Typography variant="normal" color="text">
-                    {formatDate(params.row.joined)}
+                    {params.row.joiningDate ? formatDate(params.row.joiningDate): "-"}
                 </Typography>,
-
             sortable: true
         },
         {
@@ -185,7 +201,7 @@ export default function useClientData(data) {
         packageName: row?.packageName,
         goal: row.goal,
         packagePartners: row.packagePartners,
-        joined: row.joiningDate,
+        joiningDate: row.joiningDate,
         clientNotes: row.clientNotes,
         _id: row._id,
     }));
@@ -208,7 +224,7 @@ export default function useClientData(data) {
                         label={
                             <Box display={"flex"} alignItems="center" gap={1} >
                                 <Icon fontSize={"small"}>card_membership</Icon>
-                        Pending First Payment
+                                  Membership Pending
                             </Box>
                         }
                     />
@@ -225,8 +241,7 @@ export default function useClientData(data) {
     return {
         columns, rows,
         cardItemsContent,
-        viewNotes, setViewNotes,
-        isDeleting, setIsDeleting,
-        isEditing, setIsEditing
+        selectedAction,
+        setSelectedAction
     };
 }

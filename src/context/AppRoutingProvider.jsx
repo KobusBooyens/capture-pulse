@@ -27,7 +27,6 @@ import SignInMain from "../layout/authentication/sign-in/SignInMain.jsx";
 import CoverLayout from "../layout/root/CoverLayout.jsx";
 import { useAuth } from "./AuthProvider.jsx";
 import Fallback from "../layout/root/fallback/Fallback.jsx";
-import MembershipMain from "../layout/managePackages/MembershipMain.jsx";
 
 const ProtectedRoute = () => {
     const { authToken } = useAuth();
@@ -59,8 +58,6 @@ const appRoutes =
           }/>
           <Route path="clients/edit/:id" element={<EditClientPage />} />
           <Route path="clients/add" element={<AddClientPage />} />
-
-          <Route path="memberships" element={<MembershipMain />} />
 
           {/* Checkins */}
           <Route path="checkins" element={<CheckinsMain />} />

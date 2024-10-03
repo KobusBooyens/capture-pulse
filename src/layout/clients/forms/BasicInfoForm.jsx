@@ -112,9 +112,7 @@ const BasicInfoForm = ({ isLoading, onCancel }) => {
                         arrow={false} >
                         <Icon color={"info"}>info</Icon>
                     </Tooltip>
-
                 </Box>
-
             </Grid>
             <Box display="flex" justifyContent="end" marginTop={2} width="100%">
                 {isLoading && <CircularProgress/>}

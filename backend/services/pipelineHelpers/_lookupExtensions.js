@@ -30,3 +30,12 @@ exports.packageLookup = {
         as: "package"
     }
 };
+
+exports.membershipLookup = {
+    $lookup: {
+        from: "memberships",
+        localField: "_id",
+        foreignField: "client",
+        as: "memberships"
+    }
+};

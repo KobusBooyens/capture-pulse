@@ -26,7 +26,7 @@ function StandardStatisticsCard({ color= "info", title, subTitle, children, icon
                             zIndex: 1,
                         }}
                     >
-                        {watermark}
+                        { watermark }
                     </Typography>
                     <Box display="flex" justifyContent="space-between" pt={1} px={2}>
                         <Box

@@ -49,6 +49,11 @@ const TaskForm = ({ isAdding, onCancel }) => {
                     name={"dateTime"}
                     label={"Date/time"}
                     maxDate={null}
+                    inputProps={
+                        <InputAdornment position="start">
+                            <Icon>calendar_month</Icon>
+                        </InputAdornment>
+                    }
                     fullWidth />
             </Grid>
             <Grid item xs={12} md={12}>

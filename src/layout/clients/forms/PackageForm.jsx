@@ -9,7 +9,7 @@ import { useParams } from "react-router-dom";
 import BasicInfoForm from "./BasicInfoForm.jsx";
 import Divider from "@mui/material/Divider";
 import Box from "../../../components/Box/Box.jsx";
-import AboutYouForm from "./AboutYouForm.jsx";
+import MembershipForm from "./MembershipForm.jsx";
 import Icon from "@mui/material/Icon";
 import Typography from "../../../components/Typography/Typography.jsx";
 
@@ -87,7 +87,7 @@ const PackageForm = () => {
                             </Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                            <AboutYouForm addPartner={true} />
+                            <MembershipForm addPartner={true} />
                         </AccordionDetails>
                     </Accordion>
                 </Box>

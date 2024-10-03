@@ -6,7 +6,6 @@ import ViewClientsPage from "./pages/ViewClientsPage.jsx";
 import { useTableQuery } from "../../context/TableQueryProvider.jsx";
 
 const ClientsMain = () => {
-
     const {
         page,
         pageSize,

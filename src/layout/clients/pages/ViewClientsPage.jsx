@@ -11,9 +11,10 @@ import DeleteDialog from "../../../controls/Dialogs/DeleteDialog.jsx";
 import { useCreateClient, useDeleteClient, useEditClient } from "../../../api/clients/useClientMutation.js";
 import NotesDialog from "../../../controls/Dialogs/NotesDialog/NotesDialog.jsx";
 import DataTableView from "../../../controls/Tables/DataTableView/DataTableView.jsx";
-import ClientBasicInfoDialog from "../dialogs/ClientBasicInfoDialog.jsx";
+import ClientDialog from "../dialogs/ClientDialog.jsx";
 import BasicInfoForm from "../forms/BasicInfoForm.jsx";
 import { FormProvider, useForm } from "react-hook-form";
+import MembershipForm from "../forms/MembershipForm.jsx";
 
 const ViewClientsPage = ({
     data,
@@ -23,59 +24,81 @@ const ViewClientsPage = ({
     onSearchModelChange,
     onSortModelChange
 }) => {
-    const methods = useForm();
+    const basicInfoMethods = useForm();
+    const membershipMethods = useForm();
+
     const deleteClient = useDeleteClient();
     const createClient = useCreateClient();
     const editClient = useEditClient();
-    const [showBasicInfoDialog, setShowBasicInfoDialog] = useState(false);
-    
-    const { columns, rows, cardItemsContent,
-        isDeleting, setIsDeleting,
-        isEditing, setIsEditing,
-        viewNotes, setViewNotes } =
-      useClientTableData(data?.records);
+    // const [showBasicInfoDialog, setShowBasicInfoDialog] = useState(false);
+    const [selectedAction, setSelectedAction] = useState({
+        action: null,
+        show: false,
+        data: {},
+        clientId: null
+    });
+
+    const { columns, rows, cardItemsContent } = useClientTableData(data?.records, selectedAction, setSelectedAction);
 
     useEffect(() => {
-        methods.reset({ ...isEditing.data });
-    }, [isEditing.data]);
-    
-    const handleCloseBasicInfoDialog = () => {
-        setShowBasicInfoDialog(false);
-        setIsEditing({ show: false, data: {}, clientId: null });
-        methods.reset({});
+        basicInfoMethods.reset(selectedAction.action === "edit" ?
+            { ...selectedAction.data } : {});
+    }, [selectedAction.action, selectedAction.data]);
+
+    const handleActionCloseEvents = () => {
+        setSelectedAction({ action: null, show: false, data: {}, clientId: null });
+        basicInfoMethods.reset({});
     };
 
-    const handleCloseDeleteDialog = () => {
-        setIsDeleting({ deleting: false, data: {} });
+    // const handleCloseBasicInfoDialog = () => {
+    //     setShowBasicInfoDialog(false);
+    //     setIsEditing({ show: false, data: {}, clientId: null });
+    //     methods.reset({});
+    // };
+    //
+    // const handleCloseDeleteDialog = () => {
+    //     setIsDeleting({ deleting: false, data: {} });
+    // };
+    //
+    // const handleCloseViewNotes = () => {
+    //     setViewNotes({ show: false, data: [], clientId: null });
+    // };
+
+    console.log("selectedAction", selectedAction);
+
+    const handleCreateClient = () => {
+        setSelectedAction({ action: "create", show: true, clientId: null, data: {} });
     };
 
-    const handleCloseViewNotes = () => {
-        setViewNotes({ show: false, data: [], clientId: null });
+    const onFormSubmitMembership = (data) => {
+        console.log("onFormSubmitMembership", data);
     };
 
-    const onFormSubmit = (data) => {
-        if (showBasicInfoDialog) {
+    const onFormSubmitBasicInfo = (data) => {
+        console.log("onFormSubmit", data);
+        if (selectedAction.action === "create") {
             createClient.mutate({ ...data }, {
                 onSuccess: () => {
-                    handleCloseBasicInfoDialog();
+                    handleActionCloseEvents();
                 } });
-        } else if (isEditing.show) {
+        } else if (selectedAction.action === "edit" && selectedAction.show) {
             editClient.mutate({
-                id: isEditing.clientId,
+                id: selectedAction.clientId,
                 updatedData: {
                     ...data
                 }
             }, {
                 onSuccess: () => {
-                    handleCloseBasicInfoDialog();
+                    handleActionCloseEvents();
                 } });
         }
     };
 
     const handleDelete = () => {
-        deleteClient.mutate({ id: isDeleting.data._id }, {
+        deleteClient.mutate({ id: selectedAction.data._id }, {
             onSuccess: () => {
-                setIsDeleting({ deleting: false, data: {} });
+                // setIsDeleting({ deleting: false, data: {} });
+                handleActionCloseEvents();
             }
         });
     };
@@ -100,10 +123,7 @@ const ViewClientsPage = ({
                             <Button variant={"gradient"}
                                 color={"secondary"}
                                 className={"flex gap-2"}
-                                onClick={() =>
-                                    setShowBasicInfoDialog(true)
-                                    // navigate("add")
-                                }
+                                onClick={handleCreateClient}
                             >
                                 <Icon>add</Icon> Add Client
                             </Button>
@@ -125,32 +145,52 @@ const ViewClientsPage = ({
                 </Grid>
             </Grid>
 
-            <ClientBasicInfoDialog
-                openDialog={showBasicInfoDialog || isEditing.show}
-                onClose={handleCloseBasicInfoDialog}
+            <ClientDialog
+                openDialog={(selectedAction.action === "create" || selectedAction.action === "edit")
+                  && selectedAction.show}
+                onClose={handleActionCloseEvents}
                 isLoading={false}
-                title={isEditing.show ? "Edit Client" : "Add Client"}
+                icon={"people_alt"}
+                title={selectedAction.action === "edit" ? "Edit Client" : "Add Client"}
             >
-                <FormProvider {...methods}>
-                    <form onSubmit={methods.handleSubmit(onFormSubmit)} noValidate>
+                <FormProvider {...basicInfoMethods}>
+                    <form onSubmit={basicInfoMethods.handleSubmit(onFormSubmitBasicInfo)} noValidate>
                         <BasicInfoForm
                             isLoading={createClient.isPending || editClient.isPending}
-                            onCancel={handleCloseBasicInfoDialog}/>
+                            onCancel={handleActionCloseEvents}/>
                     </form>
                 </FormProvider>
-            </ClientBasicInfoDialog>
+            </ClientDialog>
+
+            <ClientDialog
+                openDialog={selectedAction.action === "membership"
+                && selectedAction.show}
+                onClose={handleActionCloseEvents}
+                isLoading={false}
+                icon={"card_membership"}
+                title={"Manage Membership"}
+            >
+                <FormProvider {...membershipMethods}>
+                    <form onSubmit={membershipMethods.handleSubmit(onFormSubmitMembership)} noValidate>
+                        <MembershipForm
+                            // isLoading={createClient.isPending || editClient.isPending}
+                            onCancel={handleActionCloseEvents}/>
+                    </form>
+                </FormProvider>
+            </ClientDialog>
+
             <DeleteDialog
-                openDialog={isDeleting.deleting}
-                onClose={handleCloseDeleteDialog}
+                openDialog={selectedAction.action === "delete" && selectedAction.show}
+                onClose={handleActionCloseEvents}
                 onConfirm={handleDelete}
                 isLoading={deleteClient.isPending}
                 contentTextValue={"Are you sure you want to remove this client?"}
             />
             <NotesDialog
-                openDialog={viewNotes.show}
-                onClose={handleCloseViewNotes}
-                data={viewNotes.data}
-                clientId={viewNotes.clientId}
+                openDialog={selectedAction.action === "notes" && selectedAction.show}
+                onClose={handleActionCloseEvents}
+                data={selectedAction.data}
+                clientId={selectedAction.clientId}
             />
         </Box>
     );

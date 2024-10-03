@@ -1,7 +1,7 @@
 const db = require("../models");
 const { formatClientResponse } = require("../controllers/utils");
 const { startSession } = require("mongoose");
-const { clientNotesLookup, clientPackageLookup, packageLookup } = require("./pipelineHelpers/_lookupExtensions");
+const { clientNotesLookup, clientPackageLookup, packageLookup, membershipLookup } = require("./pipelineHelpers/_lookupExtensions");
 const { ObjectId } = require("mongodb");
 
 exports.getAllClients = async (subscriptionId, payload) => {
@@ -33,9 +33,10 @@ exports.getAllClients = async (subscriptionId, payload) => {
         { $sort: sortFilter },
         { $skip: pageSize * (page - 1) },
         { $limit: pageSize },
+        { ...membershipLookup },
         { ...clientNotesLookup },
-        // { ...clientPackageLookup },
-        // { ...packageLookup },
+        { ...clientPackageLookup },
+        { ...packageLookup },
     ];
 
     const [data, recordCount] = await Promise.all([

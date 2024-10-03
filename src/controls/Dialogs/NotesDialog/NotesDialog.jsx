@@ -55,11 +55,7 @@ const NotesDialog = ({ openDialog, onClose, data, clientId }) => {
     const deleteClientNote = useDeleteClientNote();
 
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
-    const [notesData, setNotesData] = useState([]);
-
-    useEffect(() => {
-        setNotesData(data);
-    },[data]);
+    const [notesData, setNotesData] = useState(data);
 
     const handleAddNote = (formData) => {
         const dataToSubmit = {
@@ -101,18 +97,24 @@ const NotesDialog = ({ openDialog, onClose, data, clientId }) => {
 
     const dialogContentToDisplay = () => {
         if (!notesData || notesData?.length === 0) {
-            return <Typography variant={"body"}>No notes found</Typography>;
+            return <Box display={"flex"} justifyContent={"center"}>
+                <Typography variant={"body"}>No notes found</Typography>
+            </Box>;
         }
 
         return (
             <List sx={{ px:2 }}>
-                {notesData.map(record =>
+                {notesData.length > 0 ? notesData.map(record =>
                     <NoteListItem key={record._id}
                         note={record.note}
                         dateTime={record.createdAt}
                         disableItem={deleteClientNote.isPending && deleteClientNote.context.data.id === record._id}
                         onDismiss={() => handleDeleteNote(record)}/>
-                )}
+                ) :
+                    <Box display={"flex"} justifyContent={"center"}>
+                        <Typography variant={"body"}>No notes found</Typography>
+                    </Box>
+                }
             </List>
         );
     };
@@ -165,7 +167,7 @@ const NotesDialog = ({ openDialog, onClose, data, clientId }) => {
                     </form>
                 </Box>
                 <Divider/>
-                <Box>
+                <Box >
                     {dialogContentToDisplay()}
                 </Box>
 

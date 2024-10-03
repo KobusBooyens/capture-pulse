@@ -210,8 +210,8 @@ exports.getCheckinInsights = async (subscription) => {
 
     return {
         totalClients,
-        totalCheckins: totalCheckinsAggregation[0].totalCheckins,
-        totalRemaining: totalClients - totalCheckinsAggregation[0].totalCheckins
+        totalCheckins: totalCheckinsAggregation[0]?.totalCheckins,
+        totalRemaining: totalClients - totalCheckinsAggregation[0]?.totalCheckins
     };
 };
 

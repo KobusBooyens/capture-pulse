@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import useMultistepForm from "../../../hooks/useMultistepForm.js";
 import BasicInfoForm from "../forms/BasicInfoForm.jsx";
 import PackageForm from "../forms/PackageForm.jsx";
-import AboutYouForm from "../forms/AboutYouForm.jsx";
+import MembershipForm from "../forms/MembershipForm.jsx";
 import Box from "../../../components/Box/Box.jsx";
 import { CircularProgress, Grid, Step, StepLabel, Stepper } from "@mui/material";
 import Card from "@mui/material/Card";
@@ -19,7 +19,7 @@ const AddClientPage = () => {
 
     const { steps, currentStepIndex, step, isFirstStep, isLastStep, back, next } = useMultistepForm([
         { component: <BasicInfoForm/>, label: "Personal" },
-        { component: <AboutYouForm/>, label: "About You" },
+        { component: <MembershipForm/>, label: "About You" },
         { component: <PackageForm/>, label: "Package" }
     ]);
 

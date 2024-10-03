@@ -10,7 +10,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props}/>;
 });
 
-const ClientBasicInfoDialog = ({ openDialog, onClose, title, isLoading, children }) => {
+const ClientDialog = ({ openDialog, icon, onClose, title, isLoading, children }) => {
     return (
         <>
             <Dialog
@@ -23,7 +23,7 @@ const ClientBasicInfoDialog = ({ openDialog, onClose, title, isLoading, children
                 <Box className={"p-5"}>
                     <DialogTitle>
                         <Box className={"flex justify-center"}>
-                            <Icon color={"secondary"} sx={{ mr: 1 }} >people_alt</Icon>
+                            <Icon color={"secondary"} sx={{ mr: 1 }}>{icon}</Icon>
                             <Typography variant="h6">{title}</Typography>
                         </Box>
                     </DialogTitle>
@@ -43,12 +43,13 @@ const ClientBasicInfoDialog = ({ openDialog, onClose, title, isLoading, children
     );
 };
 
-ClientBasicInfoDialog.propTypes = {
+ClientDialog.propTypes = {
     openDialog: PropTypes.bool,
     onClose: PropTypes.func,
     title: PropTypes.string,
+    icon: PropTypes.string,
     isLoading: PropTypes.bool,
     children: PropTypes.node
 };
 
-export default ClientBasicInfoDialog;
+export default ClientDialog;

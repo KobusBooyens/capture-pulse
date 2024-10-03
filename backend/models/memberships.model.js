@@ -17,7 +17,8 @@ const schema = new mongoose.Schema(
             required: true,
         },
         goal: {
-            type: String,
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Goals",
             required: true
         },
         weight: {
@@ -26,7 +27,7 @@ const schema = new mongoose.Schema(
         },
         height: {
             type: Number,
-            // required: true
+            required: true
         },
         status: {
             type: Number,
@@ -42,8 +43,6 @@ const schema = new mongoose.Schema(
         timestamps: true
     }
 );
-
-schema.index({ client: 1 }, { unique: true });
 
 schema.plugin(mongoose_delete, { deletedAt: true, deletedBy: true, overrideMethods: "all" });
 const Memberships = mongoose.model("Memberships", schema);
