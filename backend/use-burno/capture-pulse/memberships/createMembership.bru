@@ -1,0 +1,23 @@
+meta {
+  name: createMembership
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{url}}/membership
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "client": "66f2e486008f1b7664b11035",
+    "joiningDate": "2024-10-15",
+    "paymentDay": "15",
+    "goal": "66f26d74fdfdad162066a2a3",
+    "clientPackage": "66fab9d586ee6383a4302dfe",
+    "weight": "89",
+    "height": "178"
+  }
+}

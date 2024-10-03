@@ -1,0 +1,15 @@
+meta {
+  name: getMembershipByClient
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{url}}/membership/:clientId
+  body: none
+  auth: none
+}
+
+params:path {
+  clientId: 66fd79121962cb7aa885ae40
+}

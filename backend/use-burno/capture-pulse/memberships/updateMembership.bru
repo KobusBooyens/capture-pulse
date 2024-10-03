@@ -1,0 +1,27 @@
+meta {
+  name: updateMembership
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{url}}/membership/:id
+  body: json
+  auth: none
+}
+
+params:path {
+  id: 66fea1f40f5bb238a9f6a25a
+}
+
+body:json {
+  {
+    "client": "66fd79121962cb7aa885ae40",
+    "joiningDate": "2024-10-16",
+    "paymentDay": "15",
+    "goal": "66f26d74fdfdad162066a2a3",
+    "clientPackage": "66fab9d586ee6383a4302dfe",
+    "weight": "89",
+    "height": "178"
+  }
+}

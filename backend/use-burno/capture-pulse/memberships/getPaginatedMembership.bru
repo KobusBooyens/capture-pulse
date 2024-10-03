@@ -1,0 +1,19 @@
+meta {
+  name: getPaginatedMembership
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{url}}/memberships?page=1&pageSize=10
+  body: none
+  auth: none
+}
+
+params:query {
+  page: 1
+  pageSize: 10
+  ~sortColumn: package
+  ~sortDirection: desc
+  ~searchText: Jo
+}
