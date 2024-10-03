@@ -43,11 +43,16 @@ const ViewClientsPage = ({
     useEffect(() => {
         basicInfoMethods.reset(selectedAction.action === "edit" ?
             { ...selectedAction.data } : {});
+
+        membershipMethods.reset(selectedAction.action === "membership" ?
+            { ...selectedAction.data } : {});
+
     }, [selectedAction.action, selectedAction.data]);
 
     const handleActionCloseEvents = () => {
-        setSelectedAction({ action: null, show: false, data: {}, clientId: null });
         basicInfoMethods.reset({});
+        membershipMethods.reset({});
+        setSelectedAction({ action: null, show: false, data: {}, clientId: null });
     };
 
     // const handleCloseBasicInfoDialog = () => {
@@ -64,18 +69,23 @@ const ViewClientsPage = ({
     //     setViewNotes({ show: false, data: [], clientId: null });
     // };
 
-    console.log("selectedAction", selectedAction);
-
     const handleCreateClient = () => {
         setSelectedAction({ action: "create", show: true, clientId: null, data: {} });
     };
 
     const onFormSubmitMembership = (data) => {
-        console.log("onFormSubmitMembership", data);
+        const dataToSubmit = {
+            package: data.package,
+            amount: data.amount,
+            height: data.height,
+            weight: data.weight,
+            goal: data.goal,
+            clientId: data._id
+        };
+        console.log("onFormSubmitMembership", dataToSubmit);
     };
 
     const onFormSubmitBasicInfo = (data) => {
-        console.log("onFormSubmit", data);
         if (selectedAction.action === "create") {
             createClient.mutate({ ...data }, {
                 onSuccess: () => {
@@ -84,9 +94,7 @@ const ViewClientsPage = ({
         } else if (selectedAction.action === "edit" && selectedAction.show) {
             editClient.mutate({
                 id: selectedAction.clientId,
-                updatedData: {
-                    ...data
-                }
+                updatedData: { ...data }
             }, {
                 onSuccess: () => {
                     handleActionCloseEvents();

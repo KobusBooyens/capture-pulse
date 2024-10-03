@@ -200,8 +200,9 @@ export default function useClientData(data, selectedAction, setSelectedAction) {
         agent: row.agent,
         packageName: row?.packageName,
         goal: row.goal,
-        packagePartners: row.packagePartners,
+        // packagePartners: row.packagePartners,
         joiningDate: row.joiningDate,
+        amount: row.amount,
         clientNotes: row.clientNotes,
         _id: row._id,
     }));

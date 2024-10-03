@@ -9,42 +9,49 @@ import { usePackages } from "../../../api/packages/usePackageFetch.js";
 import { useFormContext } from "react-hook-form";
 import paymentDayOptions from "../../../data/paymentDayOptions.js";
 import FormInputDate from "../../../components/Input/FormInputDate/FormInputDate.jsx";
-import Divider from "@mui/material/Divider";
 
 const MembershipForm = ({ isLoading, onCancel }) => {
-    const { watch, setValue, getValues, formState: { defaultValues } } = useFormContext();
+    const { watch, setValue, getValues, reset, formState: { defaultValues } } = useFormContext();
   
     const goals = useGoals();
     const packages = usePackages();
 
+    const packageOptions = packages.data ? packages.data.map(record => ({
+        value: record._id.toString(),
+        label: record.name
+    })) : [];
+
+    const goalOptions = goals.data ? goals?.data.map(record => ({
+        value: record._id.toString(),
+        label: record.name,
+    })) : [];
+
     const selectedPackageChange = watch("package");
-    const [packageOptions, setPackageOptions] = useState([]);
-
-    useEffect(() => {
-        if (packages?.data && !isLoading) {
-            const options = packages?.data.map(p => ({ value: p._id.toString(), label: p.name }));
-            setPackageOptions(options);
-        }
-    }, [packages.data, isLoading]);
-
-    useEffect(() => {
-        if (selectedPackageChange !== defaultValues?.package) {
-            const amount = packages?.data.find(r => r?._id === selectedPackageChange)?.amount;
-            setValue("amount", amount);
-        } else {
-            setValue("amount", defaultValues?.amount);
-        }
-    },[packages?.data]);
-    // const [goalOptions, setGoalOptions] = useState([]);
-
-    const goalOptions = !goals.isPending && goals.isSuccess && goals.data ?
-        goals?.data.map(g => ({ label: g.name, value: g.name })) : [];
 
     // useEffect(() => {
-    //     if (goals.data) {
-    //         setGoalOptions();
+    //     if (packages.data) {
+    //         setValue("amount", packages.data.find(r => r._id === watch("package"))?.amount);
     //     }
-    // }, [goals.data]);
+    //
+    // }, [packages.data, selectedPackageChange]);
+
+    // const [packageOptions, setPackageOptions] = useState([]);
+
+    // useEffect(() => {
+    //     if (packages?.data && !isLoading) {
+    //         const options = packages?.data.map(p => ({ value: p._id.toString(), label: p.name }));
+    //         setPackageOptions(options);
+    //     }
+    // }, [packages.data, isLoading]);
+
+    // useEffect(() => {
+    //     if (selectedPackageChange !== defaultValues?.package) {
+    //         const amount = packages?.data.find(r => r?._id === selectedPackageChange)?.amount;
+    //         setValue("amount", amount);
+    //     } else {
+    //         setValue("amount", defaultValues?.amount);
+    //     }
+    // },[packages?.data]);
 
     return (
         <Grid container spacing={3}>

@@ -1,10 +1,8 @@
 import React from "react";
 import Typography from "../../../components/Typography/Typography.jsx";
-import ComplexStatisticsCard from "../../../controls/Cards/StatisticsCards/ComplexStatisticsCard.jsx";
 import PropTypes from "prop-types";
 import StandardStatisticsCard from "../../../controls/Cards/StatisticsCards/StandardStatisticsCard.jsx";
 import { getWeekOfMonth } from "../../../utils/functions.js";
-import dayjs from "dayjs";
 import { Chip } from "@mui/material";
 
 const TotalCheckins = ({ totalClients, totalCheckins, totalRemaining, isLoading }) => {
