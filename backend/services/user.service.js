@@ -68,7 +68,7 @@ exports.createUser = async (payload) => {
     }
 };
 
-exports.getAllUsers = async (subscriptionId, payload) => {
+exports.getPaginatedUsers = async (subscriptionId, payload) => {
     const pageSize = payload.pageSize ? Number(payload.pageSize) : 10;
     const page = payload.page ? Number(payload.page) : 1;
 
@@ -110,6 +110,12 @@ exports.getAllUsers = async (subscriptionId, payload) => {
             recordCount: recordCount
         }
     };
+};
+
+exports.getAllUsers = async (subscriptionId) => {
+    return db.Users.find({ subscription: subscriptionId })
+        .select("firstName lastName contactNumber email isSubscriptionOwner")
+        .lean();
 };
 
 exports.deleteUser = async (id) => {

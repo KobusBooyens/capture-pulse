@@ -8,6 +8,7 @@ module.exports = function (app) {
     });
 
     app.get("/api/user/:id", controller.getUserById);
+    app.get("/api/users/paginated", verifyToken, controller.getPaginatedUsers);
     app.get("/api/users", verifyToken, controller.getAllUsers);
     app.post("/api/user", controller.createUser);
     app.patch("/api/user/:id", controller.updateUser);

@@ -1,14 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import FormInputText from "../../../components/Input/FormInputText/FormInputText.jsx";
-import { CircularProgress, Grid } from "@mui/material";
+import { CircularProgress, Grid, InputAdornment } from "@mui/material";
 import FormInputDate from "../../../components/Input/FormInputDate/FormInputDate.jsx";
 import FormInputDropdown from "../../../components/Input/FormInputDropdown/FormInputDropdown.jsx";
 import genderOptions from "../../../data/genderOptions.js";
 import PropTypes from "prop-types";
 import Box from "../../../components/Box/Box.jsx";
 import Button from "../../../components/Button/Button.jsx";
+import { useGetUsers } from "../../../api/users/useUserFetch.js";
+import IconButton from "@mui/material/IconButton";
+import Icon from "@mui/material/Icon";
+import Tooltip from "@mui/material/Tooltip";
 
 const BasicInfoForm = ({ isLoading, onCancel }) => {
+    const getUsers = useGetUsers();
+
+    let userOptions = [];
+    if (!getUsers.isPending && getUsers.isSuccess && getUsers.data ) {
+        userOptions = getUsers.data.map(r => ({
+            value: r._id,
+            label: `${r.firstName} ${r.lastName}`
+        }));
+    }
+
     return (
         <Grid container spacing={3}>
             <Grid item xs={12} md={6}>
@@ -31,7 +45,6 @@ const BasicInfoForm = ({ isLoading, onCancel }) => {
                     rules={{ required: "Last Name is required" }}
                     fullWidth />
             </Grid>
-
             <Grid item xs={12} md={6}>
                 <FormInputDropdown
                     key={"gender"}
@@ -44,7 +57,6 @@ const BasicInfoForm = ({ isLoading, onCancel }) => {
                     rules={{ required: "Gender is required" }}
                 />
             </Grid>
-
             <Grid item xs={12} md={6}>
                 <FormInputText
                     key={"contactNumber"}
@@ -81,6 +93,28 @@ const BasicInfoForm = ({ isLoading, onCancel }) => {
                     // rules={{ required: "Date Of Birth is required" }}
                 />
             </Grid>
+            <Grid item xs={12} md={6}>
+                <Box display={"flex"} gap={1} alignItems={"center"}>
+                    <FormInputDropdown
+                        key={"agent"}
+                        name={"agent"}
+                        label="Agent"
+                        placeholder="Select Agent"
+                        options={userOptions}
+                        helperText={"Agent represents the user who signed up the client"}
+                        fullWidth
+                        required
+                        rules={{ required: "Agent is required" }}
+                    />
+                    <Tooltip title="Agent represents the user who signed up the client"
+                        placement={"top"}
+                        arrow={false} >
+                        <Icon color={"info"}>info</Icon>
+                    </Tooltip>
+
+                </Box>
+
+            </Grid>
             <Box display="flex" justifyContent="end" marginTop={2} width="100%">
                 {isLoading && <CircularProgress/>}
                 {!isLoading &&
@@ -103,10 +137,6 @@ const BasicInfoForm = ({ isLoading, onCancel }) => {
         </Grid>
 
     );
-};
-
-BasicInfoForm.propTypes = {
-    addPartner: PropTypes.bool
 };
 
 export default BasicInfoForm;

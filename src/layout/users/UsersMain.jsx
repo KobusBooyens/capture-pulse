@@ -1,6 +1,6 @@
 import React from "react";
 import { useTableQuery } from "../../context/TableQueryProvider.jsx";
-import { useGetAllUsers } from "../../api/users/useUserFetch.js";
+import { useGetPaginatedUsers } from "../../api/users/useUserFetch.js";
 import Typography from "../../components/Typography/Typography.jsx";
 import ViewUsersPage from "./pages/ViewUsersPage.jsx";
 
@@ -16,7 +16,7 @@ const UsersMain = () => {
         updateSort,
     } = useTableQuery();
 
-    const { isLoading, error, data } = useGetAllUsers({
+    const { isLoading, error, data } = useGetPaginatedUsers({
         page,
         pageSize,
         searchText,

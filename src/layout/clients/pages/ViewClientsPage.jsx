@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import useClientTableData from "../data/useClientData.jsx";
 import Box from "../../../components/Box/Box.jsx";
 import { Grid } from "@mui/material";
@@ -55,15 +55,7 @@ const ViewClientsPage = ({
 
     const onFormSubmit = (data) => {
         if (showBasicInfoDialog) {
-            let dateToSubmit = {
-                firstName: data.firstName,
-                lastName:data.lastName,
-                dob: data.dob,
-                gender: data.gender,
-                email: data.email,
-                contactNumber: data.contactNumber,
-            };
-            createClient.mutate(dateToSubmit, {
+            createClient.mutate({ ...data }, {
                 onSuccess: () => {
                     handleCloseBasicInfoDialog();
                 } });

@@ -1,0 +1,19 @@
+meta {
+  name: getPaginatedUsers
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{url}}/users/paginated?page=1&pageSize=10&searchText&sortColumn&sortDirection
+  body: none
+  auth: none
+}
+
+params:query {
+  page: 1
+  pageSize: 10
+  searchText: 
+  sortColumn: 
+  sortDirection: 
+}

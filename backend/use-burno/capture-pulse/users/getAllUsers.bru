@@ -1,19 +1,11 @@
 meta {
   name: getAllUsers
   type: http
-  seq: 3
+  seq: 6
 }
 
 get {
-  url: {{url}}/users?page=1&pageSize=10&searchText&sortColumn&sortDirection
+  url: {{url}}/users
   body: none
   auth: none
-}
-
-params:query {
-  page: 1
-  pageSize: 10
-  searchText: 
-  sortColumn: 
-  sortDirection: 
 }

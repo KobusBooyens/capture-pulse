@@ -48,6 +48,7 @@ const basicClientSchema = z.object({
     contactNumber: z.string({ required_error: "contactNumber is required" }),
     dob: z.string().optional(),
     email: z.string().optional(),
+    agent: z.string().optional(),
 });
 
 const getAllClients = async (req, res) => {

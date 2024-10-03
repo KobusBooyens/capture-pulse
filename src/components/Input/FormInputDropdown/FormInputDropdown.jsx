@@ -1,8 +1,11 @@
-import { FormControl, FormHelperText, InputLabel, MenuItem, Select } from "@mui/material";
+import { FormControl, FormHelperText, InputAdornment, InputLabel, MenuItem, Select } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
 import PropTypes from "prop-types";
+import IconButton from "@mui/material/IconButton";
+import Icon from "@mui/material/Icon";
+import Tooltip from "@mui/material/Tooltip";
 
-const FormInputDropdown = ({ options, name, label, rules, required, placeholder, ...props }) => {
+const FormInputDropdown = ({ options, name, label, rules, required, placeholder, helperText, ...props }) => {
     const { control, formState: { errors } } = useFormContext();
     return (
         <FormControl fullWidth error={!!errors[name]}>
@@ -22,6 +25,7 @@ const FormInputDropdown = ({ options, name, label, rules, required, placeholder,
                             required={required}
                             onChange={onChange}
                             placeholder={placeholder}
+
                             {...props}
                         >
                             {options.map((option) =>
@@ -30,7 +34,8 @@ const FormInputDropdown = ({ options, name, label, rules, required, placeholder,
                                 </MenuItem>
                             )}
                         </Select>
-                        {errors[name] && <FormHelperText>{errors[name].message}</FormHelperText>}
+                        { errors[name] && <FormHelperText>{errors[name].message}</FormHelperText>}
+                        { !errors[name] && helperText && <FormHelperText>{helperText}</FormHelperText>}
                     </>
                 }
             />
@@ -43,6 +48,7 @@ FormInputDropdown.propTypes = {
     name: PropTypes.string.isRequired,
     placeholder: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
+    helperText: PropTypes.string,
     rules: PropTypes.object,
     required: PropTypes.bool,
 };

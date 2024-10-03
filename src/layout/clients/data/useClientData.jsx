@@ -181,6 +181,7 @@ export default function useClientData(data) {
         email: row.email,
         dob: row.dob,
         contactNumber: row.contactNumber,
+        agent: row.agent,
         packageName: row?.packageName,
         goal: row.goal,
         packagePartners: row.packagePartners,

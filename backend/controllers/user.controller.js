@@ -38,19 +38,28 @@ const createUser = async(req, res) => {
 
 const getAllUsers = async (req, res) => {
     try {
-        const { payload, error } = validateAndRespond(basicSchema, req.query);
-        if (error) {
-            return res.status(400).json({ message: "Validation failed.", errors: error });
-        }
-
-        const response = await UserService.getAllUsers(req.subscriptionId, payload);
-        res.status(response.status).send(response.data);
+        const response = await UserService.getAllUsers(req.subscriptionId);
+        res.status(200).send(response);
     } catch (err) {
         console.error(err);
         res.status(500).send({ message: "Internal Server Error", error: err });
     }
 };
 
+const getPaginatedUsers = async (req, res) => {
+    try {
+        const { payload, error } = validateAndRespond(basicSchema, req.query);
+        if (error) {
+            return res.status(400).json({ message: "Validation failed.", errors: error });
+        }
+
+        const response = await UserService.getPaginatedUsers(req.subscriptionId, payload);
+        res.status(response.status).send(response.data);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send({ message: "Internal Server Error", error: err });
+    }
+};
 const getUserById = async(req, res) => {
     try {
         res.status(200).send("getUserById");
@@ -85,4 +94,4 @@ const deleteUser = async(req, res) => {
     }
 };
 
-module.exports = { getUserById, getAllUsers, createUser, updateUser, deleteUser };
+module.exports = { getUserById, getPaginatedUsers, getAllUsers, createUser, updateUser, deleteUser };

@@ -32,6 +32,10 @@ const schema = new mongoose.Schema(
             ref: "Subscriptions",
             required: true
         },
+        agent: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Users",
+        },
         membership: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Memberships",
