@@ -12,6 +12,7 @@ import DailyClientInsightsReport from "./graphs/dailyClientInsights/DailyClientI
 import MonthlyClientInsightsReport from "./graphs/monthlyClientInsights/MonthlyClientInsightsReport.jsx";
 import WeeklyClientInsightsReport from "./graphs/weeklyClientInsights/WeeklyClientInsightsReport.jsx";
 import TotalCheckins from "./cards/TotalCheckins.jsx";
+import CardSkeleton from "../../controls/Cards/CardSkeleton.jsx";
 
 const DashboardMain = () => {
     const { joined, payments } = reportsLineChartData;
@@ -36,7 +37,7 @@ const DashboardMain = () => {
 
                     <Grid item xs={12} md={6} lg={3}>
                         <Box mb={1.5}>
-                            <TotalCheckins {...checkinInsights.data}/>
+                            <TotalCheckins {...checkinInsights.data} isLoading={clientInsights.isLoading}/>
                         </Box>
                     </Grid>
                     {/*<Grid item xs={12} md={6} lg={3}>*/}

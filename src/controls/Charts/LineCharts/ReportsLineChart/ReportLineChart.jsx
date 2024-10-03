@@ -22,6 +22,7 @@ import Box from "../../../../components/Box/Box.jsx";
 import config from "./config.js";
 import Typography from "../../../../components/Typography/Typography.jsx";
 import { CircularProgress } from "@mui/material";
+import ChartSkeleton from "../../ChartSkeleton.jsx";
 
 ChartJS.register(
     CategoryScale,
@@ -39,38 +40,41 @@ function ReportsLineChart({ color, title, description, chart, children, isLoadin
 
     return (
         <Card sx={{ height: "100%" }}>
-            <Box padding="1rem">
-                {isLoading && <CircularProgress/>}
-                {useMemo(
-                    () => 
-                        <Box
-                            variant="gradient"
-                            bgColor={color}
-                            borderRadius="lg"
-                            coloredShadow={color}
-                            py={2}
-                            pr={0.5}
-                            mt={-5}
-                            height="12.5rem"
-                        >
-                            <Line data={data} options={options} redraw />
+            {isLoading ?
+                <ChartSkeleton/> :
+                <Box padding="1rem">
+                    {isLoading && <CircularProgress/>}
+                    {useMemo(
+                        () => 
+                            <Box
+                                variant="gradient"
+                                bgColor={color}
+                                borderRadius="lg"
+                                coloredShadow={color}
+                                py={2}
+                                pr={0.5}
+                                mt={-5}
+                                height="12.5rem"
+                            >
+                                <Line data={data} options={options} redraw />
+                            </Box>
+                        ,
+                        [chart, color]
+                    )}
+                    <Box pt={3} pb={1} px={1}>
+                        <Typography variant="h6" textTransform="capitalize">
+                            {title}
+                        </Typography>
+                        <Typography variant="body2" color="text" fontWeight="light">
+                            {description}
+                        </Typography>
+                        <Divider />
+                        <Box display="flex" alignItems="center">
+                            {children}
                         </Box>
-                    ,
-                    [chart, color]
-                )}
-                <Box pt={3} pb={1} px={1}>
-                    <Typography variant="h6" textTransform="capitalize">
-                        {title}
-                    </Typography>
-                    <Typography variant="body2" color="text" fontWeight="light">
-                        {description}
-                    </Typography>
-                    <Divider />
-                    <Box display="flex" alignItems="center">
-                        {children}
                     </Box>
                 </Box>
-            </Box>
+            }
         </Card>
     );
 }

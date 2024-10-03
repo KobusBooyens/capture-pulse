@@ -20,6 +20,7 @@ import config from "./config.js";
 import Box from "../../../../components/Box/Box.jsx";
 import Typography from "../../../../components/Typography/Typography.jsx";
 import { CircularProgress } from "@mui/material";
+import ChartSkeleton from "../../ChartSkeleton.jsx";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -28,40 +29,43 @@ function ReportsBarChart({ color, title, description, chart, children, isLoading
 
     return (
         <Card>
-            <Box padding="1rem">
-                {isLoading && <CircularProgress/>}
-                {useMemo(
-                    () => {
-                        return (
-                            <Box
-                                variant="gradient"
-                                bgColor={color}
-                                borderRadius="lg"
-                                coloredShadow={color}
-                                py={2}
-                                pr={0.5}
-                                mt={-5}
-                                height="12.5rem"
-                            >
-                                <Bar data={data} options={options} redraw />
-                            </Box>
-                        );
-                    },[color, chart]
-                )}
-                <Box pt={3} pb={1} px={1} >
-                    <Typography variant="h6" textTransform="capitalize">
-                        {title}
-                    </Typography>
-                    <Typography variant="body2" color="text" fontWeight="light">
-                        {description}
-                    </Typography>
-                    <Divider />
-                    <Box display="flex" alignItems="center">
-                        {children}
+            { isLoading ? <ChartSkeleton /> :
+                <Box padding="1rem">
+                    {isLoading && <CircularProgress />}
+                    {useMemo(
+                        () => {
+                            return (
+                                <Box
+                                    variant="gradient"
+                                    bgColor={color}
+                                    borderRadius="lg"
+                                    coloredShadow={color}
+                                    py={2}
+                                    pr={0.5}
+                                    mt={-5}
+                                    height="12.5rem"
+                                >
+                                    <Bar data={data} options={options} redraw />
+                                </Box>
+                            );
+                        }, [color, chart]
+                    )}
+                    <Box pt={3} pb={1} px={1}>
+                        <Typography variant="h6" textTransform="capitalize">
+                            {title}
+                        </Typography>
+                        <Typography variant="body2" color="text" fontWeight="light">
+                            {description}
+                        </Typography>
+                        <Divider />
+                        <Box display="flex" alignItems="center">
+                            {children}
+                        </Box>
                     </Box>
                 </Box>
-            </Box>
+            }
         </Card>
+
     );
 }
 

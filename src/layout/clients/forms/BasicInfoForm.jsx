@@ -11,6 +11,7 @@ import { useGetUsers } from "../../../api/users/useUserFetch.js";
 import IconButton from "@mui/material/IconButton";
 import Icon from "@mui/material/Icon";
 import Tooltip from "@mui/material/Tooltip";
+import ViewClientsPage from "../pages/ViewClientsPage.jsx";
 
 const BasicInfoForm = ({ isLoading, onCancel }) => {
     const getUsers = useGetUsers();
@@ -135,8 +136,12 @@ const BasicInfoForm = ({ isLoading, onCancel }) => {
                 }
             </Box>
         </Grid>
-
     );
+};
+
+BasicInfoForm.propTypes = {
+    isLoading: PropTypes.bool,
+    onCancel: PropTypes.func,
 };
 
 export default BasicInfoForm;

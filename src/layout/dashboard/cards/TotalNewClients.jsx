@@ -14,15 +14,15 @@ const TotalNewClients = ({ totalNew, isLoading }) => {
             title="Total New Clients"
             // subTitle={`+${totalNew}`}
             watermark={`+${totalNew}`}
+            isLoading={isLoading}
         >
-            {isLoading ? <CircularProgress/> :
-                <Typography component="p" variant="button" color="text" display="flex">
-                    <Chip title={"Current month"} size={"small"} label={
-                        <Typography variant="h6" fontWeight={"light"}>
-                            { dayjs().format("MMMM")}
-                        </Typography>
-                    }/>
-                </Typography> }
+            <Typography component="p" variant="button" color="text" display="flex">
+                <Chip title={"Current month"} size={"small"} label={
+                    <Typography variant="h6" fontWeight={"light"}>
+                        { dayjs().format("MMMM")}
+                    </Typography>
+                }/>
+            </Typography> 
         </StandardStatisticsCard>
     );
 };

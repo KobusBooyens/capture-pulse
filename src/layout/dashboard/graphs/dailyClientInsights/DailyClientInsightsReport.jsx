@@ -5,9 +5,7 @@ import {
 } from "../../../../api/dashboard/useDashboardFetch.js";
 import useDailyClientInsightsData from "./useDailyClientInsightsData.js";
 import Typography from "../../../../components/Typography/Typography.jsx";
-import Icon from "@mui/material/Icon";
 import Box from "../../../../components/Box/Box.jsx";
-import Button from "../../../../components/Button/Button.jsx";
 import { Chip } from "@mui/material";
 import dayjs from "dayjs";
 import ReportTrending from "../components/ReportTrending.jsx";

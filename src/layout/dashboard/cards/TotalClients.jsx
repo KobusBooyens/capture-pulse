@@ -16,29 +16,26 @@ const TotalClients = ({ totalClients, totalMales, totalFemales, isLoading }) => 
             isLoading={isLoading}
             watermark={totalClients}
         >
-            {isLoading ? <CircularProgress/> :
-        
-                <Typography component="p" variant="button" color="text" display="flex" gap={1}>
-                    <Chip title={"Current month"} size={"small"} label={
-                        <Typography
-                            component="span"
-                            variant="button"
-                            fontWeight="bold"
-                            color={"male"}>
-                            {"Males"} {totalMales}
-                        </Typography>
-                    }/>
-                    <Chip title={"Current month"} size={"small"} label={
-                        <Typography
-                            component="span"
-                            variant="button"
-                            fontWeight="bold"
-                            color={"female"}>
-                            {"Female"} {totalFemales}
-                        </Typography>
-                    }/>
-                </Typography>
-            }
+            <Typography component="p" variant="button" color="text" display="flex" gap={1}>
+                <Chip title={"Current month"} size={"small"} label={
+                    <Typography
+                        component="span"
+                        variant="button"
+                        fontWeight="bold"
+                        color={"male"}>
+                        {"Males"} {totalMales}
+                    </Typography>
+                }/>
+                <Chip title={"Current month"} size={"small"} label={
+                    <Typography
+                        component="span"
+                        variant="button"
+                        fontWeight="bold"
+                        color={"female"}>
+                        {"Female"} {totalFemales}
+                    </Typography>
+                }/>
+            </Typography>
         </StandardStatisticsCard>
     );
 };
