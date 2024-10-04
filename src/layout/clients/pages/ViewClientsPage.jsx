@@ -53,43 +53,31 @@ const ViewClientsPage = ({
 
     }, [selectedAction.action, selectedAction.data]);
 
+    console.log("data", selectedAction.data);
+
     const handleActionCloseEvents = () => {
         basicInfoMethods.reset({});
         membershipMethods.reset({});
         setSelectedAction({ action: null, show: false, data: {}, clientId: null });
     };
 
-    // const handleCloseBasicInfoDialog = () => {
-    //     setShowBasicInfoDialog(false);
-    //     setIsEditing({ show: false, data: {}, clientId: null });
-    //     methods.reset({});
-    // };
-    //
-    // const handleCloseDeleteDialog = () => {
-    //     setIsDeleting({ deleting: false, data: {} });
-    // };
-    //
-    // const handleCloseViewNotes = () => {
-    //     setViewNotes({ show: false, data: [], clientId: null });
-    // };
-
     const handleCreateClient = () => {
         setSelectedAction({ action: "create", show: true, clientId: null, data: {} });
     };
 
     const onFormSubmitMembership = (data) => {
+        console.log(data);
         const dataToSubmit = {
+            // membership: data.membership,
             package: data.package,
             amount: data.amount,
-            height: data.height,
-            weight: data.weight,
+            height: data.height.toString(),
+            weight: data.weight.toString(),
             joiningDate: data.joiningDate,
-            paymentDay: data.paymentDay,
+            paymentDay: data.paymentDay.toString(),
             goal: data.goal,
             client: data._id
         };
-
-        console.log("onFormSubmitMembership", dataToSubmit);
 
         editMembership.mutate({
             id: data?.membership,

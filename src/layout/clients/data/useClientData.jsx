@@ -3,7 +3,7 @@ import Icon from "@mui/material/Icon";
 import Tooltip from "@mui/material/Tooltip";
 import dayjs from "dayjs";
 import PropTypes from "prop-types";
-import { useCallback, useState } from "react";
+import React, { useCallback, useState } from "react";
 import ClientDetails from "../../shared/ClientDetails.jsx";
 import PackageDetails from "../../shared/PackageDetails.jsx";
 import Typography from "../../../components/Typography/Typography.jsx";
@@ -15,10 +15,6 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 
 export default function useClientData(data, selectedAction, setSelectedAction) {
-    // const [isDeleting, setIsDeleting] = useState({ deleting: false, data: {} });
-    // const [viewNotes, setViewNotes] = useState({ show: false, data: [], clientId: null });
-    // const [isEditing, setIsEditing] = useState({ show: false, data: [], clientId: null });
-
     const theme = useTheme();
     const isXs = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -31,22 +27,6 @@ export default function useClientData(data, selectedAction, setSelectedAction) {
             setSelectedAction({ action: action, show: true, data: data, clientId: data._id });
             handleMenuClose();
         }, []);
-
-        // const handleDeleteClient = useCallback((data) => {
-        //     setIsDeleting({ deleting: true, data });
-        //     handleMenuClose();
-        // },[]);
-        //
-        // const handleViewNotes = useCallback((data) => {
-        //     setViewNotes({ show: true, data: data.clientNotes, clientId: data._id });
-        //     handleMenuClose();
-        // });
-        //
-        // const handleEdit = (record) => {
-        //     setIsEditing({ show: true, data: record, clientId: record._id });
-        //     handleMenuClose();
-        //     // navigate(`./edit/${data._id}`);
-        // };
 
         return (
             <Box>
@@ -162,8 +142,8 @@ export default function useClientData(data, selectedAction, setSelectedAction) {
             renderCell: (params) =>
                 <PackageDetails
                     name={params.row?.packageName}
-                    goal={params.row.goal}
-                    partnersDetail={params.row.packagePartners}
+                    goal={params.row?.goalName}
+                    // partnersDetail={params.row.packagePartners}
                 />,
             sortable: false
         },
@@ -190,7 +170,9 @@ export default function useClientData(data, selectedAction, setSelectedAction) {
     ];
 
     const rows = data?.map((row) => ({
+        //client details
         id: row._id,
+        _id: row._id,
         firstName: row.firstName,
         lastName: row.lastName,
         gender: row.gender,
@@ -198,17 +180,25 @@ export default function useClientData(data, selectedAction, setSelectedAction) {
         dob: row.dob,
         contactNumber: row.contactNumber,
         agent: row.agent,
-        packageName: row?.packageName,
-        goal: row.goal,
-        // packagePartners: row.packagePartners,
-        joiningDate: row.joiningDate,
-        amount: row.amount,
         clientNotes: row.clientNotes,
-        _id: row._id,
+
+        //membership details
+        membership: row.membership._id,
+        goalName: row.membership.goal.name,
+        goal: row.membership.goal._id,
+        packageName: row.membership.package.name,
+        package: row.membership.package._id,
+        // packagePartners: row.packagePartners,
+        joiningDate: row.membership.joiningDate,
+        paymentDay: row.membership.paymentDay,
+        amount: row.membership.amount,
+        height: row.membership.height,
+        weight: row.membership.weight,
+
     }));
 
     const cardItemsContent = () => {
-        return data?.map(row =>
+        return rows?.map(row =>
             <>
                 <Box display={"flex"} flexDirection={"column"} gap={1} key={row._id}>
                     <Box display={"flex"} justifyContent={"space-between"} pt={2}>
@@ -232,8 +222,21 @@ export default function useClientData(data, selectedAction, setSelectedAction) {
                 </Box>
                 <Divider/>
                 <Box display={"flex"} flexDirection={"row"} justifyContent={"center"} gap={2}>
-                    <Typography variant={"button"}>Joined: Pending</Typography>
-                    <Typography variant={"button"}>Package: Pending</Typography>
+                    <PackageDetails
+                        name={row?.packageName}
+                        goal={row?.goalName}
+                        placeholder={
+                            <Box display={"flex"} justifyContent={"center"} alignItems={"center"} gap={2}>
+                                <Typography variant="caption" color="text" fontWeight="medium"><Icon fontSize={"medium"}>pending</Icon></Typography>
+                                <Typography variant="caption" >Membership is pending</Typography>
+                            </Box>}
+                    />
+                    {row.joiningDate &&
+                        <Box display={"flex"} flexDirection={"column"} justifyContent={"center"} height={"100%"}>
+                            <Typography variant="caption" color="text" fontWeight="medium">Joining Date</Typography>
+                            <Typography variant="caption">{row.joiningDate ? formatDate(row.joiningDate) : "-"}</Typography>
+                        </Box>
+                    }
                 </Box>
             </>
         );
