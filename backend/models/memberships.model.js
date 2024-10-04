@@ -33,9 +33,9 @@ const schema = new mongoose.Schema(
             type: Number,
             default: 0
         },
-        clientPackage: {
+        package: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "ClientPackage",
+            ref: "Packages",
             required: true,
         },
     }, {

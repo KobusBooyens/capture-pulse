@@ -26,32 +26,14 @@ const MembershipForm = ({ isLoading, onCancel }) => {
         label: record.name,
     })) : [];
 
-    const selectedPackageChange = watch("package");
+    const watchedPackage = watch("package");
+    const watchedAmount = watch("amount");
 
-    // useEffect(() => {
-    //     if (packages.data) {
-    //         setValue("amount", packages.data.find(r => r._id === watch("package"))?.amount);
-    //     }
-    //
-    // }, [packages.data, selectedPackageChange]);
-
-    // const [packageOptions, setPackageOptions] = useState([]);
-
-    // useEffect(() => {
-    //     if (packages?.data && !isLoading) {
-    //         const options = packages?.data.map(p => ({ value: p._id.toString(), label: p.name }));
-    //         setPackageOptions(options);
-    //     }
-    // }, [packages.data, isLoading]);
-
-    // useEffect(() => {
-    //     if (selectedPackageChange !== defaultValues?.package) {
-    //         const amount = packages?.data.find(r => r?._id === selectedPackageChange)?.amount;
-    //         setValue("amount", amount);
-    //     } else {
-    //         setValue("amount", defaultValues?.amount);
-    //     }
-    // },[packages?.data]);
+    useEffect(() => {
+        if (!watchedAmount && packages.data) {
+            setValue("amount", packages.data.find(r => r._id === watch("package"))?.amount);
+        }
+    }, [packages.data, watchedPackage, watchedAmount]);
 
     return (
         <Grid container spacing={3}>
@@ -60,8 +42,8 @@ const MembershipForm = ({ isLoading, onCancel }) => {
                     key={"package"}
                     name="package"
                     label={"Package"}
-                    placeholder={isLoading ? "Fetching packages..." : "Select Package"}
-                    disabled={isLoading }
+                    placeholder={packages.isLoading ? "Fetching packages..." : "Select Package"}
+                    disabled={packages.isLoading }
                     options={packageOptions}
                     required
                     rules={{ required: "Package is required" }}
@@ -74,7 +56,7 @@ const MembershipForm = ({ isLoading, onCancel }) => {
                     label={"Amount"}
                     type={"number"}
                     placeholder={"Enter Amount"}
-                    disabled={!selectedPackageChange}
+                    disabled={!watchedPackage}
                     fullWidth
                     required
                     rules={{
@@ -88,10 +70,9 @@ const MembershipForm = ({ isLoading, onCancel }) => {
             <Grid item xs={12} md={6}>
                 <FormInputDropdown
                     key={"paymentDay"}
-                    name="pamymentDay"
+                    name="paymentDay"
                     label={"Payment Day"}
                     placeholder={"Select Payment Day"}
-                    // disabled={isLoading }
                     options={paymentDayOptions}
                     required
                     rules={{ required: "Payment Day is required" }}

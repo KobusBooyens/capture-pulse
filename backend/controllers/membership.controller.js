@@ -15,7 +15,7 @@ const membershipSchema = z.object({
     joiningDate: z.string({ required_error: "joiningDate is required" }),
     paymentDay: z.string({ required_error: "paymentDay is required" }),
     goal: z.string({ required_error: "goal is required" }),
-    clientPackage: z.string({ required_error: "clientPackage is required" }),
+    package: z.string({ required_error: "package is required" }),
     weight: z.string({ required_error: "weight is required" }),
     height: z.string({ required_error: "height is required" })
 });

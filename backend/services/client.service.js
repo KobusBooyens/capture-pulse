@@ -1,7 +1,7 @@
 const db = require("../models");
 const { formatClientResponse } = require("../controllers/utils");
 const { startSession } = require("mongoose");
-const { clientNotesLookup, clientPackageLookup, packageLookup, membershipLookup } = require("./pipelineHelpers/_lookupExtensions");
+const { clientNotesLookup, clientPackageLookup, packageLookup, membershipLookup, membershipPackageLookup } = require("./pipelineHelpers/_lookupExtensions");
 const { ObjectId } = require("mongodb");
 
 exports.getAllClients = async (subscriptionId, payload) => {
@@ -33,10 +33,60 @@ exports.getAllClients = async (subscriptionId, payload) => {
         { $sort: sortFilter },
         { $skip: pageSize * (page - 1) },
         { $limit: pageSize },
-        { ...membershipLookup },
+        { $lookup: {
+            from: "memberships",
+            localField: "_id",
+            foreignField: "client",
+            as: "memberships"
+        } },
+        { $unwind: { path: "$memberships", preserveNullAndEmptyArrays: true } },
+        { $lookup: {
+            from: "goals",
+            localField: "memberships.goal",
+            foreignField: "_id",
+            as: "goals"
+        } },
+        { $unwind: { path: "$goals", preserveNullAndEmptyArrays: true } },
+        { $lookup: {
+            from: "packages",
+            localField: "memberships.package",
+            foreignField: "_id",
+            as: "membershipPackage"
+        } },
+        { $unwind: { path: "$membershipPackage", preserveNullAndEmptyArrays: true } },
+        { $project: {
+            _id: 1,
+            firstName: 1,
+            lastName: 1,
+            gender: 1,
+            contactNumber: 1,
+            agent: 1,
+            membership: {
+                _id: "$memberships._id",
+                joiningDate: "$memberships.joiningDate",
+                paymentDay: "$memberships.paymentDay",
+                goal: {
+                    _id: "$goals._id",
+                    name: "$goals.name",
+                },
+                weight: "$memberships.weight",
+                height: "$memberships.height",
+                status: "$memberships.status",
+                package: {
+                    _id: "$membershipPackage._id",
+                    name: "$membershipPackage.name",
+                    amount: "$membershipPackage.amount"
+                }
+            },
+
+            // memberships: 1,  // You can include or project specific membership fields here
+            // membershipPackage: 1  // Include package details from the lookup
+        }
+        },
+        // { ...membershipLookup },
+        // { ...membershipPackageLookup },
         { ...clientNotesLookup },
-        { ...clientPackageLookup },
-        { ...packageLookup },
+        // { ...clientPackageLookup },
     ];
 
     const [data, recordCount] = await Promise.all([
@@ -45,7 +95,7 @@ exports.getAllClients = async (subscriptionId, payload) => {
     ]);
 
     return {
-        records: data ? await formatClientResponse(data) : [],
+        records: data ?? [],
         recordCount: recordCount
     };
 };

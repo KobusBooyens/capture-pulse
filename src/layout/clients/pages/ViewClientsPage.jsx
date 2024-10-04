@@ -15,6 +15,7 @@ import ClientDialog from "../dialogs/ClientDialog.jsx";
 import BasicInfoForm from "../forms/BasicInfoForm.jsx";
 import { FormProvider, useForm } from "react-hook-form";
 import MembershipForm from "../forms/MembershipForm.jsx";
+import { useEditMembership } from "../../../api/memberships/useMembershipMutation.js";
 
 const ViewClientsPage = ({
     data,
@@ -30,6 +31,9 @@ const ViewClientsPage = ({
     const deleteClient = useDeleteClient();
     const createClient = useCreateClient();
     const editClient = useEditClient();
+
+    const editMembership = useEditMembership();
+
     // const [showBasicInfoDialog, setShowBasicInfoDialog] = useState(false);
     const [selectedAction, setSelectedAction] = useState({
         action: null,
@@ -79,10 +83,21 @@ const ViewClientsPage = ({
             amount: data.amount,
             height: data.height,
             weight: data.weight,
+            joiningDate: data.joiningDate,
+            paymentDay: data.paymentDay,
             goal: data.goal,
-            clientId: data._id
+            client: data._id
         };
+
         console.log("onFormSubmitMembership", dataToSubmit);
+
+        editMembership.mutate({
+            id: data?.membership,
+            updatedData: { ...dataToSubmit }
+        }, {
+            onSuccess: () => {
+                handleActionCloseEvents();
+            } });
     };
 
     const onFormSubmitBasicInfo = (data) => {
@@ -181,7 +196,7 @@ const ViewClientsPage = ({
                 <FormProvider {...membershipMethods}>
                     <form onSubmit={membershipMethods.handleSubmit(onFormSubmitMembership)} noValidate>
                         <MembershipForm
-                            // isLoading={createClient.isPending || editClient.isPending}
+                            isLoading={editMembership.isPending}
                             onCancel={handleActionCloseEvents}/>
                     </form>
                 </FormProvider>

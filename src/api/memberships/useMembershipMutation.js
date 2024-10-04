@@ -15,13 +15,13 @@ const deleteFn = async ({ id }) => {
 
 const updateFn = async ({ id, updatedData }) => {
     await new Promise(resolve => setTimeout(resolve, 2000));
-
-    const response = await apiClient.patch(`membership/${id}`, updatedData);
+    console.log({ id, updatedData });
+    const response = await apiClient.patch(`membership/${id ?? undefined}`, updatedData);
     return response.data;
 };
 
 const useEditMembership = () => {
-    return useCustomMutation(updateFn, queryKeys.PAGINATED, {
+    return useCustomMutation(updateFn, queryKeys.DETAIL, {
         success: {
             title: "Success!",
             content: "Nice! Membership was successfully updated!",
@@ -36,7 +36,7 @@ const useEditMembership = () => {
 };
 
 const useDeleteMembership = () => {
-    return useCustomMutation(deleteFn, queryKeys.PAGINATED, {
+    return useCustomMutation(deleteFn, queryKeys.DETAIL, {
         success: {
             title: "Success!",
             content: "Record has been deleted!",
@@ -51,7 +51,7 @@ const useDeleteMembership = () => {
 };
 
 const useCreateMembership = () => {
-    return useCustomMutation(createFn, queryKeys.PAGINATED, {
+    return useCustomMutation(createFn, queryKeys.DETAIL, {
         success: {
             title: "Success!",
             content: "Nice! Membership was successfully created!",
@@ -64,3 +64,5 @@ const useCreateMembership = () => {
         },
     });
 };
+
+export { useEditMembership, useDeleteMembership, useCreateMembership };

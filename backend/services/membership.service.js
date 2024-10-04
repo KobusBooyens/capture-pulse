@@ -1,6 +1,8 @@
 const db = require("../models");
 const { clientPackageLookup, packageLookup, membershipLookup } = require("./pipelineHelpers/_lookupExtensions");
 const { formatClientResponse } = require("../controllers/utils");
+const { startSession } = require("mongoose");
+const { ObjectId } = require("mongodb");
 
 exports.getPaginatedMembership = async (subscriptionId, payload) => {
     const pageSize = payload.pageSize ? Number(payload.pageSize) : 10;
@@ -55,8 +57,38 @@ exports.getMembershipByClient = async (clientId) => {
 };
 
 exports.updateMembership = async (id, payload) => {
-    return db.Memberships.findOneAndUpdate({ _id: id },
-        { $set: { ...payload } });
+    const session = await startSession();
+    session.startTransaction();
+    console.log("id", id);
+    try {
+        let membership;
+        if (ObjectId.isValid(id)) {
+            console.log("update");
+            membership = await db.Memberships.findOneAndUpdate(
+                { _id: id },
+                { $set: { ...payload } },
+                { upsert: true, new: true, session })
+                .lean();
+        } else {
+            console.log("createMembership");
+            membership = await this.createMembership(payload);
+        }
+
+        if (payload.client) {
+            await db.Client.findOneAndUpdate(
+                { _id: payload.client },
+                { $set: { membership: membership } },
+                { session });
+        }
+        
+        await session.commitTransaction();
+        return membership;
+    } catch (err) {
+        await session.abortTransaction();
+        throw err;
+    } finally {
+        await session.endSession();
+    }
 };
 
 exports.createMembership = async (payload) => {
