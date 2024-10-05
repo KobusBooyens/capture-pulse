@@ -15,7 +15,7 @@ exports.updateMembership = async (id, payload) => {
 
     try {
         let membership;
-
+        console.log("updateMembership", payload?.clients);
         const membershipPackage = await MembershipPackageService.updateMembershipPackage(
             payload.membershipPackage,
             {
@@ -46,19 +46,7 @@ exports.updateMembership = async (id, payload) => {
         }
 
         if (payload?.clients?.length > 0) {
-            for (const client of payload.clients) {
-                console.log("client", client);
-                let clientMembership = await this.getMembershipByClient(client);
-                console.log("client|clientMembership b", clientMembership);
-                if (!clientMembership) {
-                    clientMembership = new db.Memberships({
-                        client: client,
-                        membershipPackage: payload.membershipPackage
-                    });
-                    console.log("client|clientMembership a", clientMembership);
-                    await clientMembership.save({ session });
-                }
-            }
+            await linkClientMemberships(payload.clients, payload.membershipPackage, session);
         }
 
         await session.commitTransaction();
@@ -71,13 +59,29 @@ exports.updateMembership = async (id, payload) => {
     }
 };
 
+const linkClientMemberships = async (clients, membershipPackage, session) => {
+    for (const client of clients) {
+        console.log("client", client);
+        let clientMembership = await this.getMembershipByClient(client);
+        console.log("client|clientMembership b", clientMembership);
+        if (!clientMembership) {
+            clientMembership = new db.Memberships({
+                client: client,
+                membershipPackage: membershipPackage
+            });
+            console.log("client|clientMembership a", clientMembership);
+            await clientMembership.save({ session });
+        }
+    }
+};
+
 exports.createMembership = async (payload) => {
     const session = await startSession();
     session.startTransaction();
 
     try {
         const membershipPackage = await MembershipPackageService.createMembershipPackage({
-            clients: [payload.client],
+            clients: payload?.clients?.length > 0 ? [ ...payload.clients, payload.client] : [],
             package: payload.package,
             amount: payload.amount,
             paymentDay: payload.paymentDay,
@@ -95,6 +99,11 @@ exports.createMembership = async (payload) => {
         await membership.save({ session });
 
         await ClientService.updateClient(payload.client, { membership: membership });
+
+        if (payload?.clients?.length > 0) {
+            await linkClientMemberships(payload.clients, membershipPackage._id, session);
+        }
+
         await session.commitTransaction();
         return membership;
     } catch (err) {

@@ -182,7 +182,7 @@ const MembershipForm = ({ isLoading, onCancel }) => {
                     value={selectedClients}
                     onChange={(event, newValue) => {
                         setSelectedClients(newValue);
-                        setValue("clients", newValue.map(client => client._id)); // Update form value
+                        setValue("clients", newValue.map(client => client._id));
                     }}
                     loading={clientDropDown.isPending}
                     renderInput={(params) =>

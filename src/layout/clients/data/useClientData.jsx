@@ -13,6 +13,7 @@ import { Chip, useMediaQuery, useTheme } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import membershipPackageOptions from "../../../data/membershipPackageOptions.jsx";
 
 export default function useClientData(data, selectedAction, setSelectedAction) {
     const theme = useTheme();
@@ -132,7 +133,7 @@ export default function useClientData(data, selectedAction, setSelectedAction) {
             field: "membershipStatus",
             align: "left",
             flex: 0.5,
-            renderCell: (params) => <Chip color={"warning"} label={"Pending"}/>
+            renderCell: (params) => membershipPackageOptions.membershipStatusChips[params?.row.status ?? 0]
         },
         {
             headerName: "Package",
@@ -194,6 +195,7 @@ export default function useClientData(data, selectedAction, setSelectedAction) {
         joiningDate: row.membership.membershipPackage.joiningDate,
         paymentDay: row.membership.membershipPackage.paymentDay,
         amount: row.membership.membershipPackage.amount,
+        status: row.membership.membershipPackage.status,
         clients: row.membership.membershipPackage?.clients ?
             row.membership.membershipPackage.clients.filter(r => r !== row._id) : [],
         height: row.membership.height,
@@ -214,15 +216,7 @@ export default function useClientData(data, selectedAction, setSelectedAction) {
                         />
                         <Actions data={row}/>
                     </Box>
-                    <Chip
-                        color={"warning"}
-                        label={
-                            <Box display={"flex"} alignItems="center" gap={1} >
-                                <Icon fontSize={"small"}>card_membership</Icon>
-                                  Membership Pending
-                            </Box>
-                        }
-                    />
+                    {membershipPackageOptions.membershipStatusChips[row.status ?? 0]}
                 </Box>
                 <Divider/>
                 <Box display={"flex"} flexDirection={"row"} justifyContent={"center"} gap={2}>

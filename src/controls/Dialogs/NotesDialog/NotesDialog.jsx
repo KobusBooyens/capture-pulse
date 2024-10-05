@@ -55,7 +55,7 @@ const NotesDialog = ({ openDialog, onClose, data, clientId }) => {
     const deleteClientNote = useDeleteClientNote();
 
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
-    const [notesData, setNotesData] = useState(data);
+    const [notesData, setNotesData] = useState(data.clientNotes);
 
     const handleAddNote = (formData) => {
         const dataToSubmit = {
@@ -104,7 +104,7 @@ const NotesDialog = ({ openDialog, onClose, data, clientId }) => {
 
         return (
             <List sx={{ px:2 }}>
-                {notesData.length > 0 ? notesData.map(record =>
+                {notesData?.length > 0 ? notesData?.map(record =>
                     <NoteListItem key={record._id}
                         note={record.note}
                         dateTime={record.createdAt}

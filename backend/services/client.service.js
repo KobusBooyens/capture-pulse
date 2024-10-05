@@ -93,6 +93,7 @@ exports.getAllClients = async (subscriptionId, payload) => {
                     paymentDay: "$membershipPackage.paymentDay",
                     amount: "$membershipPackage.amount",
                     clients: "$membershipPackage.clients",
+                    status: "$membershipPackage.status",
                 }
             },
 
