@@ -8,34 +8,19 @@ const schema = new mongoose.Schema(
             ref: "Clients",
             required: true
         },
-        joiningDate: {
-            type: Date,
-            required: true,
-        },
-        paymentDay: {
-            type: Number,
-            required: true,
-        },
         goal: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Goals",
-            required: true
         },
         weight: {
             type: Number,
-            required: true,
         },
         height: {
             type: Number,
-            required: true
         },
-        status: {
-            type: Number,
-            default: 0
-        },
-        package: {
+        membershipPackage: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "Packages",
+            ref: "MembershipPackage",
             required: true,
         },
     }, {

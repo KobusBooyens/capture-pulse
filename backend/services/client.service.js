@@ -1,7 +1,6 @@
 const db = require("../models");
 const { formatClientResponse } = require("../controllers/utils");
-const { startSession } = require("mongoose");
-const { clientNotesLookup, clientPackageLookup, packageLookup, membershipLookup, membershipPackageLookup } = require("./pipelineHelpers/_lookupExtensions");
+const { clientNotesLookup, clientPackageLookup, packageLookup } = require("./pipelineHelpers/_lookupExtensions");
 const { ObjectId } = require("mongodb");
 
 exports.getAllClients = async (subscriptionId, payload) => {
@@ -33,6 +32,7 @@ exports.getAllClients = async (subscriptionId, payload) => {
         { $sort: sortFilter },
         { $skip: pageSize * (page - 1) },
         { $limit: pageSize },
+        //look up memberships
         { $lookup: {
             from: "memberships",
             localField: "_id",
@@ -40,6 +40,15 @@ exports.getAllClients = async (subscriptionId, payload) => {
             as: "memberships"
         } },
         { $unwind: { path: "$memberships", preserveNullAndEmptyArrays: true } },
+        //look up membership packages
+        { $lookup: {
+            from: "membershipPackage",
+            localField: "memberships.membershipPackage",
+            foreignField: "_id",
+            as: "membershipPackage"
+        } },
+        { $unwind: { path: "$membershipPackage", preserveNullAndEmptyArrays: true } },
+        //look up membership goals
         { $lookup: {
             from: "goals",
             localField: "memberships.goal",
@@ -47,24 +56,26 @@ exports.getAllClients = async (subscriptionId, payload) => {
             as: "goals"
         } },
         { $unwind: { path: "$goals", preserveNullAndEmptyArrays: true } },
+        //look up packages
         { $lookup: {
             from: "packages",
-            localField: "memberships.package",
+            localField: "membershipPackage.package",
             foreignField: "_id",
-            as: "membershipPackage"
+            as: "packages"
         } },
-        { $unwind: { path: "$membershipPackage", preserveNullAndEmptyArrays: true } },
+        { $unwind: { path: "$packages", preserveNullAndEmptyArrays: true } },
+
         { $project: {
             _id: 1,
             firstName: 1,
             lastName: 1,
             gender: 1,
+            email: 1,
+            dob: 1,
             contactNumber: 1,
             agent: 1,
             membership: {
                 _id: "$memberships._id",
-                joiningDate: "$memberships.joiningDate",
-                paymentDay: "$memberships.paymentDay",
                 goal: {
                     _id: "$goals._id",
                     name: "$goals.name",
@@ -73,20 +84,21 @@ exports.getAllClients = async (subscriptionId, payload) => {
                 height: "$memberships.height",
                 status: "$memberships.status",
                 package: {
+                    _id: "$packages._id",
+                    name: "$packages.name",
+                },
+                membershipPackage: {
                     _id: "$membershipPackage._id",
-                    name: "$membershipPackage.name",
-                    amount: "$membershipPackage.amount"
+                    joiningDate: "$membershipPackage.joiningDate",
+                    paymentDay: "$membershipPackage.paymentDay",
+                    amount: "$membershipPackage.amount",
+                    clients: "$membershipPackage.clients",
                 }
             },
 
-            // memberships: 1,  // You can include or project specific membership fields here
-            // membershipPackage: 1  // Include package details from the lookup
-        }
-        },
-        // { ...membershipLookup },
-        // { ...membershipPackageLookup },
+        } },
+
         { ...clientNotesLookup },
-        // { ...clientPackageLookup },
     ];
 
     const [data, recordCount] = await Promise.all([
@@ -109,6 +121,11 @@ exports.getClient = async (id) => {
 
     const data = await db.Client.aggregate(aggregationPipeline);
     return await formatClientResponse(data);
+};
+
+exports.getClientDropdownList = async (subscriptionId) => {
+    const clients = await db.Client.find({ subscription: subscriptionId }).select("firstName lastName").sort({ firstName: 1, lastName: 1 });
+    return clients.map(record => ({ _id: record._id, fullName: `${record.firstName} ${record.lastName}` }));
 };
 
 exports.createClient = async(subscriptionId, payload) => {

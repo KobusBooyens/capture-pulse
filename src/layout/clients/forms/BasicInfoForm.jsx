@@ -107,11 +107,11 @@ const BasicInfoForm = ({ isLoading, onCancel }) => {
                         required
                         rules={{ required: "Agent is required" }}
                     />
-                    <Tooltip title="Agent represents the user who signed up the client"
-                        placement={"top"}
-                        arrow={false} >
-                        <Icon color={"info"}>info</Icon>
-                    </Tooltip>
+                    {/*<Tooltip title="Agent represents the user who signed up the client"*/}
+                    {/*    placement={"top"}*/}
+                    {/*    arrow={false} >*/}
+                    {/*    <Icon color={"info"}>info</Icon>*/}
+                    {/*</Tooltip>*/}
                 </Box>
             </Grid>
             <Box display="flex" justifyContent="end" marginTop={2} width="100%">

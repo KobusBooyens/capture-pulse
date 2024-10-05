@@ -7,7 +7,6 @@ module.exports = function (app) {
         next();
     });
 
-    app.get("/api/memberships", verifyToken, controller.getPaginatedMembership);
     app.get("/api/membership/:clientId", verifyToken, controller.getMembershipByClient);
     app.post("/api/membership", verifyToken, controller.createMembership);
     app.patch("/api/membership/:id", verifyToken, controller.updateMembership);

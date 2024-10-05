@@ -188,10 +188,14 @@ export default function useClientData(data, selectedAction, setSelectedAction) {
         goal: row.membership.goal._id,
         packageName: row.membership.package.name,
         package: row.membership.package._id,
-        // packagePartners: row.packagePartners,
-        joiningDate: row.membership.joiningDate,
-        paymentDay: row.membership.paymentDay,
-        amount: row.membership.amount,
+
+        //membership package
+        membershipPackage: row.membership.membershipPackage._id,
+        joiningDate: row.membership.membershipPackage.joiningDate,
+        paymentDay: row.membership.membershipPackage.paymentDay,
+        amount: row.membership.membershipPackage.amount,
+        clients: row.membership.membershipPackage?.clients ?
+            row.membership.membershipPackage.clients.filter(r => r !== row._id) : [],
         height: row.membership.height,
         weight: row.membership.weight,
 
@@ -227,14 +231,18 @@ export default function useClientData(data, selectedAction, setSelectedAction) {
                         goal={row?.goalName}
                         placeholder={
                             <Box display={"flex"} justifyContent={"center"} alignItems={"center"} gap={2}>
-                                <Typography variant="caption" color="text" fontWeight="medium"><Icon fontSize={"medium"}>pending</Icon></Typography>
+                                <Typography variant="caption" color="text" fontWeight="medium">
+                                    <Icon fontSize={"medium"}>pending</Icon>
+                                </Typography>
                                 <Typography variant="caption" >Membership is pending</Typography>
                             </Box>}
                     />
                     {row.joiningDate &&
                         <Box display={"flex"} flexDirection={"column"} justifyContent={"center"} height={"100%"}>
                             <Typography variant="caption" color="text" fontWeight="medium">Joining Date</Typography>
-                            <Typography variant="caption">{row.joiningDate ? formatDate(row.joiningDate) : "-"}</Typography>
+                            <Typography variant="caption">
+                                {row.joiningDate ? formatDate(row.joiningDate) : "-"}
+                            </Typography>
                         </Box>
                     }
                 </Box>

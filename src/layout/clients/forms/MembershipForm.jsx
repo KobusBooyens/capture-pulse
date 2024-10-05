@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { CircularProgress, Grid } from "@mui/material";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Autocomplete, CircularProgress, Grid, TextField } from "@mui/material";
 import FormInputText from "../../../components/Input/FormInputText/FormInputText.jsx";
 import FormInputDropdown from "../../../components/Input/FormInputDropdown/FormInputDropdown.jsx";
 import { useGoals } from "../../../api/goals/useGoalFetch.js";
@@ -9,31 +9,68 @@ import { usePackages } from "../../../api/packages/usePackageFetch.js";
 import { useFormContext } from "react-hook-form";
 import paymentDayOptions from "../../../data/paymentDayOptions.js";
 import FormInputDate from "../../../components/Input/FormInputDate/FormInputDate.jsx";
+import { useClientDropDown } from "../../../api/clients/useClientMutation.js";
 
 const MembershipForm = ({ isLoading, onCancel }) => {
-    const { watch, setValue, getValues, reset, formState: { defaultValues } } = useFormContext();
+    const { watch, setValue, getValues, formState: { defaultValues } } = useFormContext();
+    const [isSelectedPackageCouple, setIsSelectedPackageCouple] = useState(null);
+    const [clientAutoCompleteValues, setClientAutoCompleteValues] = useState([]);
+    const [selectedClients, setSelectedClients] = useState([]);
   
     const goals = useGoals();
     const packages = usePackages();
+    const clientDropDown = useClientDropDown();
 
-    const packageOptions = packages.data ? packages.data.map(record => ({
-        value: record._id.toString(),
-        label: record.name
-    })) : [];
+    const packageOptions = useMemo(() =>
+        packages.data ? packages.data.map(record => ({
+            value: record._id.toString(),
+            label: record.name
+        })) : [],
+    [packages.data]
+    );
 
-    const goalOptions = goals.data ? goals?.data.map(record => ({
-        value: record._id.toString(),
-        label: record.name,
-    })) : [];
+    const goalOptions = useMemo(() =>
+        goals.data ? goals.data.map(record => ({
+            value: record._id.toString(),
+            label: record.name
+        })) : [],
+    [goals.data]
+    );
 
     const watchedPackage = watch("package");
     const watchedAmount = watch("amount");
 
     useEffect(() => {
-        if (!watchedAmount && packages.data) {
-            setValue("amount", packages.data.find(r => r._id === watch("package"))?.amount);
+        if (!watchedAmount && watchedPackage) {
+            const packageDetails = packages?.data?.find(r => r._id === watchedPackage);
+            setValue("amount", packageDetails?.amount);
         }
-    }, [packages.data, watchedPackage, watchedAmount]);
+    }, [watchedPackage, watchedAmount, packages?.data, setValue]);
+
+    useEffect(() => {
+        const packageDetails = packages?.data?.find(r => r._id === watchedPackage);
+        const isCouplePackage = packageDetails?.name === "Couples";
+        setIsSelectedPackageCouple(isCouplePackage);
+
+        if (isCouplePackage) {
+            const selectedClientIds = getValues("clients");
+            clientDropDown.mutate({}, {
+                onSuccess: (data) => {
+                    setClientAutoCompleteValues(data.data);
+
+                    const matchedClients = data.data.filter(client =>
+                        selectedClientIds.includes(client._id)
+                    );
+                    setSelectedClients(matchedClients);
+                }
+            });
+        }
+    }, [watchedPackage]);
+
+    const handleCancel = useCallback(() => {
+        onCancel();
+        setIsSelectedPackageCouple(false);
+    }, [onCancel]);
 
     return (
         <Grid container spacing={3}>
@@ -49,9 +86,9 @@ const MembershipForm = ({ isLoading, onCancel }) => {
                     rules={{ required: "Package is required" }}
                 />
             </Grid>
+
             <Grid item xs={12} md={6}>
                 <FormInputText
-                    key={getValues("amount")}
                     name={"amount"}
                     label={"Amount"}
                     type={"number"}
@@ -133,11 +170,44 @@ const MembershipForm = ({ isLoading, onCancel }) => {
                     rules={{ required: "Goal is required" }}
                 />
             </Grid>
+            {isSelectedPackageCouple &&
+            <Grid item xs={12} md={12}>
+                <Autocomplete
+                    multiple
+                    id="clients"
+                    options={clientAutoCompleteValues}
+                    getOptionLabel={(option) => option.fullName}
+                    getOptionDisabled={(option) => option._id === getValues("_id")}
+                    isOptionEqualToValue={(options, value) => options._id === value._id}
+                    value={selectedClients}
+                    onChange={(event, newValue) => {
+                        setSelectedClients(newValue);
+                        setValue("clients", newValue.map(client => client._id)); // Update form value
+                    }}
+                    loading={clientDropDown.isPending}
+                    renderInput={(params) =>
+                        <FormInputText
+                            variant={"standard"}
+                            {...params}
+                            key={"clients"}
+                            name={"clients"}
+                            label={"Couple Partner"}
+                            disabled={clientDropDown.isPending}
+                            placeholder={"Select another client to complete the couple"}
+                            required={isSelectedPackageCouple}
+                            rules={{
+                                required: "Couple is required"
+                            }}
+                        />
+                    }
+                />
+            </Grid>
+            }
             <Box display="flex" justifyContent="end" marginTop={2} width="100%">
                 {isLoading && <CircularProgress/>}
                 {!isLoading &&
               <>
-                  <Button onClick={onCancel}
+                  <Button onClick={handleCancel}
                       color="secondary"
                       type={"button"}
                       sx={{ mx: 1 }}>

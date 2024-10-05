@@ -14,26 +14,14 @@ const membershipSchema = z.object({
     client: z.string({ required_error: "client is required" }),
     joiningDate: z.string({ required_error: "joiningDate is required" }),
     paymentDay: z.string({ required_error: "paymentDay is required" }),
+    amount: z.string({ required_error: "amount is required" }),
     goal: z.string({ required_error: "goal is required" }),
     package: z.string({ required_error: "package is required" }),
     weight: z.string({ required_error: "weight is required" }),
-    height: z.string({ required_error: "height is required" })
+    height: z.string({ required_error: "height is required" }),
+    membershipPackage: z.string().optional(),
+    clients: z.array(z.string()).optional(),
 });
-
-const getPaginatedMembership = async (req, res) => {
-    try {
-        const { payload, error } = validateAndRespond(paginationSchema, req.query);
-        if (error) {
-            return res.status(400).json({ message: "Validation failed.", errors: error });
-        }
-
-        const response = await MembershipService.getPaginatedMembership(req.subscriptionId, payload);
-        res.status(200).send(response);
-    } catch (err) {
-        console.error(err);
-        res.status(500).send({ message: "Internal Server Error", error: err });
-    }
-};
 
 const getMembershipByClient = async (req, res) => {
     try {
@@ -87,7 +75,6 @@ const deleteMembership = async (req, res) => {
 };
 
 module.exports = {
-    getPaginatedMembership,
     updateMembership,
     getMembershipByClient,
     createMembership,

@@ -8,7 +8,8 @@ module.exports = function (app) {
         next();
     });
 
-    app.get("/api/clients", verifyToken, controller.getAllClients);
+    app.get("/api/clients", verifyToken, controller.getPaginatedClients);
+    app.get("/api/clients/dropdown", verifyToken, controller.getClientDropdownList);
     app.get("/api/clients/:id", verifyToken, controller.getClient);
     app.post("/api/clients", verifyToken, controller.createClient);
     app.patch("/api/clients/:id", verifyToken, controller.updateClient);

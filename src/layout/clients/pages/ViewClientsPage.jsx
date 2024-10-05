@@ -15,7 +15,7 @@ import ClientDialog from "../dialogs/ClientDialog.jsx";
 import BasicInfoForm from "../forms/BasicInfoForm.jsx";
 import { FormProvider, useForm } from "react-hook-form";
 import MembershipForm from "../forms/MembershipForm.jsx";
-import { useEditMembership } from "../../../api/memberships/useMembershipMutation.js";
+import { useCreateMembership, useEditMembership } from "../../../api/memberships/useMembershipMutation.js";
 
 const ViewClientsPage = ({
     data,
@@ -33,8 +33,8 @@ const ViewClientsPage = ({
     const editClient = useEditClient();
 
     const editMembership = useEditMembership();
+    const createMembership = useCreateMembership();
 
-    // const [showBasicInfoDialog, setShowBasicInfoDialog] = useState(false);
     const [selectedAction, setSelectedAction] = useState({
         action: null,
         show: false,
@@ -53,8 +53,6 @@ const ViewClientsPage = ({
 
     }, [selectedAction.action, selectedAction.data]);
 
-    console.log("data", selectedAction.data);
-
     const handleActionCloseEvents = () => {
         basicInfoMethods.reset({});
         membershipMethods.reset({});
@@ -66,9 +64,7 @@ const ViewClientsPage = ({
     };
 
     const onFormSubmitMembership = (data) => {
-        console.log(data);
         const dataToSubmit = {
-            // membership: data.membership,
             package: data.package,
             amount: data.amount,
             height: data.height.toString(),
@@ -76,16 +72,26 @@ const ViewClientsPage = ({
             joiningDate: data.joiningDate,
             paymentDay: data.paymentDay.toString(),
             goal: data.goal,
-            client: data._id
+            client: data._id,
+            clients: data.clients,
+            membershipPackage: data.membershipPackage
         };
 
-        editMembership.mutate({
-            id: data?.membership,
-            updatedData: { ...dataToSubmit }
-        }, {
-            onSuccess: () => {
-                handleActionCloseEvents();
-            } });
+        if (data.membership) {
+            editMembership.mutate({
+                id: data?.membership,
+                updatedData: { ...dataToSubmit }
+            }, {
+                onSuccess: () => {
+                    handleActionCloseEvents();
+                } });
+        } else {
+            createMembership.mutate(dataToSubmit, {
+                onSuccess: () => {
+                    handleActionCloseEvents();
+                }
+            });
+        }
     };
 
     const onFormSubmitBasicInfo = (data) => {
@@ -108,7 +114,6 @@ const ViewClientsPage = ({
     const handleDelete = () => {
         deleteClient.mutate({ id: selectedAction.data._id }, {
             onSuccess: () => {
-                // setIsDeleting({ deleting: false, data: {} });
                 handleActionCloseEvents();
             }
         });
@@ -179,12 +184,12 @@ const ViewClientsPage = ({
                 onClose={handleActionCloseEvents}
                 isLoading={false}
                 icon={"card_membership"}
-                title={"Manage Membership"}
+                title={`Manage Membership | ${selectedAction.data.firstName} ${selectedAction.data.lastName}`}
             >
                 <FormProvider {...membershipMethods}>
                     <form onSubmit={membershipMethods.handleSubmit(onFormSubmitMembership)} noValidate>
                         <MembershipForm
-                            isLoading={editMembership.isPending}
+                            isLoading={editMembership.isPending || createMembership.isPending}
                             onCancel={handleActionCloseEvents}/>
                     </form>
                 </FormProvider>

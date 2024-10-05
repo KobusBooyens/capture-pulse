@@ -8,6 +8,10 @@ const createClientFn = async (data) => {
     return response.data;
 };
 
+const clientDropdownListFn = async () => {
+    return await apiClient.get("/clients/dropdown");
+};
+
 const deleteFn = async ({ id }) => {
     await new Promise(resolve => setTimeout(resolve, 2000));
     return await apiClient.delete(`/clients/${id}`);
@@ -65,4 +69,8 @@ const useCreateClient = () => {
     });
 };
 
-export { useCreateClient, useDeleteClient, useEditClient } ;
+const useClientDropDown = () => {
+    return useCustomMutation(clientDropdownListFn, queryKeys.DROPDOWN );
+};
+
+export { useCreateClient, useDeleteClient, useEditClient, useClientDropDown } ;

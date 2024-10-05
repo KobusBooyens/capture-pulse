@@ -51,13 +51,23 @@ const basicClientSchema = z.object({
     agent: z.string().optional(),
 });
 
-const getAllClients = async (req, res) => {
+const getPaginatedClients = async (req, res) => {
     try {
         const { payload, error } = validateAndRespond(paginationSchema, req.query);
         if (error) {
             return res.status(400).json({ message: "Validation failed.", errors: error });
         }
         const response = await ClientService.getAllClients(req.subscriptionId, payload);
+        return res.status(200).send(response);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send({ message: "Internal Server Error", error: err });
+    }
+};
+
+const getClientDropdownList = async (req, res) => {
+    try {
+        const response = await ClientService.getClientDropdownList(req.subscriptionId);
         return res.status(200).send(response);
     } catch (err) {
         console.error(err);
@@ -145,6 +155,6 @@ const deleteClientNote = async (req, res) => {
 };
 
 module.exports = {
-    getAllClients, getClient, createClient, updateClient, deleteClient,
+    getPaginatedClients, getClientDropdownList, getClient, createClient, updateClient, deleteClient,
     createClientNote, deleteClientNote
 };
