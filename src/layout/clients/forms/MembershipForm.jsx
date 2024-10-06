@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Autocomplete, CircularProgress, Grid, TextField } from "@mui/material";
+import { Autocomplete, CircularProgress, Grid } from "@mui/material";
 import FormInputText from "../../../components/Input/FormInputText/FormInputText.jsx";
 import FormInputDropdown from "../../../components/Input/FormInputDropdown/FormInputDropdown.jsx";
 import { useGoals } from "../../../api/goals/useGoalFetch.js";
@@ -13,6 +13,9 @@ import { useClientDropDown } from "../../../api/clients/useClientMutation.js";
 
 const MembershipForm = ({ isLoading, onCancel }) => {
     const { watch, setValue, getValues, formState: { defaultValues } } = useFormContext();
+
+    const selectedPackageChange = watch("package");
+  
     const [isSelectedPackageCouple, setIsSelectedPackageCouple] = useState(null);
     const [clientAutoCompleteValues, setClientAutoCompleteValues] = useState([]);
     const [selectedClients, setSelectedClients] = useState([]);
@@ -37,18 +40,19 @@ const MembershipForm = ({ isLoading, onCancel }) => {
     [goals.data]
     );
 
-    const watchedPackage = watch("package");
-    const watchedAmount = watch("amount");
-
     useEffect(() => {
-        if (!watchedAmount && watchedPackage) {
-            const packageDetails = packages?.data?.find(r => r._id === watchedPackage);
-            setValue("amount", packageDetails?.amount);
+        if (selectedPackageChange !== defaultValues?.package) {
+            const amount = packages?.data?.find(r => r?._id === selectedPackageChange)?.amount;
+            setValue("amount", amount);
+        } else {
+            setValue("amount", defaultValues?.amount);
         }
-    }, [watchedPackage, watchedAmount, packages?.data, setValue]);
+
+    }, [selectedPackageChange, defaultValues, setValue]);
 
     useEffect(() => {
-        const packageDetails = packages?.data?.find(r => r._id === watchedPackage);
+        const packageDetails = packages?.data?.find(r => r._id === selectedPackageChange);
+
         const isCouplePackage = packageDetails?.name === "Couples";
         setIsSelectedPackageCouple(isCouplePackage);
 
@@ -65,7 +69,7 @@ const MembershipForm = ({ isLoading, onCancel }) => {
                 }
             });
         }
-    }, [watchedPackage]);
+    }, [selectedPackageChange]);
 
     const handleCancel = useCallback(() => {
         onCancel();
@@ -93,7 +97,7 @@ const MembershipForm = ({ isLoading, onCancel }) => {
                     label={"Amount"}
                     type={"number"}
                     placeholder={"Enter Amount"}
-                    disabled={!watchedPackage}
+                    disabled={!selectedPackageChange}
                     fullWidth
                     required
                     rules={{
